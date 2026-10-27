@@ -1,0 +1,4812 @@
+{
+  "ok": true,
+  "recorded_at_utc": "2026-10-27T09:14:16.809770+00:00",
+  "source_sha256": "71aa36b021080fcbc262ed1820ba6d169e7d3fc36651e3978beb690a2eb8515e",
+  "input_count": 127,
+  "milestone": "CTL-13 phase-one comparison at every synchronous game-physics-frame; controller/force migration remains pending",
+  "build_note": "Binaries embed parent 0e0dd21 and dirty=true. The tested normalized source content hash is authoritative; the later publication commit is not embedded.",
+  "coverage": {
+    "pairs": 13,
+    "runtime_flights": 26,
+    "body_state_rows": 937400,
+    "body_intervals_after_reference": 937140,
+    "validator_cases_per_suite": 18,
+    "option_rejections": 6,
+    "portable_checks": 13,
+    "solver_counter_cases": 12,
+    "solver_option_rejections": 4
+  },
+  "all_paired_csv_byte_identical": true,
+  "comparison_maxima": {
+    "position_m": 0.0,
+    "velocity_mps": 0.0,
+    "orientation_rad": 2.9802322387695312e-08,
+    "angular_velocity_radps": 0.0,
+    "current_a": 0.0,
+    "consumed_ah": 0.0,
+    "soc": 0.0,
+    "voltage_v": 0.0,
+    "power_w": 0.0,
+    "motor_applied_power_w": 0.0,
+    "motor_available_power_w": 0.0
+  },
+  "max_charge_interval_error_ah": 6.938893903907228e-18,
+  "reports": {
+    "editor": {
+      "ok": true,
+      "build": {
+        "version": "0.7.5-dev",
+        "source_commit": "0e0dd21b7b261cd9690fe18e9b2882e65d9fd299",
+        "source_dirty": true,
+        "source_sha256": "71aa36b021080fcbc262ed1820ba6d169e7d3fc36651e3978beb690a2eb8515e",
+        "input_count": 127
+      },
+      "validator_checks": [
+        {
+          "case": "missing_body_row",
+          "rejected": true,
+          "reason": "Missing, duplicated or reordered frame/body at line 20"
+        },
+        {
+          "case": "duplicate_body_row",
+          "rejected": true,
+          "reason": "Missing, duplicated or reordered frame/body at line 21"
+        },
+        {
+          "case": "swapped_body_order",
+          "rejected": true,
+          "reason": "Missing, duplicated or reordered frame/body at line 19"
+        },
+        {
+          "case": "missing_final_frame",
+          "rejected": true,
+          "reason": "Frame/row count differs from finalized summary"
+        },
+        {
+          "case": "nonfirst_body_nan",
+          "rejected": true,
+          "reason": "Nonfinite x_m on line 20"
+        },
+        {
+          "case": "nonfirst_body_infinity",
+          "rejected": true,
+          "reason": "Nonfinite current_a on line 20"
+        },
+        {
+          "case": "lost_reset_epoch",
+          "rejected": true,
+          "reason": "Reset epoch lost, reversed or jumped"
+        },
+        {
+          "case": "missed_physics_update",
+          "rejected": true,
+          "reason": "Not exactly one control/model update per recorded frame"
+        },
+        {
+          "case": "charge_error_that_later_cancels",
+          "rejected": true,
+          "reason": "Per-frame charge integral mismatch"
+        },
+        {
+          "case": "power_voltage_mismatch",
+          "rejected": true,
+          "reason": "Delivered power differs from V*I"
+        },
+        {
+          "case": "motor_supply_exceeded",
+          "rejected": true,
+          "reason": "Applied motor power exceeds supply beyond float-thrust rounding"
+        },
+        {
+          "case": "velocity_direction_changed",
+          "rejected": true,
+          "reason": "Observer changed velocity_mps: 0.2377726173400879 > 0.0001"
+        },
+        {
+          "case": "motor_power_changes_cancel_in_total",
+          "rejected": true,
+          "reason": "Observer changed motor_applied_power_w: 0.10000000000002274 > 0.02"
+        },
+        {
+          "case": "wrong_final_step",
+          "rejected": true,
+          "reason": "Summary physics step sequence differs"
+        },
+        {
+          "case": "wrong_final_epoch",
+          "rejected": true,
+          "reason": "Summary reset history differs"
+        },
+        {
+          "case": "wrong_reset_count",
+          "rejected": true,
+          "reason": "Summary reset history differs"
+        },
+        {
+          "case": "empty_observer_result",
+          "rejected": true,
+          "reason": "Missing or failed observer result"
+        },
+        {
+          "case": "equivalent_negated_quaternions",
+          "accepted": true
+        }
+      ],
+      "scope": "Every completed synchronous game-physics-frame after the first reference sample through the 43-game-second fixture. Pairs are compared at the same game FPS, not across FPS. This is not an internal Chaos-substep trajectory, physical controller or GPU performance test.",
+      "raw_result_sha256": "3fceb2d8225e8ca09ca315a75e0e65ac84a92609cdaed9a183c58d49dfcc6924",
+      "raw_result_local_path": "Saved/Verification/flight-trace-20261027-090216-011829/results.json",
+      "pairs": [
+        {
+          "rate": 20,
+          "comparison": {
+            "ok": true,
+            "frames": 860,
+            "maxima": {
+              "position_m": 0.0,
+              "velocity_mps": 0.0,
+              "orientation_rad": 0.0,
+              "angular_velocity_radps": 0.0,
+              "current_a": 0.0,
+              "consumed_ah": 0.0,
+              "soc": 0.0,
+              "voltage_v": 0.0,
+              "power_w": 0.0,
+              "motor_applied_power_w": 0.0,
+              "motor_available_power_w": 0.0
+            },
+            "limits": {
+              "position_m": 0.0001,
+              "velocity_mps": 0.0001,
+              "orientation_rad": 0.0001,
+              "angular_velocity_radps": 0.001,
+              "current_a": 0.001,
+              "consumed_ah": 1e-08,
+              "soc": 1e-08,
+              "voltage_v": 0.0001,
+              "power_w": 0.02,
+              "motor_applied_power_w": 0.02,
+              "motor_available_power_w": 0.02
+            }
+          },
+          "integral_differences": [
+            {
+              "id": 0,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 1,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 2,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 3,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 4,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 5,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 6,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 7,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 8,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 9,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            }
+          ],
+          "baseline": {
+            "directory": "Saved/Verification/flight-trace-20261027-090216-011829/20-baseline",
+            "trace_csv_sha256": "17e3b03143493c67944ae02ec58dba955ec5b01e0e95585247034e00d2dfceaf",
+            "trace_json_sha256": "e6ab2d1a82fe99c1834f5673b64634a5ee50d666eabd36235ca112bdd1854bd5",
+            "frames": 860,
+            "rows": 8600,
+            "window_start_s": 0.10000000149011612,
+            "window_end_s": 43.05000064149499,
+            "actual_min_game_dt_s": 0.05000000074505806,
+            "actual_max_game_dt_s": 0.05000000074505806,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.791,
+              "hover_max_z_cm": 231.552,
+              "hover_min_z_cm": 219.913,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.10001,
+              "net_visible_peak_m": 0.08093,
+              "net_rebound_mps": 7.8145,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.05000000074505806,
+              "actual_max_game_dt_s": 0.05000000074505806
+            },
+            "independently_integrated_per_body": [
+              {
+                "id": 0,
+                "reset_count": 3,
+                "current_ah": 0.15281177281682962,
+                "consumed_ah": 0.15281177281682967,
+                "delivered_j": 8862.907305293003,
+                "vi_j": 8862.907305293003,
+                "motor_j": 8647.608303339079,
+                "max_charge_interval_error_ah": 6.911788849595091e-18,
+                "max_soc_interval_error": 5.537562595969714e-17
+              },
+              {
+                "id": 1,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 2,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 3,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 4,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 5,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 6,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 7,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 8,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 9,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              }
+            ]
+          },
+          "observed": {
+            "directory": "Saved/Verification/flight-trace-20261027-090216-011829/20-observed",
+            "trace_csv_sha256": "17e3b03143493c67944ae02ec58dba955ec5b01e0e95585247034e00d2dfceaf",
+            "trace_json_sha256": "02f2baa1da1a3aa662a76dc1f53ce26d63299f5ef44369546c5bde1225ad5adb",
+            "frames": 860,
+            "rows": 8600,
+            "window_start_s": 0.10000000149011612,
+            "window_end_s": 43.05000064149499,
+            "actual_min_game_dt_s": 0.05000000074505806,
+            "actual_max_game_dt_s": 0.05000000074505806,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.791,
+              "hover_max_z_cm": 231.552,
+              "hover_min_z_cm": 219.913,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.10001,
+              "net_visible_peak_m": 0.08093,
+              "net_rebound_mps": 7.8145,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.05000000074505806,
+              "actual_max_game_dt_s": 0.05000000074505806
+            },
+            "independent_consumption_matches_baseline": true,
+            "observer": {
+              "ok": true,
+              "mode": "sync",
+              "solver_steps": 5950,
+              "pre_integrations": 5950,
+              "post_integrations": 5950,
+              "solver_min_dt_s": 0.007142857249294009,
+              "solver_max_dt_s": 0.007142857249294009,
+              "solver_elapsed_s": 42.5000006332994,
+              "callback_order_errors": 0,
+              "time_balance_error_s": -4.973799150320701e-14,
+              "time_balance_valid": true,
+              "observer_begin_world_s": 0.5500000081956387,
+              "observer_end_world_s": 43.05000064149499,
+              "completion_signal_world_s": 43.05000064149499,
+              "observer_covers_completion_tick": true
+            }
+          }
+        },
+        {
+          "rate": 30,
+          "comparison": {
+            "ok": true,
+            "frames": 1290,
+            "maxima": {
+              "position_m": 0.0,
+              "velocity_mps": 0.0,
+              "orientation_rad": 0.0,
+              "angular_velocity_radps": 0.0,
+              "current_a": 0.0,
+              "consumed_ah": 0.0,
+              "soc": 0.0,
+              "voltage_v": 0.0,
+              "power_w": 0.0,
+              "motor_applied_power_w": 0.0,
+              "motor_available_power_w": 0.0
+            },
+            "limits": {
+              "position_m": 0.0001,
+              "velocity_mps": 0.0001,
+              "orientation_rad": 0.0001,
+              "angular_velocity_radps": 0.001,
+              "current_a": 0.001,
+              "consumed_ah": 1e-08,
+              "soc": 1e-08,
+              "voltage_v": 0.0001,
+              "power_w": 0.02,
+              "motor_applied_power_w": 0.02,
+              "motor_available_power_w": 0.02
+            }
+          },
+          "integral_differences": [
+            {
+              "id": 0,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 1,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 2,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 3,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 4,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 5,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 6,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 7,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 8,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 9,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            }
+          ],
+          "baseline": {
+            "directory": "Saved/Verification/flight-trace-20261027-090216-011829/30-baseline",
+            "trace_csv_sha256": "1b3b64d670980ae9066cc4c5fd90a73d9a391298818388a0f9b1e6e5f6d7a38b",
+            "trace_json_sha256": "90fdc521e3d0a8963d5b7008b90ea68cb30015317a23058785b26ce484b2de36",
+            "frames": 1290,
+            "rows": 12900,
+            "window_start_s": 0.06666667014360428,
+            "window_end_s": 43.03333557769656,
+            "actual_min_game_dt_s": 0.03333333507180214,
+            "actual_max_game_dt_s": 0.03333333507180214,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.297,
+              "hover_max_z_cm": 231.674,
+              "hover_min_z_cm": 219.909,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.05318,
+              "net_visible_peak_m": 0.05041,
+              "net_rebound_mps": 1.123,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.03333333507180214,
+              "actual_max_game_dt_s": 0.03333333507180214
+            },
+            "independently_integrated_per_body": [
+              {
+                "id": 0,
+                "reset_count": 3,
+                "current_ah": 0.15273875577560897,
+                "consumed_ah": 0.15273875577560914,
+                "delivered_j": 8858.572994304543,
+                "vi_j": 8858.572994304543,
+                "motor_j": 8643.189990365043,
+                "max_charge_interval_error_ah": 6.938893903907228e-18,
+                "max_soc_interval_error": 5.545694112263355e-17
+              },
+              {
+                "id": 1,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 2,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 3,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 4,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 5,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 6,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 7,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 8,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 9,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              }
+            ]
+          },
+          "observed": {
+            "directory": "Saved/Verification/flight-trace-20261027-090216-011829/30-observed",
+            "trace_csv_sha256": "1b3b64d670980ae9066cc4c5fd90a73d9a391298818388a0f9b1e6e5f6d7a38b",
+            "trace_json_sha256": "5ecb7e393bcd8cfe390d9ae36ee01de4e27049ca8c19d08de8202fd29fc2f244",
+            "frames": 1290,
+            "rows": 12900,
+            "window_start_s": 0.06666667014360428,
+            "window_end_s": 43.03333557769656,
+            "actual_min_game_dt_s": 0.03333333507180214,
+            "actual_max_game_dt_s": 0.03333333507180214,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.297,
+              "hover_max_z_cm": 231.674,
+              "hover_min_z_cm": 219.909,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.05318,
+              "net_visible_peak_m": 0.05041,
+              "net_rebound_mps": 1.123,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.03333333507180214,
+              "actual_max_game_dt_s": 0.03333333507180214
+            },
+            "independent_consumption_matches_baseline": true,
+            "observer": {
+              "ok": true,
+              "mode": "sync",
+              "solver_steps": 6375,
+              "pre_integrations": 6375,
+              "post_integrations": 6375,
+              "solver_min_dt_s": 0.006666667014360428,
+              "solver_max_dt_s": 0.006666667014360428,
+              "solver_elapsed_s": 42.50000221654566,
+              "callback_order_errors": 0,
+              "time_balance_error_s": 2.0676793610618915e-12,
+              "time_balance_valid": true,
+              "observer_begin_world_s": 0.5333333611488342,
+              "observer_end_world_s": 43.03333557769656,
+              "completion_signal_world_s": 43.03333557769656,
+              "observer_covers_completion_tick": true
+            }
+          }
+        },
+        {
+          "rate": 45,
+          "comparison": {
+            "ok": true,
+            "frames": 1935,
+            "maxima": {
+              "position_m": 0.0,
+              "velocity_mps": 0.0,
+              "orientation_rad": 0.0,
+              "angular_velocity_radps": 0.0,
+              "current_a": 0.0,
+              "consumed_ah": 0.0,
+              "soc": 0.0,
+              "voltage_v": 0.0,
+              "power_w": 0.0,
+              "motor_applied_power_w": 0.0,
+              "motor_available_power_w": 0.0
+            },
+            "limits": {
+              "position_m": 0.0001,
+              "velocity_mps": 0.0001,
+              "orientation_rad": 0.0001,
+              "angular_velocity_radps": 0.001,
+              "current_a": 0.001,
+              "consumed_ah": 1e-08,
+              "soc": 1e-08,
+              "voltage_v": 0.0001,
+              "power_w": 0.02,
+              "motor_applied_power_w": 0.02,
+              "motor_available_power_w": 0.02
+            }
+          },
+          "integral_differences": [
+            {
+              "id": 0,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 1,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 2,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 3,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 4,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 5,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 6,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 7,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 8,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 9,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            }
+          ],
+          "baseline": {
+            "directory": "Saved/Verification/flight-trace-20261027-090216-011829/45-baseline",
+            "trace_csv_sha256": "5bcd899a7e56c2df538617617318a32f59ef4aadfd8d96604dcc0da3bda977d2",
+            "trace_json_sha256": "f507da411b62174b35d632a75e2dc569669469a30a2969a8f0605793d515a504",
+            "frames": 1935,
+            "rows": 19350,
+            "window_start_s": 0.04444444552063942,
+            "window_end_s": 43.02222326397896,
+            "actual_min_game_dt_s": 0.02222222276031971,
+            "actual_max_game_dt_s": 0.02222222276031971,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.133,
+              "hover_max_z_cm": 231.764,
+              "hover_min_z_cm": 219.911,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.0611,
+              "net_visible_peak_m": 0.05974,
+              "net_rebound_mps": 1.0251,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.02222222276031971,
+              "actual_max_game_dt_s": 0.02222222276031971
+            },
+            "independently_integrated_per_body": [
+              {
+                "id": 0,
+                "reset_count": 3,
+                "current_ah": 0.15269907100550342,
+                "consumed_ah": 0.15269907100550342,
+                "delivered_j": 8856.150138611887,
+                "vi_j": 8856.150138611887,
+                "motor_j": 8640.711248890475,
+                "max_charge_interval_error_ah": 6.938893903907228e-18,
+                "max_soc_interval_error": 5.549759870410176e-17
+              },
+              {
+                "id": 1,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 2,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 3,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 4,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 5,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 6,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 7,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 8,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 9,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              }
+            ]
+          },
+          "observed": {
+            "directory": "Saved/Verification/flight-trace-20261027-090216-011829/45-observed",
+            "trace_csv_sha256": "5bcd899a7e56c2df538617617318a32f59ef4aadfd8d96604dcc0da3bda977d2",
+            "trace_json_sha256": "282691f5f1fcd4a2b3628b79bf1e0f664e2b03635f8cb0617d9e59a7a446830e",
+            "frames": 1935,
+            "rows": 19350,
+            "window_start_s": 0.04444444552063942,
+            "window_end_s": 43.02222326397896,
+            "actual_min_game_dt_s": 0.02222222276031971,
+            "actual_max_game_dt_s": 0.02222222276031971,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.133,
+              "hover_max_z_cm": 231.764,
+              "hover_min_z_cm": 219.911,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.0611,
+              "net_visible_peak_m": 0.05974,
+              "net_rebound_mps": 1.0251,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.02222222276031971,
+              "actual_max_game_dt_s": 0.02222222276031971
+            },
+            "independent_consumption_matches_baseline": true,
+            "observer": {
+              "ok": true,
+              "mode": "sync",
+              "solver_steps": 5736,
+              "pre_integrations": 5736,
+              "post_integrations": 5736,
+              "solver_min_dt_s": 0.007407407586773236,
+              "solver_max_dt_s": 0.007407407586773236,
+              "solver_elapsed_s": 42.48888991773259,
+              "callback_order_errors": 0,
+              "time_balance_error_s": -1.3073986337985843e-12,
+              "time_balance_valid": true,
+              "observer_begin_world_s": 0.533333346247673,
+              "observer_end_world_s": 43.02222326397896,
+              "completion_signal_world_s": 43.02222326397896,
+              "observer_covers_completion_tick": true
+            }
+          }
+        },
+        {
+          "rate": 60,
+          "comparison": {
+            "ok": true,
+            "frames": 2580,
+            "maxima": {
+              "position_m": 0.0,
+              "velocity_mps": 0.0,
+              "orientation_rad": 0.0,
+              "angular_velocity_radps": 0.0,
+              "current_a": 0.0,
+              "consumed_ah": 0.0,
+              "soc": 0.0,
+              "voltage_v": 0.0,
+              "power_w": 0.0,
+              "motor_applied_power_w": 0.0,
+              "motor_available_power_w": 0.0
+            },
+            "limits": {
+              "position_m": 0.0001,
+              "velocity_mps": 0.0001,
+              "orientation_rad": 0.0001,
+              "angular_velocity_radps": 0.001,
+              "current_a": 0.001,
+              "consumed_ah": 1e-08,
+              "soc": 1e-08,
+              "voltage_v": 0.0001,
+              "power_w": 0.02,
+              "motor_applied_power_w": 0.02,
+              "motor_available_power_w": 0.02
+            }
+          },
+          "integral_differences": [
+            {
+              "id": 0,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 1,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 2,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 3,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 4,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 5,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 6,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 7,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 8,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 9,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            }
+          ],
+          "baseline": {
+            "directory": "Saved/Verification/flight-trace-20261027-090216-011829/60-baseline",
+            "trace_csv_sha256": "de434553425f256aa0e9272de2af63c9607e71e5907a9f7632cdf9b5d7ed1dae",
+            "trace_json_sha256": "a96ac2c4f19627a89417baa1f4982338d58f874dd165a0179311c6cae3df1154",
+            "frames": 2580,
+            "rows": 25800,
+            "window_start_s": 0.03333333507180214,
+            "window_end_s": 43.01666891016066,
+            "actual_min_game_dt_s": 0.01666666753590107,
+            "actual_max_game_dt_s": 0.01666666753590107,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.15,
+              "hover_max_z_cm": 231.869,
+              "hover_min_z_cm": 219.915,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.06753,
+              "net_visible_peak_m": 0.0646,
+              "net_rebound_mps": 1.0562,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.01666666753590107,
+              "actual_max_game_dt_s": 0.01666666753590107
+            },
+            "independently_integrated_per_body": [
+              {
+                "id": 0,
+                "reset_count": 3,
+                "current_ah": 0.15269686055468065,
+                "consumed_ah": 0.152696860554681,
+                "delivered_j": 8855.907650322702,
+                "vi_j": 8855.907650322702,
+                "motor_j": 8640.440952158397,
+                "max_charge_interval_error_ah": 6.938893903907228e-18,
+                "max_soc_interval_error": 5.543661233189945e-17
+              },
+              {
+                "id": 1,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 2,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 3,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 4,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 5,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 6,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 7,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 8,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 9,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              }
+            ]
+          },
+          "observed": {
+            "directory": "Saved/Verification/flight-trace-20261027-090216-011829/60-observed",
+            "trace_csv_sha256": "de434553425f256aa0e9272de2af63c9607e71e5907a9f7632cdf9b5d7ed1dae",
+            "trace_json_sha256": "166a93f72e572bdd981ee675a837a08ea38b1e930a0537f6d347d9d4c910c9db",
+            "frames": 2580,
+            "rows": 25800,
+            "window_start_s": 0.03333333507180214,
+            "window_end_s": 43.01666891016066,
+            "actual_min_game_dt_s": 0.01666666753590107,
+            "actual_max_game_dt_s": 0.01666666753590107,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.15,
+              "hover_max_z_cm": 231.869,
+              "hover_min_z_cm": 219.915,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.06753,
+              "net_visible_peak_m": 0.0646,
+              "net_rebound_mps": 1.0562,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.01666666753590107,
+              "actual_max_game_dt_s": 0.01666666753590107
+            },
+            "independent_consumption_matches_baseline": true,
+            "observer": {
+              "ok": true,
+              "mode": "sync",
+              "solver_steps": 7650,
+              "pre_integrations": 7650,
+              "post_integrations": 7650,
+              "solver_min_dt_s": 0.005555555845300357,
+              "solver_max_dt_s": 0.005555555845300357,
+              "solver_elapsed_s": 42.50000221654598,
+              "callback_order_errors": 0,
+              "time_balance_error_s": 1.7479351299698465e-12,
+              "time_balance_valid": true,
+              "observer_begin_world_s": 0.5166666936129332,
+              "observer_end_world_s": 43.01666891016066,
+              "completion_signal_world_s": 43.01666891016066,
+              "observer_covers_completion_tick": true
+            }
+          }
+        },
+        {
+          "rate": 120,
+          "comparison": {
+            "ok": true,
+            "frames": 5160,
+            "maxima": {
+              "position_m": 0.0,
+              "velocity_mps": 0.0,
+              "orientation_rad": 2.9802322387695312e-08,
+              "angular_velocity_radps": 0.0,
+              "current_a": 0.0,
+              "consumed_ah": 0.0,
+              "soc": 0.0,
+              "voltage_v": 0.0,
+              "power_w": 0.0,
+              "motor_applied_power_w": 0.0,
+              "motor_available_power_w": 0.0
+            },
+            "limits": {
+              "position_m": 0.0001,
+              "velocity_mps": 0.0001,
+              "orientation_rad": 0.0001,
+              "angular_velocity_radps": 0.001,
+              "current_a": 0.001,
+              "consumed_ah": 1e-08,
+              "soc": 1e-08,
+              "voltage_v": 0.0001,
+              "power_w": 0.02,
+              "motor_applied_power_w": 0.02,
+              "motor_available_power_w": 0.02
+            }
+          },
+          "integral_differences": [
+            {
+              "id": 0,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 1,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 2,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 3,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 4,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 5,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 6,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 7,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 8,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 9,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            }
+          ],
+          "baseline": {
+            "directory": "Saved/Verification/flight-trace-20261027-090216-011829/120-baseline",
+            "trace_csv_sha256": "12a413b3debf834a55c9157dfb8b38f4f55d029d0fd44a5268251bce7fad848a",
+            "trace_json_sha256": "fe36c4c8b7c39f5ad2969a1da504e1116f048c941769f5a2fa3289e4b6785a4c",
+            "frames": 5160,
+            "rows": 51600,
+            "window_start_s": 0.01666666753590107,
+            "window_end_s": 43.00833557639271,
+            "actual_min_game_dt_s": 0.008333333767950535,
+            "actual_max_game_dt_s": 0.008333333767950535,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 2.988,
+              "hover_max_z_cm": 231.982,
+              "hover_min_z_cm": 219.921,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.075,
+              "net_visible_peak_m": 0.07437,
+              "net_rebound_mps": 1.0764,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.008333333767950535,
+              "actual_max_game_dt_s": 0.008333333767950535
+            },
+            "independently_integrated_per_body": [
+              {
+                "id": 0,
+                "reset_count": 3,
+                "current_ah": 0.15275433322822154,
+                "consumed_ah": 0.1527543332282217,
+                "delivered_j": 8858.922824589043,
+                "vi_j": 8858.922824589043,
+                "motor_j": 8643.414474605332,
+                "max_charge_interval_error_ah": 6.932117640329194e-18,
+                "max_soc_interval_error": 5.550776309946881e-17
+              },
+              {
+                "id": 1,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 2,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 3,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 4,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 5,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 6,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 7,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 8,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 9,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              }
+            ]
+          },
+          "observed": {
+            "directory": "Saved/Verification/flight-trace-20261027-090216-011829/120-observed",
+            "trace_csv_sha256": "12a413b3debf834a55c9157dfb8b38f4f55d029d0fd44a5268251bce7fad848a",
+            "trace_json_sha256": "2e94ce1a101f054be89825ee8a1b457bfeb9b8eb9873bdccf579a33a8877663b",
+            "frames": 5160,
+            "rows": 51600,
+            "window_start_s": 0.01666666753590107,
+            "window_end_s": 43.00833557639271,
+            "actual_min_game_dt_s": 0.008333333767950535,
+            "actual_max_game_dt_s": 0.008333333767950535,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 2.988,
+              "hover_max_z_cm": 231.982,
+              "hover_min_z_cm": 219.921,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.075,
+              "net_visible_peak_m": 0.07437,
+              "net_rebound_mps": 1.0764,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.008333333767950535,
+              "actual_max_game_dt_s": 0.008333333767950535
+            },
+            "independent_consumption_matches_baseline": true,
+            "observer": {
+              "ok": true,
+              "mode": "sync",
+              "solver_steps": 10200,
+              "pre_integrations": 10200,
+              "post_integrations": 10200,
+              "solver_min_dt_s": 0.004166666883975267,
+              "solver_max_dt_s": 0.004166666883975267,
+              "solver_elapsed_s": 42.50000221654773,
+              "callback_order_errors": 0,
+              "time_balance_error_s": 0,
+              "time_balance_valid": true,
+              "observer_begin_world_s": 0.5083333598449826,
+              "observer_end_world_s": 43.00833557639271,
+              "completion_signal_world_s": 43.00833557639271,
+              "observer_covers_completion_tick": true
+            }
+          }
+        },
+        {
+          "rate": 240,
+          "comparison": {
+            "ok": true,
+            "frames": 10320,
+            "maxima": {
+              "position_m": 0.0,
+              "velocity_mps": 0.0,
+              "orientation_rad": 0.0,
+              "angular_velocity_radps": 0.0,
+              "current_a": 0.0,
+              "consumed_ah": 0.0,
+              "soc": 0.0,
+              "voltage_v": 0.0,
+              "power_w": 0.0,
+              "motor_applied_power_w": 0.0,
+              "motor_available_power_w": 0.0
+            },
+            "limits": {
+              "position_m": 0.0001,
+              "velocity_mps": 0.0001,
+              "orientation_rad": 0.0001,
+              "angular_velocity_radps": 0.001,
+              "current_a": 0.001,
+              "consumed_ah": 1e-08,
+              "soc": 1e-08,
+              "voltage_v": 0.0001,
+              "power_w": 0.02,
+              "motor_applied_power_w": 0.02,
+              "motor_available_power_w": 0.02
+            }
+          },
+          "integral_differences": [
+            {
+              "id": 0,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 1,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 2,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 3,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 4,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 5,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 6,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 7,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 8,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 9,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            }
+          ],
+          "baseline": {
+            "directory": "Saved/Verification/flight-trace-20261027-090216-011829/240-baseline",
+            "trace_csv_sha256": "cb0455db73dae91fd4fb1ef215ce948a0157a23f89b4e428e834682b6c4e7ec3",
+            "trace_json_sha256": "09e0f5a397b1282c63112a3d4bcb18e3b72816b3b7b9f189ef59001e5fa5835b",
+            "frames": 10320,
+            "rows": 103200,
+            "window_start_s": 0.008333333767950535,
+            "window_end_s": 43.004168909508735,
+            "actual_min_game_dt_s": 0.004166666883975267,
+            "actual_max_game_dt_s": 0.004166666883975267,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 2.977,
+              "hover_max_z_cm": 232.008,
+              "hover_min_z_cm": 219.92,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.07781,
+              "net_visible_peak_m": 0.07754,
+              "net_rebound_mps": 1.0704,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.004166666883975267,
+              "actual_max_game_dt_s": 0.004166666883975267
+            },
+            "independently_integrated_per_body": [
+              {
+                "id": 0,
+                "reset_count": 3,
+                "current_ah": 0.1527443630667595,
+                "consumed_ah": 0.15274436306675918,
+                "delivered_j": 8858.27534787326,
+                "vi_j": 8858.27534787326,
+                "motor_j": 8642.746035168773,
+                "max_charge_interval_error_ah": 6.935505772118211e-18,
+                "max_soc_interval_error": 5.550437496767979e-17
+              },
+              {
+                "id": 1,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 2,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 3,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 4,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 5,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 6,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 7,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 8,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 9,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              }
+            ]
+          },
+          "observed": {
+            "directory": "Saved/Verification/flight-trace-20261027-090216-011829/240-observed",
+            "trace_csv_sha256": "cb0455db73dae91fd4fb1ef215ce948a0157a23f89b4e428e834682b6c4e7ec3",
+            "trace_json_sha256": "acbde4cdf8eba6941914f920d947cf0eeb677742a4dbbd05adca429b292d25ef",
+            "frames": 10320,
+            "rows": 103200,
+            "window_start_s": 0.008333333767950535,
+            "window_end_s": 43.004168909508735,
+            "actual_min_game_dt_s": 0.004166666883975267,
+            "actual_max_game_dt_s": 0.004166666883975267,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 2.977,
+              "hover_max_z_cm": 232.008,
+              "hover_min_z_cm": 219.92,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.07781,
+              "net_visible_peak_m": 0.07754,
+              "net_rebound_mps": 1.0704,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.004166666883975267,
+              "actual_max_game_dt_s": 0.004166666883975267
+            },
+            "independent_consumption_matches_baseline": true,
+            "observer": {
+              "ok": true,
+              "mode": "sync",
+              "solver_steps": 10200,
+              "pre_integrations": 10200,
+              "post_integrations": 10200,
+              "solver_min_dt_s": 0.004166666883975267,
+              "solver_max_dt_s": 0.004166666883975267,
+              "solver_elapsed_s": 42.50000221654773,
+              "callback_order_errors": 0,
+              "time_balance_error_s": 0,
+              "time_balance_valid": true,
+              "observer_begin_world_s": 0.5041666929610074,
+              "observer_end_world_s": 43.004168909508735,
+              "completion_signal_world_s": 43.004168909508735,
+              "observer_covers_completion_tick": true
+            }
+          }
+        }
+      ]
+    },
+    "shipping": {
+      "ok": true,
+      "build": {
+        "version": "0.7.5-dev",
+        "source_commit": "0e0dd21b7b261cd9690fe18e9b2882e65d9fd299",
+        "source_dirty": true,
+        "source_sha256": "71aa36b021080fcbc262ed1820ba6d169e7d3fc36651e3978beb690a2eb8515e",
+        "input_count": 127
+      },
+      "validator_checks": [
+        {
+          "case": "missing_body_row",
+          "rejected": true,
+          "reason": "Missing, duplicated or reordered frame/body at line 20"
+        },
+        {
+          "case": "duplicate_body_row",
+          "rejected": true,
+          "reason": "Missing, duplicated or reordered frame/body at line 21"
+        },
+        {
+          "case": "swapped_body_order",
+          "rejected": true,
+          "reason": "Missing, duplicated or reordered frame/body at line 19"
+        },
+        {
+          "case": "missing_final_frame",
+          "rejected": true,
+          "reason": "Frame/row count differs from finalized summary"
+        },
+        {
+          "case": "nonfirst_body_nan",
+          "rejected": true,
+          "reason": "Nonfinite x_m on line 20"
+        },
+        {
+          "case": "nonfirst_body_infinity",
+          "rejected": true,
+          "reason": "Nonfinite current_a on line 20"
+        },
+        {
+          "case": "lost_reset_epoch",
+          "rejected": true,
+          "reason": "Reset epoch lost, reversed or jumped"
+        },
+        {
+          "case": "missed_physics_update",
+          "rejected": true,
+          "reason": "Not exactly one control/model update per recorded frame"
+        },
+        {
+          "case": "charge_error_that_later_cancels",
+          "rejected": true,
+          "reason": "Per-frame charge integral mismatch"
+        },
+        {
+          "case": "power_voltage_mismatch",
+          "rejected": true,
+          "reason": "Delivered power differs from V*I"
+        },
+        {
+          "case": "motor_supply_exceeded",
+          "rejected": true,
+          "reason": "Applied motor power exceeds supply beyond float-thrust rounding"
+        },
+        {
+          "case": "velocity_direction_changed",
+          "rejected": true,
+          "reason": "Observer changed velocity_mps: 0.2377726173400879 > 0.0001"
+        },
+        {
+          "case": "motor_power_changes_cancel_in_total",
+          "rejected": true,
+          "reason": "Observer changed motor_applied_power_w: 0.10000000000002274 > 0.02"
+        },
+        {
+          "case": "wrong_final_step",
+          "rejected": true,
+          "reason": "Summary physics step sequence differs"
+        },
+        {
+          "case": "wrong_final_epoch",
+          "rejected": true,
+          "reason": "Summary reset history differs"
+        },
+        {
+          "case": "wrong_reset_count",
+          "rejected": true,
+          "reason": "Summary reset history differs"
+        },
+        {
+          "case": "empty_observer_result",
+          "rejected": true,
+          "reason": "Missing or failed observer result"
+        },
+        {
+          "case": "equivalent_negated_quaternions",
+          "accepted": true
+        }
+      ],
+      "scope": "Every completed synchronous game-physics-frame after the first reference sample through the 43-game-second fixture. Pairs are compared at the same game FPS, not across FPS. This is not an internal Chaos-substep trajectory, physical controller or GPU performance test.",
+      "raw_result_sha256": "cf16e97f90d11e00ce1542dd5b2bcec25b07bcd75cfdc11db473a2cb22a07a8f",
+      "raw_result_local_path": "Saved/Verification/flight-trace-20261027-090245-610934/results.json",
+      "pairs": [
+        {
+          "rate": 20,
+          "comparison": {
+            "ok": true,
+            "frames": 860,
+            "maxima": {
+              "position_m": 0.0,
+              "velocity_mps": 0.0,
+              "orientation_rad": 0.0,
+              "angular_velocity_radps": 0.0,
+              "current_a": 0.0,
+              "consumed_ah": 0.0,
+              "soc": 0.0,
+              "voltage_v": 0.0,
+              "power_w": 0.0,
+              "motor_applied_power_w": 0.0,
+              "motor_available_power_w": 0.0
+            },
+            "limits": {
+              "position_m": 0.0001,
+              "velocity_mps": 0.0001,
+              "orientation_rad": 0.0001,
+              "angular_velocity_radps": 0.001,
+              "current_a": 0.001,
+              "consumed_ah": 1e-08,
+              "soc": 1e-08,
+              "voltage_v": 0.0001,
+              "power_w": 0.02,
+              "motor_applied_power_w": 0.02,
+              "motor_available_power_w": 0.02
+            }
+          },
+          "integral_differences": [
+            {
+              "id": 0,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 1,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 2,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 3,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 4,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 5,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 6,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 7,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 8,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 9,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            }
+          ],
+          "baseline": {
+            "directory": "Saved/Verification/flight-trace-20261027-090245-610934/20-baseline",
+            "trace_csv_sha256": "7fffa52c93cdf381038098f142e25b3ac44c13ff3c6c21237ddabf689a0bd6f4",
+            "trace_json_sha256": "7ffdd7f511308a84b6ef4d6ca46ec5d4298c8f5d0196daf51521459bd9a1854b",
+            "frames": 860,
+            "rows": 8600,
+            "window_start_s": 0.10000000149011612,
+            "window_end_s": 43.05000064149499,
+            "actual_min_game_dt_s": 0.05000000074505806,
+            "actual_max_game_dt_s": 0.05000000074505806,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.791,
+              "hover_max_z_cm": 231.552,
+              "hover_min_z_cm": 219.913,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.10001,
+              "net_visible_peak_m": 0.08093,
+              "net_rebound_mps": 7.8145,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.05000000074505806,
+              "actual_max_game_dt_s": 0.05000000074505806
+            },
+            "independently_integrated_per_body": [
+              {
+                "id": 0,
+                "reset_count": 3,
+                "current_ah": 0.15281177281675898,
+                "consumed_ah": 0.15281177281675906,
+                "delivered_j": 8862.907305289189,
+                "vi_j": 8862.907305289189,
+                "motor_j": 8647.608304970145,
+                "max_charge_interval_error_ah": 6.911788849595091e-18,
+                "max_soc_interval_error": 5.545694112263355e-17
+              },
+              {
+                "id": 1,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 2,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 3,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 4,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 5,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 6,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 7,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 8,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 9,
+                "reset_count": 0,
+                "current_ah": 0.003581407074351687,
+                "consumed_ah": 0.003581407074351687,
+                "delivered_j": 216.4125630462667,
+                "vi_j": 216.4125630462667,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1514636860259229e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              }
+            ]
+          },
+          "observed": {
+            "directory": "Saved/Verification/flight-trace-20261027-090245-610934/20-observed",
+            "trace_csv_sha256": "7fffa52c93cdf381038098f142e25b3ac44c13ff3c6c21237ddabf689a0bd6f4",
+            "trace_json_sha256": "49dae371b4ff858da46e09e019627b8ea5fdb0ec2ca5fb6350c011318565424e",
+            "frames": 860,
+            "rows": 8600,
+            "window_start_s": 0.10000000149011612,
+            "window_end_s": 43.05000064149499,
+            "actual_min_game_dt_s": 0.05000000074505806,
+            "actual_max_game_dt_s": 0.05000000074505806,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.791,
+              "hover_max_z_cm": 231.552,
+              "hover_min_z_cm": 219.913,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.10001,
+              "net_visible_peak_m": 0.08093,
+              "net_rebound_mps": 7.8145,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.05000000074505806,
+              "actual_max_game_dt_s": 0.05000000074505806
+            },
+            "independent_consumption_matches_baseline": true,
+            "observer": {
+              "ok": true,
+              "mode": "sync",
+              "solver_steps": 5950,
+              "pre_integrations": 5950,
+              "post_integrations": 5950,
+              "solver_min_dt_s": 0.007142857249294009,
+              "solver_max_dt_s": 0.007142857249294009,
+              "solver_elapsed_s": 42.5000006332994,
+              "callback_order_errors": 0,
+              "time_balance_error_s": -4.973799150320701e-14,
+              "time_balance_valid": true,
+              "observer_begin_world_s": 0.5500000081956387,
+              "observer_end_world_s": 43.05000064149499,
+              "completion_signal_world_s": 43.05000064149499,
+              "observer_covers_completion_tick": true
+            }
+          }
+        },
+        {
+          "rate": 30,
+          "comparison": {
+            "ok": true,
+            "frames": 1290,
+            "maxima": {
+              "position_m": 0.0,
+              "velocity_mps": 0.0,
+              "orientation_rad": 0.0,
+              "angular_velocity_radps": 0.0,
+              "current_a": 0.0,
+              "consumed_ah": 0.0,
+              "soc": 0.0,
+              "voltage_v": 0.0,
+              "power_w": 0.0,
+              "motor_applied_power_w": 0.0,
+              "motor_available_power_w": 0.0
+            },
+            "limits": {
+              "position_m": 0.0001,
+              "velocity_mps": 0.0001,
+              "orientation_rad": 0.0001,
+              "angular_velocity_radps": 0.001,
+              "current_a": 0.001,
+              "consumed_ah": 1e-08,
+              "soc": 1e-08,
+              "voltage_v": 0.0001,
+              "power_w": 0.02,
+              "motor_applied_power_w": 0.02,
+              "motor_available_power_w": 0.02
+            }
+          },
+          "integral_differences": [
+            {
+              "id": 0,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 1,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 2,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 3,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 4,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 5,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 6,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 7,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 8,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 9,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            }
+          ],
+          "baseline": {
+            "directory": "Saved/Verification/flight-trace-20261027-090245-610934/30-baseline",
+            "trace_csv_sha256": "26eb806a432ae2a44a37eed687bda72a872e5a081c95a2a7bec8ee33577838ae",
+            "trace_json_sha256": "9030da61468b9ca2b6f9aa8f27f66e638c32b3878fa652db25682aafd55d5c5c",
+            "frames": 1290,
+            "rows": 12900,
+            "window_start_s": 0.06666667014360428,
+            "window_end_s": 43.03333557769656,
+            "actual_min_game_dt_s": 0.03333333507180214,
+            "actual_max_game_dt_s": 0.03333333507180214,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.297,
+              "hover_max_z_cm": 231.674,
+              "hover_min_z_cm": 219.909,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.05318,
+              "net_visible_peak_m": 0.05041,
+              "net_rebound_mps": 1.123,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.03333333507180214,
+              "actual_max_game_dt_s": 0.03333333507180214
+            },
+            "independently_integrated_per_body": [
+              {
+                "id": 0,
+                "reset_count": 3,
+                "current_ah": 0.15273875577558094,
+                "consumed_ah": 0.1527387557755811,
+                "delivered_j": 8858.572994303024,
+                "vi_j": 8858.572994303024,
+                "motor_j": 8643.189990727633,
+                "max_charge_interval_error_ah": 6.8969657730181405e-18,
+                "max_soc_interval_error": 5.547049364978962e-17
+              },
+              {
+                "id": 1,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 2,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 3,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 4,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 5,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 6,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 7,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 8,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              },
+              {
+                "id": 9,
+                "reset_count": 0,
+                "current_ah": 0.0035827969660962083,
+                "consumed_ah": 0.0035827969660962083,
+                "delivered_j": 216.49654959711472,
+                "vi_j": 216.49654959711472,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.1599340154984659e-19,
+                "max_soc_interval_error": 5.550670430828474e-17
+              }
+            ]
+          },
+          "observed": {
+            "directory": "Saved/Verification/flight-trace-20261027-090245-610934/30-observed",
+            "trace_csv_sha256": "26eb806a432ae2a44a37eed687bda72a872e5a081c95a2a7bec8ee33577838ae",
+            "trace_json_sha256": "9e22abd897a7297246306a5abae6396bb2c5c96ea0b03c16344cc9336fa7d92f",
+            "frames": 1290,
+            "rows": 12900,
+            "window_start_s": 0.06666667014360428,
+            "window_end_s": 43.03333557769656,
+            "actual_min_game_dt_s": 0.03333333507180214,
+            "actual_max_game_dt_s": 0.03333333507180214,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.297,
+              "hover_max_z_cm": 231.674,
+              "hover_min_z_cm": 219.909,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.05318,
+              "net_visible_peak_m": 0.05041,
+              "net_rebound_mps": 1.123,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.03333333507180214,
+              "actual_max_game_dt_s": 0.03333333507180214
+            },
+            "independent_consumption_matches_baseline": true,
+            "observer": {
+              "ok": true,
+              "mode": "sync",
+              "solver_steps": 6375,
+              "pre_integrations": 6375,
+              "post_integrations": 6375,
+              "solver_min_dt_s": 0.006666667014360428,
+              "solver_max_dt_s": 0.006666667014360428,
+              "solver_elapsed_s": 42.50000221654566,
+              "callback_order_errors": 0,
+              "time_balance_error_s": 2.0676793610618915e-12,
+              "time_balance_valid": true,
+              "observer_begin_world_s": 0.5333333611488342,
+              "observer_end_world_s": 43.03333557769656,
+              "completion_signal_world_s": 43.03333557769656,
+              "observer_covers_completion_tick": true
+            }
+          }
+        },
+        {
+          "rate": 45,
+          "comparison": {
+            "ok": true,
+            "frames": 1935,
+            "maxima": {
+              "position_m": 0.0,
+              "velocity_mps": 0.0,
+              "orientation_rad": 0.0,
+              "angular_velocity_radps": 0.0,
+              "current_a": 0.0,
+              "consumed_ah": 0.0,
+              "soc": 0.0,
+              "voltage_v": 0.0,
+              "power_w": 0.0,
+              "motor_applied_power_w": 0.0,
+              "motor_available_power_w": 0.0
+            },
+            "limits": {
+              "position_m": 0.0001,
+              "velocity_mps": 0.0001,
+              "orientation_rad": 0.0001,
+              "angular_velocity_radps": 0.001,
+              "current_a": 0.001,
+              "consumed_ah": 1e-08,
+              "soc": 1e-08,
+              "voltage_v": 0.0001,
+              "power_w": 0.02,
+              "motor_applied_power_w": 0.02,
+              "motor_available_power_w": 0.02
+            }
+          },
+          "integral_differences": [
+            {
+              "id": 0,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 1,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 2,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 3,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 4,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 5,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 6,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 7,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 8,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 9,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            }
+          ],
+          "baseline": {
+            "directory": "Saved/Verification/flight-trace-20261027-090245-610934/45-baseline",
+            "trace_csv_sha256": "a6de097500e4831a996b416a2dc74dd82911c4933603815693be1ce08222b120",
+            "trace_json_sha256": "d434720eb4c69bf9c36bccaaf0aa112690d72f80c43eb1ddfbcfb9996e0073a6",
+            "frames": 1935,
+            "rows": 19350,
+            "window_start_s": 0.04444444552063942,
+            "window_end_s": 43.02222326397896,
+            "actual_min_game_dt_s": 0.02222222276031971,
+            "actual_max_game_dt_s": 0.02222222276031971,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.133,
+              "hover_max_z_cm": 231.764,
+              "hover_min_z_cm": 219.911,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.0611,
+              "net_visible_peak_m": 0.05974,
+              "net_rebound_mps": 1.0251,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.02222222276031971,
+              "actual_max_game_dt_s": 0.02222222276031971
+            },
+            "independently_integrated_per_body": [
+              {
+                "id": 0,
+                "reset_count": 3,
+                "current_ah": 0.15269907121477916,
+                "consumed_ah": 0.1526990712147792,
+                "delivered_j": 8856.150150222318,
+                "vi_j": 8856.150150222318,
+                "motor_j": 8640.711251033526,
+                "max_charge_interval_error_ah": 6.9253413767511596e-18,
+                "max_soc_interval_error": 5.5480869803393486e-17
+              },
+              {
+                "id": 1,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 2,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 3,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 4,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 5,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 6,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 7,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 8,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              },
+              {
+                "id": 9,
+                "reset_count": 0,
+                "current_ah": 0.003583723371519237,
+                "consumed_ah": 0.003583723371519237,
+                "delivered_j": 216.5525292088689,
+                "vi_j": 216.5525292088689,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.5496328154680877e-17
+              }
+            ]
+          },
+          "observed": {
+            "directory": "Saved/Verification/flight-trace-20261027-090245-610934/45-observed",
+            "trace_csv_sha256": "a6de097500e4831a996b416a2dc74dd82911c4933603815693be1ce08222b120",
+            "trace_json_sha256": "1ad862df9fb03b19383dd769677b36a52c23c12deccb91e7562dc5b64a4e4166",
+            "frames": 1935,
+            "rows": 19350,
+            "window_start_s": 0.04444444552063942,
+            "window_end_s": 43.02222326397896,
+            "actual_min_game_dt_s": 0.02222222276031971,
+            "actual_max_game_dt_s": 0.02222222276031971,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.133,
+              "hover_max_z_cm": 231.764,
+              "hover_min_z_cm": 219.911,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.0611,
+              "net_visible_peak_m": 0.05974,
+              "net_rebound_mps": 1.0251,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.02222222276031971,
+              "actual_max_game_dt_s": 0.02222222276031971
+            },
+            "independent_consumption_matches_baseline": true,
+            "observer": {
+              "ok": true,
+              "mode": "sync",
+              "solver_steps": 5736,
+              "pre_integrations": 5736,
+              "post_integrations": 5736,
+              "solver_min_dt_s": 0.007407407586773236,
+              "solver_max_dt_s": 0.007407407586773236,
+              "solver_elapsed_s": 42.48888991773259,
+              "callback_order_errors": 0,
+              "time_balance_error_s": -1.3073986337985843e-12,
+              "time_balance_valid": true,
+              "observer_begin_world_s": 0.533333346247673,
+              "observer_end_world_s": 43.02222326397896,
+              "completion_signal_world_s": 43.02222326397896,
+              "observer_covers_completion_tick": true
+            }
+          }
+        },
+        {
+          "rate": 60,
+          "comparison": {
+            "ok": true,
+            "frames": 2580,
+            "maxima": {
+              "position_m": 0.0,
+              "velocity_mps": 0.0,
+              "orientation_rad": 0.0,
+              "angular_velocity_radps": 0.0,
+              "current_a": 0.0,
+              "consumed_ah": 0.0,
+              "soc": 0.0,
+              "voltage_v": 0.0,
+              "power_w": 0.0,
+              "motor_applied_power_w": 0.0,
+              "motor_available_power_w": 0.0
+            },
+            "limits": {
+              "position_m": 0.0001,
+              "velocity_mps": 0.0001,
+              "orientation_rad": 0.0001,
+              "angular_velocity_radps": 0.001,
+              "current_a": 0.001,
+              "consumed_ah": 1e-08,
+              "soc": 1e-08,
+              "voltage_v": 0.0001,
+              "power_w": 0.02,
+              "motor_applied_power_w": 0.02,
+              "motor_available_power_w": 0.02
+            }
+          },
+          "integral_differences": [
+            {
+              "id": 0,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 1,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 2,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 3,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 4,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 5,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 6,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 7,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 8,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 9,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            }
+          ],
+          "baseline": {
+            "directory": "Saved/Verification/flight-trace-20261027-090245-610934/60-baseline",
+            "trace_csv_sha256": "767c95e7b5cd43e2d33a7aabfdbf7fb7f9da5bf1ddcc699877426d0333304365",
+            "trace_json_sha256": "e949e0d8c9a02eee7f54099d522fcb42cc20534519f16ce85028e4fad09f72d8",
+            "frames": 2580,
+            "rows": 25800,
+            "window_start_s": 0.03333333507180214,
+            "window_end_s": 43.01666891016066,
+            "actual_min_game_dt_s": 0.01666666753590107,
+            "actual_max_game_dt_s": 0.01666666753590107,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.15,
+              "hover_max_z_cm": 231.869,
+              "hover_min_z_cm": 219.915,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.06753,
+              "net_visible_peak_m": 0.0646,
+              "net_rebound_mps": 1.0562,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.01666666753590107,
+              "actual_max_game_dt_s": 0.01666666753590107
+            },
+            "independently_integrated_per_body": [
+              {
+                "id": 0,
+                "reset_count": 3,
+                "current_ah": 0.1526968602575126,
+                "consumed_ah": 0.15269686025751295,
+                "delivered_j": 8855.907633820878,
+                "vi_j": 8855.907633820878,
+                "motor_j": 8640.440938004913,
+                "max_charge_interval_error_ah": 6.938893903907228e-18,
+                "max_soc_interval_error": 5.543661233189945e-17
+              },
+              {
+                "id": 1,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 2,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 3,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 4,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 5,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 6,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 7,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 8,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 9,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              }
+            ]
+          },
+          "observed": {
+            "directory": "Saved/Verification/flight-trace-20261027-090245-610934/60-observed",
+            "trace_csv_sha256": "767c95e7b5cd43e2d33a7aabfdbf7fb7f9da5bf1ddcc699877426d0333304365",
+            "trace_json_sha256": "e3caafaa25caba0e4ca0b223ea0719dfcf639f30d47de962eefbab924bd46840",
+            "frames": 2580,
+            "rows": 25800,
+            "window_start_s": 0.03333333507180214,
+            "window_end_s": 43.01666891016066,
+            "actual_min_game_dt_s": 0.01666666753590107,
+            "actual_max_game_dt_s": 0.01666666753590107,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.15,
+              "hover_max_z_cm": 231.869,
+              "hover_min_z_cm": 219.915,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.06753,
+              "net_visible_peak_m": 0.0646,
+              "net_rebound_mps": 1.0562,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.01666666753590107,
+              "actual_max_game_dt_s": 0.01666666753590107
+            },
+            "independent_consumption_matches_baseline": true,
+            "observer": {
+              "ok": true,
+              "mode": "sync",
+              "solver_steps": 7650,
+              "pre_integrations": 7650,
+              "post_integrations": 7650,
+              "solver_min_dt_s": 0.005555555845300357,
+              "solver_max_dt_s": 0.005555555845300357,
+              "solver_elapsed_s": 42.50000221654598,
+              "callback_order_errors": 0,
+              "time_balance_error_s": 1.7479351299698465e-12,
+              "time_balance_valid": true,
+              "observer_begin_world_s": 0.5166666936129332,
+              "observer_end_world_s": 43.01666891016066,
+              "completion_signal_world_s": 43.01666891016066,
+              "observer_covers_completion_tick": true
+            }
+          }
+        },
+        {
+          "rate": 120,
+          "comparison": {
+            "ok": true,
+            "frames": 5160,
+            "maxima": {
+              "position_m": 0.0,
+              "velocity_mps": 0.0,
+              "orientation_rad": 0.0,
+              "angular_velocity_radps": 0.0,
+              "current_a": 0.0,
+              "consumed_ah": 0.0,
+              "soc": 0.0,
+              "voltage_v": 0.0,
+              "power_w": 0.0,
+              "motor_applied_power_w": 0.0,
+              "motor_available_power_w": 0.0
+            },
+            "limits": {
+              "position_m": 0.0001,
+              "velocity_mps": 0.0001,
+              "orientation_rad": 0.0001,
+              "angular_velocity_radps": 0.001,
+              "current_a": 0.001,
+              "consumed_ah": 1e-08,
+              "soc": 1e-08,
+              "voltage_v": 0.0001,
+              "power_w": 0.02,
+              "motor_applied_power_w": 0.02,
+              "motor_available_power_w": 0.02
+            }
+          },
+          "integral_differences": [
+            {
+              "id": 0,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 1,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 2,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 3,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 4,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 5,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 6,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 7,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 8,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 9,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            }
+          ],
+          "baseline": {
+            "directory": "Saved/Verification/flight-trace-20261027-090245-610934/120-baseline",
+            "trace_csv_sha256": "00029c67fe22db1a8230492bd28aea96454fc6df0306c9c5611aa0e40261c3a5",
+            "trace_json_sha256": "f8dee9fc93d9cd8eee0504d26c9c6eada3409039c204bc29005cddfba02ee1ce",
+            "frames": 5160,
+            "rows": 51600,
+            "window_start_s": 0.01666666753590107,
+            "window_end_s": 43.00833557639271,
+            "actual_min_game_dt_s": 0.008333333767950535,
+            "actual_max_game_dt_s": 0.008333333767950535,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 2.988,
+              "hover_max_z_cm": 231.982,
+              "hover_min_z_cm": 219.921,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.075,
+              "net_visible_peak_m": 0.07437,
+              "net_rebound_mps": 1.0764,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.008333333767950535,
+              "actual_max_game_dt_s": 0.008333333767950535
+            },
+            "independently_integrated_per_body": [
+              {
+                "id": 0,
+                "reset_count": 3,
+                "current_ah": 0.1527543333132059,
+                "consumed_ah": 0.15275433331320606,
+                "delivered_j": 8858.922829298677,
+                "vi_j": 8858.922829298677,
+                "motor_j": 8643.414477724127,
+                "max_charge_interval_error_ah": 6.932223519447601e-18,
+                "max_soc_interval_error": 5.550776309946881e-17
+              },
+              {
+                "id": 1,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 2,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 3,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 4,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 5,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 6,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 7,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 8,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              },
+              {
+                "id": 9,
+                "reset_count": 0,
+                "current_ah": 0.0035848816035862294,
+                "consumed_ah": 0.00358488160358623,
+                "delivered_j": 216.62251733349063,
+                "vi_j": 216.62251733349063,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.5494898786582385e-17
+              }
+            ]
+          },
+          "observed": {
+            "directory": "Saved/Verification/flight-trace-20261027-090245-610934/120-observed",
+            "trace_csv_sha256": "00029c67fe22db1a8230492bd28aea96454fc6df0306c9c5611aa0e40261c3a5",
+            "trace_json_sha256": "84159e3a628c51830fd12bdbde0f4e219743e8ea0d0e6e3d50bc6c12439de1da",
+            "frames": 5160,
+            "rows": 51600,
+            "window_start_s": 0.01666666753590107,
+            "window_end_s": 43.00833557639271,
+            "actual_min_game_dt_s": 0.008333333767950535,
+            "actual_max_game_dt_s": 0.008333333767950535,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 2.988,
+              "hover_max_z_cm": 231.982,
+              "hover_min_z_cm": 219.921,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.075,
+              "net_visible_peak_m": 0.07437,
+              "net_rebound_mps": 1.0764,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.008333333767950535,
+              "actual_max_game_dt_s": 0.008333333767950535
+            },
+            "independent_consumption_matches_baseline": true,
+            "observer": {
+              "ok": true,
+              "mode": "sync",
+              "solver_steps": 10200,
+              "pre_integrations": 10200,
+              "post_integrations": 10200,
+              "solver_min_dt_s": 0.004166666883975267,
+              "solver_max_dt_s": 0.004166666883975267,
+              "solver_elapsed_s": 42.50000221654773,
+              "callback_order_errors": 0,
+              "time_balance_error_s": 0,
+              "time_balance_valid": true,
+              "observer_begin_world_s": 0.5083333598449826,
+              "observer_end_world_s": 43.00833557639271,
+              "completion_signal_world_s": 43.00833557639271,
+              "observer_covers_completion_tick": true
+            }
+          }
+        },
+        {
+          "rate": 240,
+          "comparison": {
+            "ok": true,
+            "frames": 10320,
+            "maxima": {
+              "position_m": 0.0,
+              "velocity_mps": 0.0,
+              "orientation_rad": 0.0,
+              "angular_velocity_radps": 0.0,
+              "current_a": 0.0,
+              "consumed_ah": 0.0,
+              "soc": 0.0,
+              "voltage_v": 0.0,
+              "power_w": 0.0,
+              "motor_applied_power_w": 0.0,
+              "motor_available_power_w": 0.0
+            },
+            "limits": {
+              "position_m": 0.0001,
+              "velocity_mps": 0.0001,
+              "orientation_rad": 0.0001,
+              "angular_velocity_radps": 0.001,
+              "current_a": 0.001,
+              "consumed_ah": 1e-08,
+              "soc": 1e-08,
+              "voltage_v": 0.0001,
+              "power_w": 0.02,
+              "motor_applied_power_w": 0.02,
+              "motor_available_power_w": 0.02
+            }
+          },
+          "integral_differences": [
+            {
+              "id": 0,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 1,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 2,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 3,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 4,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 5,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 6,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 7,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 8,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 9,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            }
+          ],
+          "baseline": {
+            "directory": "Saved/Verification/flight-trace-20261027-090245-610934/240-baseline",
+            "trace_csv_sha256": "ff1578a61a4d2e55b2a60988a4d700c6912b79f22b5e48554741ea52b0d93cdd",
+            "trace_json_sha256": "94f4134c5ef69a26ee9a9deac59c0d76b848f7cf32f8560f496910845b95ec82",
+            "frames": 10320,
+            "rows": 103200,
+            "window_start_s": 0.008333333767950535,
+            "window_end_s": 43.004168909508735,
+            "actual_min_game_dt_s": 0.004166666883975267,
+            "actual_max_game_dt_s": 0.004166666883975267,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 2.977,
+              "hover_max_z_cm": 232.008,
+              "hover_min_z_cm": 219.92,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.07781,
+              "net_visible_peak_m": 0.07754,
+              "net_rebound_mps": 1.0704,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.004166666883975267,
+              "actual_max_game_dt_s": 0.004166666883975267
+            },
+            "independently_integrated_per_body": [
+              {
+                "id": 0,
+                "reset_count": 3,
+                "current_ah": 0.15274436303473593,
+                "consumed_ah": 0.15274436303473563,
+                "delivered_j": 8858.275346094091,
+                "vi_j": 8858.275346094091,
+                "motor_j": 8642.746033408346,
+                "max_charge_interval_error_ah": 6.932117640329194e-18,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 1,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 2,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 3,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 4,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 5,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 6,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 7,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 8,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              },
+              {
+                "id": 9,
+                "reset_count": 0,
+                "current_ah": 0.0035852290431679004,
+                "consumed_ah": 0.0035852290431679004,
+                "delivered_j": 216.64351195622095,
+                "vi_j": 216.64351195622095,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.167345553786941e-19,
+                "max_soc_interval_error": 5.550945716536332e-17
+              }
+            ]
+          },
+          "observed": {
+            "directory": "Saved/Verification/flight-trace-20261027-090245-610934/240-observed",
+            "trace_csv_sha256": "ff1578a61a4d2e55b2a60988a4d700c6912b79f22b5e48554741ea52b0d93cdd",
+            "trace_json_sha256": "3489fb488a768bbc3c61d4437ff7edb21fbf45002ae8b5ec1a52c09ee3df3daa",
+            "frames": 10320,
+            "rows": 103200,
+            "window_start_s": 0.008333333767950535,
+            "window_end_s": 43.004168909508735,
+            "actual_min_game_dt_s": 0.004166666883975267,
+            "actual_max_game_dt_s": 0.004166666883975267,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 2.977,
+              "hover_max_z_cm": 232.008,
+              "hover_min_z_cm": 219.92,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.07781,
+              "net_visible_peak_m": 0.07754,
+              "net_rebound_mps": 1.0704,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.004166666883975267,
+              "actual_max_game_dt_s": 0.004166666883975267
+            },
+            "independent_consumption_matches_baseline": true,
+            "observer": {
+              "ok": true,
+              "mode": "sync",
+              "solver_steps": 10200,
+              "pre_integrations": 10200,
+              "post_integrations": 10200,
+              "solver_min_dt_s": 0.004166666883975267,
+              "solver_max_dt_s": 0.004166666883975267,
+              "solver_elapsed_s": 42.50000221654773,
+              "callback_order_errors": 0,
+              "time_balance_error_s": 0,
+              "time_balance_valid": true,
+              "observer_begin_world_s": 0.5041666929610074,
+              "observer_end_world_s": 43.004168909508735,
+              "completion_signal_world_s": 43.004168909508735,
+              "observer_covers_completion_tick": true
+            }
+          }
+        }
+      ]
+    },
+    "relocated_shipping": {
+      "ok": true,
+      "build": {
+        "version": "0.7.5-dev",
+        "source_commit": "0e0dd21b7b261cd9690fe18e9b2882e65d9fd299",
+        "source_dirty": true,
+        "source_sha256": "71aa36b021080fcbc262ed1820ba6d169e7d3fc36651e3978beb690a2eb8515e",
+        "input_count": 127
+      },
+      "validator_checks": [
+        {
+          "case": "missing_body_row",
+          "rejected": true,
+          "reason": "Missing, duplicated or reordered frame/body at line 20"
+        },
+        {
+          "case": "duplicate_body_row",
+          "rejected": true,
+          "reason": "Missing, duplicated or reordered frame/body at line 21"
+        },
+        {
+          "case": "swapped_body_order",
+          "rejected": true,
+          "reason": "Missing, duplicated or reordered frame/body at line 19"
+        },
+        {
+          "case": "missing_final_frame",
+          "rejected": true,
+          "reason": "Frame/row count differs from finalized summary"
+        },
+        {
+          "case": "nonfirst_body_nan",
+          "rejected": true,
+          "reason": "Nonfinite x_m on line 20"
+        },
+        {
+          "case": "nonfirst_body_infinity",
+          "rejected": true,
+          "reason": "Nonfinite current_a on line 20"
+        },
+        {
+          "case": "lost_reset_epoch",
+          "rejected": true,
+          "reason": "Reset epoch lost, reversed or jumped"
+        },
+        {
+          "case": "missed_physics_update",
+          "rejected": true,
+          "reason": "Not exactly one control/model update per recorded frame"
+        },
+        {
+          "case": "charge_error_that_later_cancels",
+          "rejected": true,
+          "reason": "Per-frame charge integral mismatch"
+        },
+        {
+          "case": "power_voltage_mismatch",
+          "rejected": true,
+          "reason": "Delivered power differs from V*I"
+        },
+        {
+          "case": "motor_supply_exceeded",
+          "rejected": true,
+          "reason": "Applied motor power exceeds supply beyond float-thrust rounding"
+        },
+        {
+          "case": "velocity_direction_changed",
+          "rejected": true,
+          "reason": "Observer changed velocity_mps: 0.20701583862304687 > 0.0001"
+        },
+        {
+          "case": "motor_power_changes_cancel_in_total",
+          "rejected": true,
+          "reason": "Observer changed motor_applied_power_w: 0.09999999999999432 > 0.02"
+        },
+        {
+          "case": "wrong_final_step",
+          "rejected": true,
+          "reason": "Summary physics step sequence differs"
+        },
+        {
+          "case": "wrong_final_epoch",
+          "rejected": true,
+          "reason": "Summary reset history differs"
+        },
+        {
+          "case": "wrong_reset_count",
+          "rejected": true,
+          "reason": "Summary reset history differs"
+        },
+        {
+          "case": "empty_observer_result",
+          "rejected": true,
+          "reason": "Missing or failed observer result"
+        },
+        {
+          "case": "equivalent_negated_quaternions",
+          "accepted": true
+        }
+      ],
+      "scope": "Every completed synchronous game-physics-frame after the first reference sample through the 43-game-second fixture. Pairs are compared at the same game FPS, not across FPS. This is not an internal Chaos-substep trajectory, physical controller or GPU performance test.",
+      "raw_result_sha256": "bdf782deffb1fedc28af3c1804ef16301cccbc1fbf90cc3213c99c93eabac361",
+      "raw_result_local_path": "Saved/Verification/flight-trace-20261027-090443-893557/results.json",
+      "pairs": [
+        {
+          "rate": 60,
+          "comparison": {
+            "ok": true,
+            "frames": 2580,
+            "maxima": {
+              "position_m": 0.0,
+              "velocity_mps": 0.0,
+              "orientation_rad": 0.0,
+              "angular_velocity_radps": 0.0,
+              "current_a": 0.0,
+              "consumed_ah": 0.0,
+              "soc": 0.0,
+              "voltage_v": 0.0,
+              "power_w": 0.0,
+              "motor_applied_power_w": 0.0,
+              "motor_available_power_w": 0.0
+            },
+            "limits": {
+              "position_m": 0.0001,
+              "velocity_mps": 0.0001,
+              "orientation_rad": 0.0001,
+              "angular_velocity_radps": 0.001,
+              "current_a": 0.001,
+              "consumed_ah": 1e-08,
+              "soc": 1e-08,
+              "voltage_v": 0.0001,
+              "power_w": 0.02,
+              "motor_applied_power_w": 0.02,
+              "motor_available_power_w": 0.02
+            }
+          },
+          "integral_differences": [
+            {
+              "id": 0,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 1,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 2,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 3,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 4,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 5,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 6,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 7,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 8,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            },
+            {
+              "id": 9,
+              "current_ah": 0.0,
+              "consumed_ah": 0.0,
+              "delivered_j": 0.0,
+              "motor_j": 0.0
+            }
+          ],
+          "baseline": {
+            "directory": "Saved/Verification/flight-trace-20261027-090443-893557/60-baseline",
+            "trace_csv_sha256": "767c95e7b5cd43e2d33a7aabfdbf7fb7f9da5bf1ddcc699877426d0333304365",
+            "trace_json_sha256": "8c9c1b56c4d2d4b44f0b2ef8fa7e32cc2881de74323abe819c44bfff3e520f47",
+            "frames": 2580,
+            "rows": 25800,
+            "window_start_s": 0.03333333507180214,
+            "window_end_s": 43.01666891016066,
+            "actual_min_game_dt_s": 0.01666666753590107,
+            "actual_max_game_dt_s": 0.01666666753590107,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.15,
+              "hover_max_z_cm": 231.869,
+              "hover_min_z_cm": 219.915,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.06753,
+              "net_visible_peak_m": 0.0646,
+              "net_rebound_mps": 1.0562,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.01666666753590107,
+              "actual_max_game_dt_s": 0.01666666753590107
+            },
+            "independently_integrated_per_body": [
+              {
+                "id": 0,
+                "reset_count": 3,
+                "current_ah": 0.1526968602575126,
+                "consumed_ah": 0.15269686025751295,
+                "delivered_j": 8855.907633820878,
+                "vi_j": 8855.907633820878,
+                "motor_j": 8640.440938004913,
+                "max_charge_interval_error_ah": 6.938893903907228e-18,
+                "max_soc_interval_error": 5.543661233189945e-17
+              },
+              {
+                "id": 1,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 2,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 3,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 4,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 5,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 6,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 7,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 8,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              },
+              {
+                "id": 9,
+                "reset_count": 0,
+                "current_ah": 0.0035841867244228902,
+                "consumed_ah": 0.0035841867244228907,
+                "delivered_j": 216.58052808803222,
+                "vi_j": 216.58052808803222,
+                "motor_j": 0.0,
+                "max_charge_interval_error_ah": 2.166286762602873e-19,
+                "max_soc_interval_error": 5.545905870500169e-17
+              }
+            ]
+          },
+          "observed": {
+            "directory": "Saved/Verification/flight-trace-20261027-090443-893557/60-observed",
+            "trace_csv_sha256": "767c95e7b5cd43e2d33a7aabfdbf7fb7f9da5bf1ddcc699877426d0333304365",
+            "trace_json_sha256": "fb9f70ad1dbd756a477dbd684a3193879fe3949269e8d8ec48948bed1fe6a7cc",
+            "frames": 2580,
+            "rows": 25800,
+            "window_start_s": 0.03333333507180214,
+            "window_end_s": 43.01666891016066,
+            "actual_min_game_dt_s": 0.01666666753590107,
+            "actual_max_game_dt_s": 0.01666666753590107,
+            "first_sample_is_reference": true,
+            "completed_by_smoke": true,
+            "reset_counts": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flight_metrics": {
+              "ok": true,
+              "drones": 10,
+              "hover_error_cm": 3.15,
+              "hover_max_z_cm": 231.869,
+              "hover_min_z_cm": 219.915,
+              "floor_wall_contact": true,
+              "net_contact": true,
+              "net_peak_m": 0.06753,
+              "net_visible_peak_m": 0.0646,
+              "net_rebound_mps": 1.0562,
+              "striker_physical_goal": true,
+              "blue_score": 1,
+              "csv_export": true,
+              "actual_min_game_dt_s": 0.01666666753590107,
+              "actual_max_game_dt_s": 0.01666666753590107
+            },
+            "independent_consumption_matches_baseline": true,
+            "observer": {
+              "ok": true,
+              "mode": "sync",
+              "solver_steps": 7650,
+              "pre_integrations": 7650,
+              "post_integrations": 7650,
+              "solver_min_dt_s": 0.005555555845300357,
+              "solver_max_dt_s": 0.005555555845300357,
+              "solver_elapsed_s": 42.50000221654598,
+              "callback_order_errors": 0,
+              "time_balance_error_s": 1.7479351299698465e-12,
+              "time_balance_valid": true,
+              "observer_begin_world_s": 0.5166666936129332,
+              "observer_end_world_s": 43.01666891016066,
+              "completion_signal_world_s": 43.01666891016066,
+              "observer_covers_completion_tick": true
+            }
+          }
+        }
+      ]
+    }
+  },
+  "solver_regression": {
+    "ok": true,
+    "build": {
+      "version": "0.7.5-dev",
+      "source_commit": "0e0dd21b7b261cd9690fe18e9b2882e65d9fd299",
+      "source_dirty": true,
+      "source_sha256": "71aa36b021080fcbc262ed1820ba6d169e7d3fc36651e3978beb690a2eb8515e",
+      "input_count": 127
+    },
+    "rejected_options": [
+      {
+        "case": "reject-invalid-fps",
+        "error": "Use FPS 20/30/45/60/120/240 and a finite probe duration between 5 and 10 seconds.",
+        "ok": true,
+        "process_exit_code": 0
+      },
+      {
+        "case": "reject-orphan-passthrough",
+        "error": "Passthrough requires ImperialPhysicsSmoke and its explicit completion signal.",
+        "ok": true,
+        "process_exit_code": 0
+      },
+      {
+        "case": "reject-fixed-passthrough",
+        "error": "Passthrough is allowed only for the unchanged synchronous solver mode.",
+        "ok": true,
+        "process_exit_code": 0
+      },
+      {
+        "case": "reject-armed-fixed",
+        "error": "Fixed counter experiment cannot run with armed or autonomous aircraft.",
+        "ok": true,
+        "process_exit_code": 0
+      }
+    ],
+    "flight_comparison": null,
+    "scope": "Explicit callback counter probe. Production flight controller and default physics settings are unchanged. No physical controller input.",
+    "raw_result_sha256": "dbeab027b8c23bc2eeaf6c111902ad17d2d27cb570d3a97bbd9e7c071e3f0323",
+    "measurements": [
+      {
+        "rate": 20,
+        "mode": "sync",
+        "ok": true,
+        "solver_steps": 1120,
+        "solver_min_dt_s": 0.007142857249294009,
+        "solver_max_dt_s": 0.007142857249294009,
+        "solver_elapsed_s": 8.000000119209195,
+        "time_balance_error_s": 9.414691248821327e-14,
+        "callback_order_errors": 0,
+        "integration_dt_compatible": true
+      },
+      {
+        "rate": 30,
+        "mode": "sync",
+        "ok": true,
+        "solver_steps": 1200,
+        "solver_min_dt_s": 0.006666667014360428,
+        "solver_max_dt_s": 0.006666667014360428,
+        "solver_elapsed_s": 8.000000417232364,
+        "time_balance_error_s": 1.4921397450962104e-13,
+        "callback_order_errors": 0,
+        "integration_dt_compatible": true
+      },
+      {
+        "rate": 45,
+        "mode": "sync",
+        "ok": true,
+        "solver_steps": 1080,
+        "solver_min_dt_s": 0.007407407586773236,
+        "solver_max_dt_s": 0.007407407586773236,
+        "solver_elapsed_s": 8.000000193714968,
+        "time_balance_error_s": 1.2789769243681803e-13,
+        "callback_order_errors": 0,
+        "integration_dt_compatible": true
+      },
+      {
+        "rate": 60,
+        "mode": "sync",
+        "ok": true,
+        "solver_steps": 1440,
+        "solver_min_dt_s": 0.005555555845300357,
+        "solver_max_dt_s": 0.005555555845300357,
+        "solver_elapsed_s": 8.000000417232684,
+        "time_balance_error_s": -1.7053025658242404e-13,
+        "callback_order_errors": 0,
+        "integration_dt_compatible": true
+      },
+      {
+        "rate": 120,
+        "mode": "sync",
+        "ok": true,
+        "solver_steps": 1920,
+        "solver_min_dt_s": 0.004166666883975267,
+        "solver_max_dt_s": 0.004166666883975267,
+        "solver_elapsed_s": 8.000000417232513,
+        "time_balance_error_s": 0,
+        "callback_order_errors": 0,
+        "integration_dt_compatible": true
+      },
+      {
+        "rate": 240,
+        "mode": "sync",
+        "ok": true,
+        "solver_steps": 1920,
+        "solver_min_dt_s": 0.004166666883975267,
+        "solver_max_dt_s": 0.004166666883975267,
+        "solver_elapsed_s": 8.000000417232513,
+        "time_balance_error_s": 0,
+        "callback_order_errors": 0,
+        "integration_dt_compatible": true
+      },
+      {
+        "rate": 20,
+        "mode": "fixed120",
+        "ok": true,
+        "solver_steps": 960,
+        "solver_min_dt_s": 0.008333333333333333,
+        "solver_max_dt_s": 0.008333333333333333,
+        "solver_elapsed_s": 8.000000000000187,
+        "time_balance_error_s": -1.8607337892717624e-13,
+        "callback_order_errors": 0,
+        "integration_dt_compatible": true
+      },
+      {
+        "rate": 30,
+        "mode": "fixed120",
+        "ok": true,
+        "solver_steps": 960,
+        "solver_min_dt_s": 0.008333333333333333,
+        "solver_max_dt_s": 0.008333333333333333,
+        "solver_elapsed_s": 8.000000000000187,
+        "time_balance_error_s": -1.8662849043948881e-13,
+        "callback_order_errors": 0,
+        "integration_dt_compatible": true
+      },
+      {
+        "rate": 45,
+        "mode": "fixed120",
+        "ok": true,
+        "solver_steps": 960,
+        "solver_min_dt_s": 0.008333333333333333,
+        "solver_max_dt_s": 0.008333333333333333,
+        "solver_elapsed_s": 8.000000000000187,
+        "time_balance_error_s": -1.8621215680525438e-13,
+        "callback_order_errors": 0,
+        "integration_dt_compatible": true
+      },
+      {
+        "rate": 60,
+        "mode": "fixed120",
+        "ok": true,
+        "solver_steps": 960,
+        "solver_min_dt_s": 0.008333333333333333,
+        "solver_max_dt_s": 0.008333333333333333,
+        "solver_elapsed_s": 8.000000000000187,
+        "time_balance_error_s": -1.8662849043948881e-13,
+        "callback_order_errors": 0,
+        "integration_dt_compatible": true
+      },
+      {
+        "rate": 120,
+        "mode": "fixed120",
+        "ok": true,
+        "solver_steps": 960,
+        "solver_min_dt_s": 0.008333333333333333,
+        "solver_max_dt_s": 0.008333333333333333,
+        "solver_elapsed_s": 8.000000000000187,
+        "time_balance_error_s": -1.8662849043948881e-13,
+        "callback_order_errors": 0,
+        "integration_dt_compatible": true
+      },
+      {
+        "rate": 240,
+        "mode": "fixed120",
+        "ok": true,
+        "solver_steps": 960,
+        "solver_min_dt_s": 0.008333333333333333,
+        "solver_max_dt_s": 0.008333333333333333,
+        "solver_elapsed_s": 8.000000000000187,
+        "time_balance_error_s": -1.8662849043948881e-13,
+        "callback_order_errors": 0,
+        "integration_dt_compatible": true
+      }
+    ]
+  },
+  "trace_options": {
+    "ok": true,
+    "build": {
+      "version": "0.7.5-dev",
+      "source_commit": "0e0dd21b7b261cd9690fe18e9b2882e65d9fd299",
+      "source_dirty": true,
+      "source_sha256": "71aa36b021080fcbc262ed1820ba6d169e7d3fc36651e3978beb690a2eb8515e",
+      "input_count": 127
+    },
+    "checks": [
+      {
+        "case": "orphan",
+        "ok": true,
+        "reason": "ImperialFlightTrace requires the explicit ImperialPhysicsSmoke fixture.",
+        "process_exit_code": 0
+      },
+      {
+        "case": "fixed",
+        "ok": true,
+        "reason": "Full-flight traces allow only the unchanged synchronous probe passthrough.",
+        "process_exit_code": 0
+      },
+      {
+        "case": "probe_without_passthrough",
+        "ok": true,
+        "reason": "Full-flight traces allow only the unchanged synchronous probe passthrough.",
+        "process_exit_code": 0
+      },
+      {
+        "case": "missing_csv",
+        "ok": true,
+        "reason": "Both ImperialFlightTraceCsv and ImperialFlightTraceResult are required.",
+        "process_exit_code": 0
+      },
+      {
+        "case": "invalid_fps",
+        "ok": true,
+        "reason": "Flight trace requires FPS 20/30/45/60/120/240.",
+        "process_exit_code": 0
+      },
+      {
+        "case": "existing_csv",
+        "ok": true,
+        "reason": "Flight trace CSV already exists; choose a new output file.",
+        "process_exit_code": 0
+      }
+    ]
+  },
+  "portable": {
+    "ok": true,
+    "checks": [
+      {
+        "name": "all released file hashes match",
+        "passed": true
+      },
+      {
+        "name": "standalone feedback form exists, is checksummed and matches reviewed source",
+        "passed": true
+      },
+      {
+        "name": "no pilot settings or generated Saved directory",
+        "passed": true
+      },
+      {
+        "name": "native launcher resolves relocated files without developer tools",
+        "passed": true
+      },
+      {
+        "name": "frozen APF starts with no installed Python or Git on PATH",
+        "passed": true
+      },
+      {
+        "name": "frozen APF provenance matches released upstream",
+        "passed": true
+      },
+      {
+        "name": "actual bundled APF responds to ten-aircraft protocol 2",
+        "passed": true
+      },
+      {
+        "name": "bounded APF test exits cleanly",
+        "passed": true
+      },
+      {
+        "name": "fresh standalone Unreal storage result",
+        "passed": true
+      },
+      {
+        "name": "fresh keyboard startup and profile safety",
+        "passed": true
+      },
+      {
+        "name": "fresh writes only to explicit per-user data path",
+        "passed": true
+      },
+      {
+        "name": "first use never invents a controller profile",
+        "passed": true
+      },
+      {
+        "name": "package remains free of generated pilot data after execution",
+        "passed": true
+      }
+    ]
+  },
+  "local_qa_archive": {
+    "filename": "ImperialWings-Windows-v0.7.5-dev-trace-r2.zip",
+    "bytes": 374810923,
+    "sha256": "33ec007b00d6e1075690ad2cb1c8096330af1aeda207dbc37de27643870df67c",
+    "published_as_release": false
+  },
+  "test_source_sha256": {
+    "flight_trace_analysis.py": "4591e39c97c3cd00b0f0640cd0f2f134641b629331e240169354cbd3d8cae59a",
+    "run-flight-trace.py": "ec67a152535cc66ae828a54be618c9e5cf72f2b9626ccdb0094fab9c893e647e",
+    "test-flight-trace-options.py": "65090a2df8be293e33d686719a832982bd3a1bd14d2554101f6a0bd928ceec3c"
+  },
+  "real_calibration_unchanged": true,
+  "limitations": [
+    "First row is a reference; preceding initial interval is excluded from all integrals.",
+    "Samples are completed synchronous game-physics-frame endpoints, not internal Chaos-substep states or mathematical continuous trajectories.",
+    "Each observer/baseline pair has the same controlled game FPS. Different FPS trajectories are not claimed equal.",
+    "Electrical energy is integrated model output, independently recalculated from CSV V/I/dt; it is not measured battery energy or mechanical work.",
+    "No fixed120 flight, physical USB, other physical PC, GPU performance or photoreal rendering validation.",
+    "Derived normalized-dot/acos angular residual may be nonzero even for byte-identical quaternion fields.",
+    "Existing CSV guard is an explicit pre-open check; runners use unique output directories. No atomic cross-process output ownership claim."
+  ]
+}

@@ -13,6 +13,8 @@
 #include "ImperialElasticNet.h"
 #include "ImperialSoccerLayout.h"
 #include "ImperialBuildInfo.h"
+#include "ImperialSolverProbe.h"
+#include "ImperialFlightTrace.h"
 #include "ImperialPresentationEffects.h"
 #include "Engine/GameInstance.h"
 #include "Engine/GameViewportClient.h"
@@ -659,5 +661,22 @@ void AImperialMatchManager::SmokeTick()
     FString Result=FString::Printf(TEXT("{\"ok\":%s,\"drones\":%d,\"hover_error_cm\":%.3f,\"hover_max_z_cm\":%.3f,\"hover_min_z_cm\":%.3f,\"floor_wall_contact\":%s,\"net_contact\":%s,\"net_peak_m\":%.5f,\"net_visible_peak_m\":%.5f,\"net_rebound_mps\":%.4f,\"striker_physical_goal\":%s,\"blue_score\":%d,\"csv_export\":%s}\n"),Valid?TEXT("true"):TEXT("false"),Drones.Num(),SmokeHoverError,SmokeMaxHeight,SmokeMinHeight,bSmokeFloorWall?TEXT("true"):TEXT("false"),bSmokeNet?TEXT("true"):TEXT("false"),SmokeNetPeak,SmokeNetVisualPeak,SmokeNetRebound/100,bSmokeGoal?TEXT("true"):TEXT("false"),Rules.Score(0),CSV?TEXT("true"):TEXT("false"));
     AttachVerificationIdentity(Result,SmokeMinDt,SmokeMaxDt);
     FFileHelper::SaveStringToFile(Result,*(SmokeResultFile.IsEmpty()?FPaths::Combine(ImperialUserData::Directory(),TEXT("physics-smoke.json")):SmokeResultFile));
-    UE_LOG(LogTemp,Display,TEXT("IMPERIAL_PHYSICS_SMOKE_%s %s"),Valid?TEXT("PASS"):TEXT("FAIL"),*Result);FPlatformMisc::RequestExitWithStatus(false,Valid?0:1);
+    UE_LOG(LogTemp,Display,TEXT("IMPERIAL_PHYSICS_SMOKE_%s %s"),Valid?TEXT("PASS"):TEXT("FAIL"),*Result);
+    if(FParse::Param(FCommandLine::Get(),TEXT("ImperialFlightTrace")))
+    {
+        if(auto* Trace=Cast<AImperialFlightTrace>(UGameplayStatics::GetActorOfClass(GetWorld(),AImperialFlightTrace::StaticClass())))
+        {
+            Trace->RequestFinish(Elapsed,Valid);
+            return;
+        }
+    }
+    if(FParse::Param(FCommandLine::Get(),TEXT("ImperialSolverProbe"))&&FParse::Param(FCommandLine::Get(),TEXT("ImperialSolverProbePassthrough")))
+    {
+        if(auto* Probe=Cast<AImperialSolverProbe>(UGameplayStatics::GetActorOfClass(GetWorld(),AImperialSolverProbe::StaticClass())))
+        {
+            Probe->CompletePassthrough(Elapsed,[Valid](bool ProbeOk){FPlatformMisc::RequestExitWithStatus(false,Valid&&ProbeOk?0:1);});
+            return;
+        }
+    }
+    FPlatformMisc::RequestExitWithStatus(false,Valid?0:1);
 }

@@ -10,6 +10,10 @@
 #include "ImperialRadioModeVerifier.h"
 #include "ImperialPowerVerifier.h"
 #include "ImperialThrottleVerifier.h"
+#include "ImperialSolverProbe.h"
+#include "ImperialFlightTrace.h"
+#include "ImperialResponseVerifier.h"
+#include "ImperialSolverBridgeVerifier.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 AImperialGameMode::AImperialGameMode()
@@ -22,10 +26,21 @@ void AImperialGameMode::StartPlay()
     GetWorld()->SpawnActor<AImperialMatchManager>();
     GetWorld()->SpawnActor<AImperialPresentationEffects>();
     GetWorld()->SpawnActor<AImperialRoleRibbons>();
+    // The bridge validates conflicting diagnostic flags itself, before another verifier can start.
+    if(FParse::Param(FCommandLine::Get(),TEXT("ImperialSolverBridgeSmoke")))
+    {
+        GetWorld()->SpawnActor<AImperialSolverBridgeVerifier>();
+    }
+    else
+    {
+    if(FParse::Param(FCommandLine::Get(),TEXT("ImperialResponseSmoke")))GetWorld()->SpawnActor<AImperialResponseVerifier>();
     if(FParse::Param(FCommandLine::Get(),TEXT("ImperialInputSmoke")))GetWorld()->SpawnActor<AImperialInputSafetyVerifier>();
     if(FParse::Param(FCommandLine::Get(),TEXT("ImperialTimeSmoke")))GetWorld()->SpawnActor<AImperialTimeVerifier>();
     if(FParse::Param(FCommandLine::Get(),TEXT("ImperialRadioModeSmoke")))GetWorld()->SpawnActor<AImperialRadioModeVerifier>();
     if(FParse::Param(FCommandLine::Get(),TEXT("ImperialPowerSmoke")))GetWorld()->SpawnActor<AImperialPowerVerifier>();
     if(FParse::Param(FCommandLine::Get(),TEXT("ImperialThrottleSmoke")))GetWorld()->SpawnActor<AImperialThrottleVerifier>();
+    if(FParse::Param(FCommandLine::Get(),TEXT("ImperialSolverProbe")))GetWorld()->SpawnActor<AImperialSolverProbe>();
+    if(FParse::Param(FCommandLine::Get(),TEXT("ImperialFlightTrace")))GetWorld()->SpawnActor<AImperialFlightTrace>();
+    }
     Super::StartPlay();
 }

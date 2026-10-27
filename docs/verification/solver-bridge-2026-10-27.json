@@ -1,0 +1,2372 @@
+{
+  "ok": true,
+  "recorded_utc": "2026-10-27T09:34:32.372437+00:00",
+  "source_sha256": "4ed812ec3ebad3bee96ec4c4235dbf060ac1e53ff54a4038d1dd5a070b7bb838",
+  "input_count": 129,
+  "milestone": "CTL-13 phase-two prerequisite: isolated synchronous body snapshot/force bridge, not production flight-model migration",
+  "build_note": "Binaries embed parent a1092dc and dirty=true; tested normalized content hash identifies the exact source.",
+  "coverage": {
+    "isolated_rigid_body_runs": 15,
+    "solver_steps": 12087,
+    "scripted_phases_per_run": 9,
+    "same_sequence_and_older_replay_tested": true,
+    "negative_cli_cases": 12,
+    "validator_cases_per_suite": 19,
+    "portable_checks": 13,
+    "normal_drone_regression_flights": 2,
+    "normal_drone_state_rows": 51600
+  },
+  "maxima": {
+    "max_step_velocity_error_mps": 3.257796900263287e-08,
+    "max_step_angular_velocity_error_radps": 9.343946302021969e-08,
+    "max_cumulative_velocity_error_mps": 2.2127980829084507e-06,
+    "max_cumulative_angular_velocity_error_radps": 3.918020174747546e-06
+  },
+  "reports": {
+    "editor": {
+      "ok": true,
+      "build": {
+        "version": "0.7.5-dev",
+        "source_commit": "a1092dc8b33fde9d372566fef36d9f0d63ae5661",
+        "source_dirty": true,
+        "source_sha256": "4ed812ec3ebad3bee96ec4c4235dbf060ac1e53ff54a4038d1dd5a070b7bb838",
+        "input_count": 129
+      },
+      "measurements": [
+        {
+          "rate": 20,
+          "independent": {
+            "ok": true,
+            "steps": 630,
+            "applied_steps": 140,
+            "phase_counts": [
+              70,
+              70,
+              70,
+              70,
+              70,
+              70,
+              70,
+              70,
+              70
+            ],
+            "phase_times_s": [
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814
+            ],
+            "completed_simulated_s": 4.500000067055255,
+            "min_dt_s": 0.007142857249294009,
+            "max_dt_s": 0.007142857249294009,
+            "input_snapshots_consumed": 90,
+            "max_step_velocity_error_mps": 3.133825829272972e-08,
+            "max_step_angular_velocity_error_radps": 3.183861400047337e-08,
+            "max_cumulative_velocity_error_mps": 9.443912203989172e-07,
+            "max_cumulative_angular_velocity_error_radps": 1.2595030739102712e-06,
+            "final_velocity_mps": [
+              1.0000008392333986,
+              -0.5000004196166993,
+              0.25000020980834964
+            ],
+            "final_angular_velocity_radps": [
+              0.4999997019767761,
+              2.4148234523124756e-09,
+              -1.9999988079071045
+            ],
+            "expected_final_velocity_mps": [
+              1.0000000149011599,
+              -0.5000000074505799,
+              0.25000000372528997
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.5000000074505799,
+              0.0,
+              -2.0000000298023197
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-092934-999092-0c8e98ce/sync-20/result.json",
+          "result_sha256": "98c52a70a3252eba42831080554bddb2fe50af116c6401d1f8a4abace0deeb6a",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 20,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5000000074505814,
+            "solver_end_s": 5.0000000745058175,
+            "solver_elapsed_s": 4.500000067055255,
+            "game_elapsed_s": 4.500000067055225,
+            "game_frames": 90,
+            "game_min_dt_s": 0.05000000074505806,
+            "game_max_dt_s": 0.05000000074505806,
+            "solver_min_dt_s": 0.007142857249294009,
+            "solver_max_dt_s": 0.007142857249294009,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 630,
+            "force_calls": 140,
+            "torque_calls": 140,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 3.1338258292729725e-08,
+            "max_angular_increment_error_radps": 3.226064767889673e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 90,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        },
+        {
+          "rate": 30,
+          "independent": {
+            "ok": true,
+            "steps": 675,
+            "applied_steps": 150,
+            "phase_counts": [
+              75,
+              75,
+              75,
+              75,
+              75,
+              75,
+              75,
+              75,
+              75
+            ],
+            "phase_times_s": [
+              0.5000000260770315,
+              0.5000000260770315,
+              0.5000000260770315,
+              0.5000000260770315,
+              0.5000000260770315,
+              0.5000000260770315,
+              0.5000000260770315,
+              0.5000000260770315,
+              0.5000000260770315
+            ],
+            "completed_simulated_s": 4.500000234693232,
+            "min_dt_s": 0.006666667014360428,
+            "max_dt_s": 0.006666667014360428,
+            "input_snapshots_consumed": 135,
+            "max_step_velocity_error_mps": 2.9533564887157852e-08,
+            "max_step_angular_velocity_error_radps": 4.761567340757394e-08,
+            "max_cumulative_velocity_error_mps": 1.108618328120317e-06,
+            "max_cumulative_angular_velocity_error_radps": 1.7049742570242767e-06,
+            "final_velocity_mps": [
+              0.9999990844726563,
+              -0.49999954223632814,
+              0.24999977111816407
+            ],
+            "final_angular_velocity_radps": [
+              0.49999961256980896,
+              -1.1721668968789345e-08,
+              -1.9999984502792358
+            ],
+            "expected_final_velocity_mps": [
+              1.0000000521540668,
+              -0.5000000260770334,
+              0.2500000130385167
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.5000000260770334,
+              0.0,
+              -2.0000001043081337
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-092934-999092-0c8e98ce/sync-30/result.json",
+          "result_sha256": "ce69e8ee013da4a592a45aa97d17cb6a56794595f711f1651e9ddb2489715922",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 30,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5000000260770315,
+            "solver_end_s": 5.000000260770251,
+            "solver_elapsed_s": 4.500000234693232,
+            "game_elapsed_s": 4.500000234693289,
+            "game_frames": 135,
+            "game_min_dt_s": 0.03333333507180214,
+            "game_max_dt_s": 0.03333333507180214,
+            "solver_min_dt_s": 0.006666667014360428,
+            "solver_max_dt_s": 0.006666667014360428,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 675,
+            "force_calls": 150,
+            "torque_calls": 150,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 2.9533564887157856e-08,
+            "max_angular_increment_error_radps": 4.752520926383931e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 135,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        },
+        {
+          "rate": 45,
+          "independent": {
+            "ok": true,
+            "steps": 609,
+            "applied_steps": 132,
+            "phase_counts": [
+              69,
+              66,
+              69,
+              66,
+              69,
+              66,
+              69,
+              66,
+              69
+            ],
+            "phase_times_s": [
+              0.5111111234873529,
+              0.4888889007270331,
+              0.5111111234873529,
+              0.4888889007270331,
+              0.5111111234873529,
+              0.4888889007270331,
+              0.5111111234873529,
+              0.4888889007270331,
+              0.5111111234873529
+            ],
+            "completed_simulated_s": 4.511111220344913,
+            "min_dt_s": 0.007407407586773236,
+            "max_dt_s": 0.007407407586773236,
+            "input_snapshots_consumed": 203,
+            "max_step_velocity_error_mps": 3.257796900263287e-08,
+            "max_step_angular_velocity_error_radps": 3.969638268866047e-08,
+            "max_cumulative_velocity_error_mps": 1.2410925834746372e-06,
+            "max_cumulative_angular_velocity_error_radps": 1.9199740370145605e-06,
+            "final_velocity_mps": [
+              0.9777767181396485,
+              -0.48888835906982425,
+              0.24444417953491213
+            ],
+            "final_angular_velocity_radps": [
+              0.4888893663883209,
+              -3.5960117106270673e-09,
+              -1.9555574655532837
+            ],
+            "expected_final_velocity_mps": [
+              0.9777778014540691,
+              -0.48888890072703456,
+              0.24444445036351728
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.48888890072703456,
+              0.0,
+              -1.9555556029081382
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-092934-999092-0c8e98ce/sync-45/result.json",
+          "result_sha256": "89dc5923745b0bc606c9c1e5be6bd6aedd1b0c03741a95b26e5ab2e16632e074",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 45,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5111111234873529,
+            "solver_end_s": 5.0222223438322455,
+            "solver_elapsed_s": 4.511111220344913,
+            "game_elapsed_s": 4.511111220344901,
+            "game_frames": 203,
+            "game_min_dt_s": 0.02222222276031971,
+            "game_max_dt_s": 0.02222222276031971,
+            "solver_min_dt_s": 0.007407407586773236,
+            "solver_max_dt_s": 0.007407407586773236,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 609,
+            "force_calls": 132,
+            "torque_calls": 132,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 3.257796900263287e-08,
+            "max_angular_increment_error_radps": 4.008566718848859e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 203,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        },
+        {
+          "rate": 60,
+          "independent": {
+            "ok": true,
+            "steps": 810,
+            "applied_steps": 180,
+            "phase_counts": [
+              90,
+              90,
+              90,
+              90,
+              90,
+              90,
+              90,
+              90,
+              90
+            ],
+            "phase_times_s": [
+              0.5000000260770328,
+              0.5000000260770328,
+              0.5000000260770328,
+              0.5000000260770328,
+              0.5000000260770328,
+              0.5000000260770328,
+              0.5000000260770328,
+              0.5000000260770328,
+              0.5000000260770328
+            ],
+            "completed_simulated_s": 4.500000234693273,
+            "min_dt_s": 0.005555555845300357,
+            "max_dt_s": 0.005555555845300357,
+            "input_snapshots_consumed": 270,
+            "max_step_velocity_error_mps": 2.461130403039982e-08,
+            "max_step_angular_velocity_error_radps": 9.343946302021969e-08,
+            "max_cumulative_velocity_error_mps": 2.2127980829084507e-06,
+            "max_cumulative_angular_velocity_error_radps": 3.918020174747546e-06,
+            "final_velocity_mps": [
+              1.0000019836425782,
+              -0.5000009918212891,
+              0.25000049591064455
+            ],
+            "final_angular_velocity_radps": [
+              0.5000009536743164,
+              -6.177837408305464e-11,
+              -2.0000038146972656
+            ],
+            "expected_final_velocity_mps": [
+              1.0000000521540615,
+              -0.5000000260770308,
+              0.2500000130385154
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.5000000260770308,
+              0.0,
+              -2.000000104308123
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-092934-999092-0c8e98ce/sync-60/result.json",
+          "result_sha256": "537636ba88505f85c215af17f9365cf7b8297b67ebb37f6b121a86017300a8f8",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 60,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5000000260770328,
+            "solver_end_s": 5.0000002607703316,
+            "solver_elapsed_s": 4.500000234693273,
+            "game_elapsed_s": 4.500000234693289,
+            "game_frames": 270,
+            "game_min_dt_s": 0.01666666753590107,
+            "game_max_dt_s": 0.01666666753590107,
+            "solver_min_dt_s": 0.005555555845300357,
+            "solver_max_dt_s": 0.005555555845300357,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 810,
+            "force_calls": 180,
+            "torque_calls": 180,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 2.461130403039982e-08,
+            "max_angular_increment_error_radps": 9.360949626566883e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 270,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        },
+        {
+          "rate": 120,
+          "independent": {
+            "ok": true,
+            "steps": 1080,
+            "applied_steps": 240,
+            "phase_counts": [
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120
+            ],
+            "phase_times_s": [
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321
+            ],
+            "completed_simulated_s": 4.500000234693289,
+            "min_dt_s": 0.004166666883975267,
+            "max_dt_s": 0.004166666883975267,
+            "input_snapshots_consumed": 540,
+            "max_step_velocity_error_mps": 2.938418998628809e-08,
+            "max_step_angular_velocity_error_radps": 2.2079687441790018e-08,
+            "max_cumulative_velocity_error_mps": 1.7204581891861276e-06,
+            "max_cumulative_angular_velocity_error_radps": 1.7049387892797737e-06,
+            "final_velocity_mps": [
+              0.999998550415039,
+              -0.4999992752075195,
+              0.24999963760375976
+            ],
+            "final_angular_velocity_radps": [
+              0.49999961256980896,
+              4.058858138478172e-09,
+              -1.9999984502792358
+            ],
+            "expected_final_velocity_mps": [
+              1.0000000521540642,
+              -0.5000000260770321,
+              0.25000001303851604
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.5000000260770321,
+              0.0,
+              -2.0000001043081284
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-092934-999092-0c8e98ce/sync-120/result.json",
+          "result_sha256": "59d1ed64c52d98401fea7bc4ae93b000aeba9c3b66258c0515ff610478f7faf2",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 120,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5000000260770321,
+            "solver_end_s": 5.000000260770321,
+            "solver_elapsed_s": 4.500000234693289,
+            "game_elapsed_s": 4.500000234693289,
+            "game_frames": 540,
+            "game_min_dt_s": 0.008333333767950535,
+            "game_max_dt_s": 0.008333333767950535,
+            "solver_min_dt_s": 0.004166666883975267,
+            "solver_max_dt_s": 0.004166666883975267,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 1080,
+            "force_calls": 240,
+            "torque_calls": 240,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 2.938418998628809e-08,
+            "max_angular_increment_error_radps": 2.1874045107704655e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 540,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        },
+        {
+          "rate": 240,
+          "independent": {
+            "ok": true,
+            "steps": 1080,
+            "applied_steps": 240,
+            "phase_counts": [
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120
+            ],
+            "phase_times_s": [
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321
+            ],
+            "completed_simulated_s": 4.500000234693289,
+            "min_dt_s": 0.004166666883975267,
+            "max_dt_s": 0.004166666883975267,
+            "input_snapshots_consumed": 1080,
+            "max_step_velocity_error_mps": 2.938418998628809e-08,
+            "max_step_angular_velocity_error_radps": 2.2079687441790018e-08,
+            "max_cumulative_velocity_error_mps": 1.7204581891861276e-06,
+            "max_cumulative_angular_velocity_error_radps": 1.7049387892797737e-06,
+            "final_velocity_mps": [
+              0.999998550415039,
+              -0.4999992752075195,
+              0.24999963760375976
+            ],
+            "final_angular_velocity_radps": [
+              0.49999961256980896,
+              4.058858138478172e-09,
+              -1.9999984502792358
+            ],
+            "expected_final_velocity_mps": [
+              1.0000000521540642,
+              -0.5000000260770321,
+              0.25000001303851604
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.5000000260770321,
+              0.0,
+              -2.0000001043081284
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-092934-999092-0c8e98ce/sync-240/result.json",
+          "result_sha256": "efdf8daac6ff42e4c536ad8abcea3f3e1445179ae766b09184f2409a823d9fce",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 240,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5000000260770321,
+            "solver_end_s": 5.000000260770321,
+            "solver_elapsed_s": 4.500000234693289,
+            "game_elapsed_s": 4.500000234693289,
+            "game_frames": 1080,
+            "game_min_dt_s": 0.004166666883975267,
+            "game_max_dt_s": 0.004166666883975267,
+            "solver_min_dt_s": 0.004166666883975267,
+            "solver_max_dt_s": 0.004166666883975267,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 1080,
+            "force_calls": 240,
+            "torque_calls": 240,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 2.938418998628809e-08,
+            "max_angular_increment_error_radps": 2.1874045107704655e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 1080,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        }
+      ],
+      "rejected_options": [
+        {
+          "case": "invalid_fps",
+          "ok": true,
+          "error": "Use FPS 20/30/45/60/120/240.",
+          "result_sha256": "61e7104081a271de22faeec7fd3ca9dad2c7709a07c9d8343d1b3a4f73d8860b"
+        },
+        {
+          "case": "conflicting_probe",
+          "ok": true,
+          "error": "Solver bridge conflict: cannot run with another smoke, trace or solver probe.",
+          "result_sha256": "9097f6fb4259650d2d19eafe9678f5f2b163ee54195c36cba3f0ae0b34fa1f28"
+        },
+        {
+          "case": "conflicting_flight",
+          "ok": true,
+          "error": "Solver bridge conflict: cannot run with another smoke, trace or solver probe.",
+          "result_sha256": "9097f6fb4259650d2d19eafe9678f5f2b163ee54195c36cba3f0ae0b34fa1f28"
+        },
+        {
+          "case": "conflicting_fixed",
+          "ok": true,
+          "error": "Solver bridge conflict: cannot run with another smoke, trace or solver probe.",
+          "result_sha256": "9097f6fb4259650d2d19eafe9678f5f2b163ee54195c36cba3f0ae0b34fa1f28"
+        }
+      ],
+      "validator_checks": [
+        {
+          "case": "lost_step",
+          "rejected": true,
+          "reason": "missing/duplicate/reordered solver step"
+        },
+        {
+          "case": "duplicated_step",
+          "rejected": true,
+          "reason": "missing/duplicate/reordered solver step"
+        },
+        {
+          "case": "missing_final_stage",
+          "rejected": true,
+          "reason": "untested command gate"
+        },
+        {
+          "case": "double_force",
+          "rejected": true,
+          "reason": "duplicate/missing force application"
+        },
+        {
+          "case": "no_actual_acceleration",
+          "rejected": true,
+          "reason": "analytical per-step impulse mismatch"
+        },
+        {
+          "case": "extra_blocked_impulse",
+          "rejected": true,
+          "reason": "analytical per-step impulse mismatch"
+        },
+        {
+          "case": "wrong_force_units",
+          "rejected": true,
+          "reason": "wrong applied force or SI conversion"
+        },
+        {
+          "case": "wrong_torque_units",
+          "rejected": true,
+          "reason": "wrong applied torque or SI conversion"
+        },
+        {
+          "case": "wrong_com",
+          "rejected": true,
+          "reason": "fixture COM is expected centered"
+        },
+        {
+          "case": "nan_velocity",
+          "rejected": true,
+          "reason": "invalid vector"
+        },
+        {
+          "case": "lease_silently_refreshed",
+          "rejected": true,
+          "reason": "consumer differs from published snapshot: issued_s"
+        },
+        {
+          "case": "replayed_input_accepted",
+          "rejected": true,
+          "reason": "wrong force gate"
+        },
+        {
+          "case": "unsafe_body_release",
+          "rejected": true,
+          "reason": "callback_unregistered_before_body_release"
+        },
+        {
+          "case": "callback_survives_body_release",
+          "rejected": true,
+          "reason": "callback_deleted_before_body_release"
+        },
+        {
+          "case": "callback_runs_after_shutdown",
+          "rejected": true,
+          "reason": "callback ran after unregister"
+        },
+        {
+          "case": "invalid_coast_error",
+          "rejected": true,
+          "reason": "force/torque remained after callback teardown"
+        },
+        {
+          "case": "wrong_summary_count",
+          "rejected": true,
+          "reason": "summary counts differ from steps"
+        },
+        {
+          "case": "wrong_frame_rate",
+          "rejected": true,
+          "reason": "actual game frame cadence"
+        },
+        {
+          "case": "wrong_source",
+          "rejected": true,
+          "reason": "source mismatch"
+        }
+      ],
+      "scope": "Isolated synchronous simple sphere input-buffer/force path. Simulated-age leases; no production drone PID migration, fixed120 flight, hardware/USB/GPU/other-PC verification.",
+      "raw_result_path": "Saved/Verification/solver-bridge-20261027-092934-999092-0c8e98ce/results.json",
+      "raw_result_sha256": "79d90f61f3cc2db2d49b29f6c65de01321cab29117f2746ebcce3ed5666bf2ce"
+    },
+    "shipping": {
+      "ok": true,
+      "build": {
+        "version": "0.7.5-dev",
+        "source_commit": "a1092dc8b33fde9d372566fef36d9f0d63ae5661",
+        "source_dirty": true,
+        "source_sha256": "4ed812ec3ebad3bee96ec4c4235dbf060ac1e53ff54a4038d1dd5a070b7bb838",
+        "input_count": 129
+      },
+      "measurements": [
+        {
+          "rate": 20,
+          "independent": {
+            "ok": true,
+            "steps": 630,
+            "applied_steps": 140,
+            "phase_counts": [
+              70,
+              70,
+              70,
+              70,
+              70,
+              70,
+              70,
+              70,
+              70
+            ],
+            "phase_times_s": [
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814
+            ],
+            "completed_simulated_s": 4.500000067055255,
+            "min_dt_s": 0.007142857249294009,
+            "max_dt_s": 0.007142857249294009,
+            "input_snapshots_consumed": 90,
+            "max_step_velocity_error_mps": 3.133825829272972e-08,
+            "max_step_angular_velocity_error_radps": 3.183861400047337e-08,
+            "max_cumulative_velocity_error_mps": 9.443912203989172e-07,
+            "max_cumulative_angular_velocity_error_radps": 1.2595030739102712e-06,
+            "final_velocity_mps": [
+              1.0000008392333986,
+              -0.5000004196166993,
+              0.25000020980834964
+            ],
+            "final_angular_velocity_radps": [
+              0.4999997019767761,
+              2.4148234523124756e-09,
+              -1.9999988079071045
+            ],
+            "expected_final_velocity_mps": [
+              1.0000000149011599,
+              -0.5000000074505799,
+              0.25000000372528997
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.5000000074505799,
+              0.0,
+              -2.0000000298023197
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-092910-580395/sync-20/result.json",
+          "result_sha256": "e5a7985394f7ca8e929d71dcbc381882b495b8545ea222e111dc691ba1b165fa",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 20,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5000000074505814,
+            "solver_end_s": 5.0000000745058175,
+            "solver_elapsed_s": 4.500000067055255,
+            "game_elapsed_s": 4.500000067055225,
+            "game_frames": 90,
+            "game_min_dt_s": 0.05000000074505806,
+            "game_max_dt_s": 0.05000000074505806,
+            "solver_min_dt_s": 0.007142857249294009,
+            "solver_max_dt_s": 0.007142857249294009,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 630,
+            "force_calls": 140,
+            "torque_calls": 140,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 3.1338258292729725e-08,
+            "max_angular_increment_error_radps": 3.226064767889673e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 90,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        },
+        {
+          "rate": 30,
+          "independent": {
+            "ok": true,
+            "steps": 675,
+            "applied_steps": 150,
+            "phase_counts": [
+              75,
+              75,
+              75,
+              75,
+              75,
+              75,
+              75,
+              75,
+              75
+            ],
+            "phase_times_s": [
+              0.5000000260770315,
+              0.5000000260770315,
+              0.5000000260770315,
+              0.5000000260770315,
+              0.5000000260770315,
+              0.5000000260770315,
+              0.5000000260770315,
+              0.5000000260770315,
+              0.5000000260770315
+            ],
+            "completed_simulated_s": 4.500000234693232,
+            "min_dt_s": 0.006666667014360428,
+            "max_dt_s": 0.006666667014360428,
+            "input_snapshots_consumed": 135,
+            "max_step_velocity_error_mps": 2.9533564887157852e-08,
+            "max_step_angular_velocity_error_radps": 4.761567340757394e-08,
+            "max_cumulative_velocity_error_mps": 1.108618328120317e-06,
+            "max_cumulative_angular_velocity_error_radps": 1.7049742570242767e-06,
+            "final_velocity_mps": [
+              0.9999990844726563,
+              -0.49999954223632814,
+              0.24999977111816407
+            ],
+            "final_angular_velocity_radps": [
+              0.49999961256980896,
+              -1.1721668968789345e-08,
+              -1.9999984502792358
+            ],
+            "expected_final_velocity_mps": [
+              1.0000000521540668,
+              -0.5000000260770334,
+              0.2500000130385167
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.5000000260770334,
+              0.0,
+              -2.0000001043081337
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-092910-580395/sync-30/result.json",
+          "result_sha256": "8521e05fe06fd73c1302dc03555e1b9fcb02064492b6760b1298b164b1d99332",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 30,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5000000260770315,
+            "solver_end_s": 5.000000260770251,
+            "solver_elapsed_s": 4.500000234693232,
+            "game_elapsed_s": 4.500000234693289,
+            "game_frames": 135,
+            "game_min_dt_s": 0.03333333507180214,
+            "game_max_dt_s": 0.03333333507180214,
+            "solver_min_dt_s": 0.006666667014360428,
+            "solver_max_dt_s": 0.006666667014360428,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 675,
+            "force_calls": 150,
+            "torque_calls": 150,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 2.9533564887157856e-08,
+            "max_angular_increment_error_radps": 4.752520926383931e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 135,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        },
+        {
+          "rate": 45,
+          "independent": {
+            "ok": true,
+            "steps": 609,
+            "applied_steps": 132,
+            "phase_counts": [
+              69,
+              66,
+              69,
+              66,
+              69,
+              66,
+              69,
+              66,
+              69
+            ],
+            "phase_times_s": [
+              0.5111111234873529,
+              0.4888889007270331,
+              0.5111111234873529,
+              0.4888889007270331,
+              0.5111111234873529,
+              0.4888889007270331,
+              0.5111111234873529,
+              0.4888889007270331,
+              0.5111111234873529
+            ],
+            "completed_simulated_s": 4.511111220344913,
+            "min_dt_s": 0.007407407586773236,
+            "max_dt_s": 0.007407407586773236,
+            "input_snapshots_consumed": 203,
+            "max_step_velocity_error_mps": 3.257796900263287e-08,
+            "max_step_angular_velocity_error_radps": 3.969638268866047e-08,
+            "max_cumulative_velocity_error_mps": 1.2410925834746372e-06,
+            "max_cumulative_angular_velocity_error_radps": 1.9199740370145605e-06,
+            "final_velocity_mps": [
+              0.9777767181396485,
+              -0.48888835906982425,
+              0.24444417953491213
+            ],
+            "final_angular_velocity_radps": [
+              0.4888893663883209,
+              -3.5960117106270673e-09,
+              -1.9555574655532837
+            ],
+            "expected_final_velocity_mps": [
+              0.9777778014540691,
+              -0.48888890072703456,
+              0.24444445036351728
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.48888890072703456,
+              0.0,
+              -1.9555556029081382
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-092910-580395/sync-45/result.json",
+          "result_sha256": "90216691b9aa082f74546bfc94e53da4a932817e619b169edee6ab9046b71e66",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 45,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5111111234873529,
+            "solver_end_s": 5.0222223438322455,
+            "solver_elapsed_s": 4.511111220344913,
+            "game_elapsed_s": 4.511111220344901,
+            "game_frames": 203,
+            "game_min_dt_s": 0.02222222276031971,
+            "game_max_dt_s": 0.02222222276031971,
+            "solver_min_dt_s": 0.007407407586773236,
+            "solver_max_dt_s": 0.007407407586773236,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 609,
+            "force_calls": 132,
+            "torque_calls": 132,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 3.257796900263287e-08,
+            "max_angular_increment_error_radps": 4.008566718848859e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 203,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        },
+        {
+          "rate": 60,
+          "independent": {
+            "ok": true,
+            "steps": 810,
+            "applied_steps": 180,
+            "phase_counts": [
+              90,
+              90,
+              90,
+              90,
+              90,
+              90,
+              90,
+              90,
+              90
+            ],
+            "phase_times_s": [
+              0.5000000260770328,
+              0.5000000260770328,
+              0.5000000260770328,
+              0.5000000260770328,
+              0.5000000260770328,
+              0.5000000260770328,
+              0.5000000260770328,
+              0.5000000260770328,
+              0.5000000260770328
+            ],
+            "completed_simulated_s": 4.500000234693273,
+            "min_dt_s": 0.005555555845300357,
+            "max_dt_s": 0.005555555845300357,
+            "input_snapshots_consumed": 270,
+            "max_step_velocity_error_mps": 2.461130403039982e-08,
+            "max_step_angular_velocity_error_radps": 9.343946302021969e-08,
+            "max_cumulative_velocity_error_mps": 2.2127980829084507e-06,
+            "max_cumulative_angular_velocity_error_radps": 3.918020174747546e-06,
+            "final_velocity_mps": [
+              1.0000019836425782,
+              -0.5000009918212891,
+              0.25000049591064455
+            ],
+            "final_angular_velocity_radps": [
+              0.5000009536743164,
+              -6.177837408305464e-11,
+              -2.0000038146972656
+            ],
+            "expected_final_velocity_mps": [
+              1.0000000521540615,
+              -0.5000000260770308,
+              0.2500000130385154
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.5000000260770308,
+              0.0,
+              -2.000000104308123
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-092910-580395/sync-60/result.json",
+          "result_sha256": "2aeafe1af4a3afd46a50486744b8467ce074189f4fd0c3f46c7ee5d3ab18aa15",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 60,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5000000260770328,
+            "solver_end_s": 5.0000002607703316,
+            "solver_elapsed_s": 4.500000234693273,
+            "game_elapsed_s": 4.500000234693289,
+            "game_frames": 270,
+            "game_min_dt_s": 0.01666666753590107,
+            "game_max_dt_s": 0.01666666753590107,
+            "solver_min_dt_s": 0.005555555845300357,
+            "solver_max_dt_s": 0.005555555845300357,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 810,
+            "force_calls": 180,
+            "torque_calls": 180,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 2.461130403039982e-08,
+            "max_angular_increment_error_radps": 9.360949626566883e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 270,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        },
+        {
+          "rate": 120,
+          "independent": {
+            "ok": true,
+            "steps": 1080,
+            "applied_steps": 240,
+            "phase_counts": [
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120
+            ],
+            "phase_times_s": [
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321
+            ],
+            "completed_simulated_s": 4.500000234693289,
+            "min_dt_s": 0.004166666883975267,
+            "max_dt_s": 0.004166666883975267,
+            "input_snapshots_consumed": 540,
+            "max_step_velocity_error_mps": 2.938418998628809e-08,
+            "max_step_angular_velocity_error_radps": 2.2079687441790018e-08,
+            "max_cumulative_velocity_error_mps": 1.7204581891861276e-06,
+            "max_cumulative_angular_velocity_error_radps": 1.7049387892797737e-06,
+            "final_velocity_mps": [
+              0.999998550415039,
+              -0.4999992752075195,
+              0.24999963760375976
+            ],
+            "final_angular_velocity_radps": [
+              0.49999961256980896,
+              4.058858138478172e-09,
+              -1.9999984502792358
+            ],
+            "expected_final_velocity_mps": [
+              1.0000000521540642,
+              -0.5000000260770321,
+              0.25000001303851604
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.5000000260770321,
+              0.0,
+              -2.0000001043081284
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-092910-580395/sync-120/result.json",
+          "result_sha256": "ee6112c99a62980c55284877eb686047beb68770fba6d3c72bfcd3ad7aa47b51",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 120,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5000000260770321,
+            "solver_end_s": 5.000000260770321,
+            "solver_elapsed_s": 4.500000234693289,
+            "game_elapsed_s": 4.500000234693289,
+            "game_frames": 540,
+            "game_min_dt_s": 0.008333333767950535,
+            "game_max_dt_s": 0.008333333767950535,
+            "solver_min_dt_s": 0.004166666883975267,
+            "solver_max_dt_s": 0.004166666883975267,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 1080,
+            "force_calls": 240,
+            "torque_calls": 240,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 2.938418998628809e-08,
+            "max_angular_increment_error_radps": 2.1874045107704655e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 540,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        },
+        {
+          "rate": 240,
+          "independent": {
+            "ok": true,
+            "steps": 1080,
+            "applied_steps": 240,
+            "phase_counts": [
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120
+            ],
+            "phase_times_s": [
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321
+            ],
+            "completed_simulated_s": 4.500000234693289,
+            "min_dt_s": 0.004166666883975267,
+            "max_dt_s": 0.004166666883975267,
+            "input_snapshots_consumed": 1080,
+            "max_step_velocity_error_mps": 2.938418998628809e-08,
+            "max_step_angular_velocity_error_radps": 2.2079687441790018e-08,
+            "max_cumulative_velocity_error_mps": 1.7204581891861276e-06,
+            "max_cumulative_angular_velocity_error_radps": 1.7049387892797737e-06,
+            "final_velocity_mps": [
+              0.999998550415039,
+              -0.4999992752075195,
+              0.24999963760375976
+            ],
+            "final_angular_velocity_radps": [
+              0.49999961256980896,
+              4.058858138478172e-09,
+              -1.9999984502792358
+            ],
+            "expected_final_velocity_mps": [
+              1.0000000521540642,
+              -0.5000000260770321,
+              0.25000001303851604
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.5000000260770321,
+              0.0,
+              -2.0000001043081284
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-092910-580395/sync-240/result.json",
+          "result_sha256": "0371afb4da8d1943dc5a01b4088dd7eede7baa39c5ee443c7e62a696ea845738",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 240,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5000000260770321,
+            "solver_end_s": 5.000000260770321,
+            "solver_elapsed_s": 4.500000234693289,
+            "game_elapsed_s": 4.500000234693289,
+            "game_frames": 1080,
+            "game_min_dt_s": 0.004166666883975267,
+            "game_max_dt_s": 0.004166666883975267,
+            "solver_min_dt_s": 0.004166666883975267,
+            "solver_max_dt_s": 0.004166666883975267,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 1080,
+            "force_calls": 240,
+            "torque_calls": 240,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 2.938418998628809e-08,
+            "max_angular_increment_error_radps": 2.1874045107704655e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 1080,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        }
+      ],
+      "rejected_options": [
+        {
+          "case": "invalid_fps",
+          "ok": true,
+          "error": "Use FPS 20/30/45/60/120/240.",
+          "result_sha256": "03095ff8420369cce613599a16e9a3725eae6e7ad179c8ca0804f213d058af59"
+        },
+        {
+          "case": "conflicting_probe",
+          "ok": true,
+          "error": "Solver bridge conflict: cannot run with another smoke, trace or solver probe.",
+          "result_sha256": "d94aa4550b5fcbe113e8a2827eafaec18db6162ba1154d4299df26746a1206c0"
+        },
+        {
+          "case": "conflicting_flight",
+          "ok": true,
+          "error": "Solver bridge conflict: cannot run with another smoke, trace or solver probe.",
+          "result_sha256": "d94aa4550b5fcbe113e8a2827eafaec18db6162ba1154d4299df26746a1206c0"
+        },
+        {
+          "case": "conflicting_fixed",
+          "ok": true,
+          "error": "Solver bridge conflict: cannot run with another smoke, trace or solver probe.",
+          "result_sha256": "d94aa4550b5fcbe113e8a2827eafaec18db6162ba1154d4299df26746a1206c0"
+        }
+      ],
+      "validator_checks": [
+        {
+          "case": "lost_step",
+          "rejected": true,
+          "reason": "missing/duplicate/reordered solver step"
+        },
+        {
+          "case": "duplicated_step",
+          "rejected": true,
+          "reason": "missing/duplicate/reordered solver step"
+        },
+        {
+          "case": "missing_final_stage",
+          "rejected": true,
+          "reason": "untested command gate"
+        },
+        {
+          "case": "double_force",
+          "rejected": true,
+          "reason": "duplicate/missing force application"
+        },
+        {
+          "case": "no_actual_acceleration",
+          "rejected": true,
+          "reason": "analytical per-step impulse mismatch"
+        },
+        {
+          "case": "extra_blocked_impulse",
+          "rejected": true,
+          "reason": "analytical per-step impulse mismatch"
+        },
+        {
+          "case": "wrong_force_units",
+          "rejected": true,
+          "reason": "wrong applied force or SI conversion"
+        },
+        {
+          "case": "wrong_torque_units",
+          "rejected": true,
+          "reason": "wrong applied torque or SI conversion"
+        },
+        {
+          "case": "wrong_com",
+          "rejected": true,
+          "reason": "fixture COM is expected centered"
+        },
+        {
+          "case": "nan_velocity",
+          "rejected": true,
+          "reason": "invalid vector"
+        },
+        {
+          "case": "lease_silently_refreshed",
+          "rejected": true,
+          "reason": "consumer differs from published snapshot: issued_s"
+        },
+        {
+          "case": "replayed_input_accepted",
+          "rejected": true,
+          "reason": "wrong force gate"
+        },
+        {
+          "case": "unsafe_body_release",
+          "rejected": true,
+          "reason": "callback_unregistered_before_body_release"
+        },
+        {
+          "case": "callback_survives_body_release",
+          "rejected": true,
+          "reason": "callback_deleted_before_body_release"
+        },
+        {
+          "case": "callback_runs_after_shutdown",
+          "rejected": true,
+          "reason": "callback ran after unregister"
+        },
+        {
+          "case": "invalid_coast_error",
+          "rejected": true,
+          "reason": "force/torque remained after callback teardown"
+        },
+        {
+          "case": "wrong_summary_count",
+          "rejected": true,
+          "reason": "summary counts differ from steps"
+        },
+        {
+          "case": "wrong_frame_rate",
+          "rejected": true,
+          "reason": "actual game frame cadence"
+        },
+        {
+          "case": "wrong_source",
+          "rejected": true,
+          "reason": "source mismatch"
+        }
+      ],
+      "scope": "Isolated synchronous simple sphere input-buffer/force path. Simulated-age leases; no production drone PID migration, fixed120 flight, hardware/USB/GPU/other-PC verification.",
+      "raw_result_path": "Saved/Verification/solver-bridge-20261027-092910-580395/results.json",
+      "raw_result_sha256": "dbb70b2546b8feef9c35bcddf3f4859ac8fa76c77e7e218c4afb7f7c5210f779"
+    },
+    "relocated_shipping": {
+      "ok": true,
+      "build": {
+        "version": "0.7.5-dev",
+        "source_commit": "a1092dc8b33fde9d372566fef36d9f0d63ae5661",
+        "source_dirty": true,
+        "source_sha256": "4ed812ec3ebad3bee96ec4c4235dbf060ac1e53ff54a4038d1dd5a070b7bb838",
+        "input_count": 129
+      },
+      "measurements": [
+        {
+          "rate": 20,
+          "independent": {
+            "ok": true,
+            "steps": 630,
+            "applied_steps": 140,
+            "phase_counts": [
+              70,
+              70,
+              70,
+              70,
+              70,
+              70,
+              70,
+              70,
+              70
+            ],
+            "phase_times_s": [
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814,
+              0.5000000074505814
+            ],
+            "completed_simulated_s": 4.500000067055255,
+            "min_dt_s": 0.007142857249294009,
+            "max_dt_s": 0.007142857249294009,
+            "input_snapshots_consumed": 90,
+            "max_step_velocity_error_mps": 3.133825829272972e-08,
+            "max_step_angular_velocity_error_radps": 3.183861400047337e-08,
+            "max_cumulative_velocity_error_mps": 9.443912203989172e-07,
+            "max_cumulative_angular_velocity_error_radps": 1.2595030739102712e-06,
+            "final_velocity_mps": [
+              1.0000008392333986,
+              -0.5000004196166993,
+              0.25000020980834964
+            ],
+            "final_angular_velocity_radps": [
+              0.4999997019767761,
+              2.4148234523124756e-09,
+              -1.9999988079071045
+            ],
+            "expected_final_velocity_mps": [
+              1.0000000149011599,
+              -0.5000000074505799,
+              0.25000000372528997
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.5000000074505799,
+              0.0,
+              -2.0000000298023197
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-093111-509764-12893a4f/sync-20/result.json",
+          "result_sha256": "e5a7985394f7ca8e929d71dcbc381882b495b8545ea222e111dc691ba1b165fa",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 20,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5000000074505814,
+            "solver_end_s": 5.0000000745058175,
+            "solver_elapsed_s": 4.500000067055255,
+            "game_elapsed_s": 4.500000067055225,
+            "game_frames": 90,
+            "game_min_dt_s": 0.05000000074505806,
+            "game_max_dt_s": 0.05000000074505806,
+            "solver_min_dt_s": 0.007142857249294009,
+            "solver_max_dt_s": 0.007142857249294009,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 630,
+            "force_calls": 140,
+            "torque_calls": 140,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 3.1338258292729725e-08,
+            "max_angular_increment_error_radps": 3.226064767889673e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 90,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        },
+        {
+          "rate": 45,
+          "independent": {
+            "ok": true,
+            "steps": 609,
+            "applied_steps": 132,
+            "phase_counts": [
+              69,
+              66,
+              69,
+              66,
+              69,
+              66,
+              69,
+              66,
+              69
+            ],
+            "phase_times_s": [
+              0.5111111234873529,
+              0.4888889007270331,
+              0.5111111234873529,
+              0.4888889007270331,
+              0.5111111234873529,
+              0.4888889007270331,
+              0.5111111234873529,
+              0.4888889007270331,
+              0.5111111234873529
+            ],
+            "completed_simulated_s": 4.511111220344913,
+            "min_dt_s": 0.007407407586773236,
+            "max_dt_s": 0.007407407586773236,
+            "input_snapshots_consumed": 203,
+            "max_step_velocity_error_mps": 3.257796900263287e-08,
+            "max_step_angular_velocity_error_radps": 3.969638268866047e-08,
+            "max_cumulative_velocity_error_mps": 1.2410925834746372e-06,
+            "max_cumulative_angular_velocity_error_radps": 1.9199740370145605e-06,
+            "final_velocity_mps": [
+              0.9777767181396485,
+              -0.48888835906982425,
+              0.24444417953491213
+            ],
+            "final_angular_velocity_radps": [
+              0.4888893663883209,
+              -3.5960117106270673e-09,
+              -1.9555574655532837
+            ],
+            "expected_final_velocity_mps": [
+              0.9777778014540691,
+              -0.48888890072703456,
+              0.24444445036351728
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.48888890072703456,
+              0.0,
+              -1.9555556029081382
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-093111-509764-12893a4f/sync-45/result.json",
+          "result_sha256": "90216691b9aa082f74546bfc94e53da4a932817e619b169edee6ab9046b71e66",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 45,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5111111234873529,
+            "solver_end_s": 5.0222223438322455,
+            "solver_elapsed_s": 4.511111220344913,
+            "game_elapsed_s": 4.511111220344901,
+            "game_frames": 203,
+            "game_min_dt_s": 0.02222222276031971,
+            "game_max_dt_s": 0.02222222276031971,
+            "solver_min_dt_s": 0.007407407586773236,
+            "solver_max_dt_s": 0.007407407586773236,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 609,
+            "force_calls": 132,
+            "torque_calls": 132,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 3.257796900263287e-08,
+            "max_angular_increment_error_radps": 4.008566718848859e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 203,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        },
+        {
+          "rate": 240,
+          "independent": {
+            "ok": true,
+            "steps": 1080,
+            "applied_steps": 240,
+            "phase_counts": [
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120,
+              120
+            ],
+            "phase_times_s": [
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321,
+              0.5000000260770321
+            ],
+            "completed_simulated_s": 4.500000234693289,
+            "min_dt_s": 0.004166666883975267,
+            "max_dt_s": 0.004166666883975267,
+            "input_snapshots_consumed": 1080,
+            "max_step_velocity_error_mps": 2.938418998628809e-08,
+            "max_step_angular_velocity_error_radps": 2.2079687441790018e-08,
+            "max_cumulative_velocity_error_mps": 1.7204581891861276e-06,
+            "max_cumulative_angular_velocity_error_radps": 1.7049387892797737e-06,
+            "final_velocity_mps": [
+              0.999998550415039,
+              -0.4999992752075195,
+              0.24999963760375976
+            ],
+            "final_angular_velocity_radps": [
+              0.49999961256980896,
+              4.058858138478172e-09,
+              -1.9999984502792358
+            ],
+            "expected_final_velocity_mps": [
+              1.0000000521540642,
+              -0.5000000260770321,
+              0.25000001303851604
+            ],
+            "expected_final_angular_velocity_radps": [
+              0.5000000260770321,
+              0.0,
+              -2.0000001043081284
+            ]
+          },
+          "result_path": "Saved/Verification/solver-bridge-20261027-093111-509764-12893a4f/sync-240/result.json",
+          "result_sha256": "0371afb4da8d1943dc5a01b4088dd7eede7baa39c5ee443c7e62a696ea845738",
+          "runtime_summary": {
+            "ok": true,
+            "error": "",
+            "mode": "sync",
+            "requested_fps": 240,
+            "fixture_only": true,
+            "drone_force_path_changed": false,
+            "normal_drones_disarmed": true,
+            "callback_unregistered_before_body_release": true,
+            "callback_deleted_before_body_release": true,
+            "post_shutdown_callback_calls": 0,
+            "coast_velocity_error_mps": 0,
+            "coast_angular_velocity_error_radps": 0,
+            "bound_generation": 1,
+            "ttl_s": 0.1,
+            "configured_mass_kg": 2,
+            "radius_m": 0.25,
+            "command_force_n": [
+              2,
+              -1,
+              0.5
+            ],
+            "command_offset_m": [
+              0,
+              0.05,
+              0
+            ],
+            "phase_duration_s": 0.5,
+            "duration_s": 4.5,
+            "solver_start_s": 0.5000000260770321,
+            "solver_end_s": 5.000000260770321,
+            "solver_elapsed_s": 4.500000234693289,
+            "game_elapsed_s": 4.500000234693289,
+            "game_frames": 1080,
+            "game_min_dt_s": 0.004166666883975267,
+            "game_max_dt_s": 0.004166666883975267,
+            "solver_min_dt_s": 0.004166666883975267,
+            "solver_max_dt_s": 0.004166666883975267,
+            "integration_min_dt_s": 9.99999993922529e-09,
+            "integration_max_dt_s": 0.00833333283662796,
+            "steps": 1080,
+            "force_calls": 240,
+            "torque_calls": 240,
+            "order_errors": 0,
+            "max_linear_increment_error_mps": 2.938418998628809e-08,
+            "max_angular_increment_error_radps": 2.1874045107704655e-08,
+            "scope": "Isolated collision-free sphere, synchronous solver-step input snapshots and internal COM force/torque adapter. Nine software command phases; each completed integration checked analytically. No drone PID migration, contact test, fixed120 flight, real USB latency, body reuse or cross-PC claim."
+          },
+          "command_publications": 1080,
+          "consumed_replay_kinds": [
+            "older_sequence",
+            "same_sequence_new_snapshot"
+          ]
+        }
+      ],
+      "rejected_options": [
+        {
+          "case": "invalid_fps",
+          "ok": true,
+          "error": "Use FPS 20/30/45/60/120/240.",
+          "result_sha256": "03095ff8420369cce613599a16e9a3725eae6e7ad179c8ca0804f213d058af59"
+        },
+        {
+          "case": "conflicting_probe",
+          "ok": true,
+          "error": "Solver bridge conflict: cannot run with another smoke, trace or solver probe.",
+          "result_sha256": "d94aa4550b5fcbe113e8a2827eafaec18db6162ba1154d4299df26746a1206c0"
+        },
+        {
+          "case": "conflicting_flight",
+          "ok": true,
+          "error": "Solver bridge conflict: cannot run with another smoke, trace or solver probe.",
+          "result_sha256": "d94aa4550b5fcbe113e8a2827eafaec18db6162ba1154d4299df26746a1206c0"
+        },
+        {
+          "case": "conflicting_fixed",
+          "ok": true,
+          "error": "Solver bridge conflict: cannot run with another smoke, trace or solver probe.",
+          "result_sha256": "d94aa4550b5fcbe113e8a2827eafaec18db6162ba1154d4299df26746a1206c0"
+        }
+      ],
+      "validator_checks": [
+        {
+          "case": "lost_step",
+          "rejected": true,
+          "reason": "missing/duplicate/reordered solver step"
+        },
+        {
+          "case": "duplicated_step",
+          "rejected": true,
+          "reason": "missing/duplicate/reordered solver step"
+        },
+        {
+          "case": "missing_final_stage",
+          "rejected": true,
+          "reason": "untested command gate"
+        },
+        {
+          "case": "double_force",
+          "rejected": true,
+          "reason": "duplicate/missing force application"
+        },
+        {
+          "case": "no_actual_acceleration",
+          "rejected": true,
+          "reason": "analytical per-step impulse mismatch"
+        },
+        {
+          "case": "extra_blocked_impulse",
+          "rejected": true,
+          "reason": "analytical per-step impulse mismatch"
+        },
+        {
+          "case": "wrong_force_units",
+          "rejected": true,
+          "reason": "wrong applied force or SI conversion"
+        },
+        {
+          "case": "wrong_torque_units",
+          "rejected": true,
+          "reason": "wrong applied torque or SI conversion"
+        },
+        {
+          "case": "wrong_com",
+          "rejected": true,
+          "reason": "fixture COM is expected centered"
+        },
+        {
+          "case": "nan_velocity",
+          "rejected": true,
+          "reason": "invalid vector"
+        },
+        {
+          "case": "lease_silently_refreshed",
+          "rejected": true,
+          "reason": "consumer differs from published snapshot: issued_s"
+        },
+        {
+          "case": "replayed_input_accepted",
+          "rejected": true,
+          "reason": "wrong force gate"
+        },
+        {
+          "case": "unsafe_body_release",
+          "rejected": true,
+          "reason": "callback_unregistered_before_body_release"
+        },
+        {
+          "case": "callback_survives_body_release",
+          "rejected": true,
+          "reason": "callback_deleted_before_body_release"
+        },
+        {
+          "case": "callback_runs_after_shutdown",
+          "rejected": true,
+          "reason": "callback ran after unregister"
+        },
+        {
+          "case": "invalid_coast_error",
+          "rejected": true,
+          "reason": "force/torque remained after callback teardown"
+        },
+        {
+          "case": "wrong_summary_count",
+          "rejected": true,
+          "reason": "summary counts differ from steps"
+        },
+        {
+          "case": "wrong_frame_rate",
+          "rejected": true,
+          "reason": "actual game frame cadence"
+        },
+        {
+          "case": "wrong_source",
+          "rejected": true,
+          "reason": "source mismatch"
+        }
+      ],
+      "scope": "Isolated synchronous simple sphere input-buffer/force path. Simulated-age leases; no production drone PID migration, fixed120 flight, hardware/USB/GPU/other-PC verification.",
+      "raw_result_path": "Saved/Verification/solver-bridge-20261027-093111-509764-12893a4f/results.json",
+      "raw_result_sha256": "ab78aa69117a4a9fdf4c6b1bd9c64b3b9822b1161dd568bc7f18f8dc12a1302f"
+    }
+  },
+  "normal_flight_regression": {
+    "ok": true,
+    "source_sha256": "4ed812ec3ebad3bee96ec4c4235dbf060ac1e53ff54a4038d1dd5a070b7bb838",
+    "raw_result_path": "Saved/Verification/flight-trace-20261027-093345-744322/results.json",
+    "raw_result_sha256": "1bd9c75c1ae3ef5aa2ecaf4babab8041acafaa872875dc89afa88baf9d29fa26",
+    "rate": 60,
+    "flights": 2,
+    "validator_cases": 18,
+    "comparison": {
+      "ok": true,
+      "frames": 2580,
+      "maxima": {
+        "position_m": 0.0,
+        "velocity_mps": 0.0,
+        "orientation_rad": 0.0,
+        "angular_velocity_radps": 0.0,
+        "current_a": 0.0,
+        "consumed_ah": 0.0,
+        "soc": 0.0,
+        "voltage_v": 0.0,
+        "power_w": 0.0,
+        "motor_applied_power_w": 0.0,
+        "motor_available_power_w": 0.0
+      },
+      "limits": {
+        "position_m": 0.0001,
+        "velocity_mps": 0.0001,
+        "orientation_rad": 0.0001,
+        "angular_velocity_radps": 0.001,
+        "current_a": 0.001,
+        "consumed_ah": 1e-08,
+        "soc": 1e-08,
+        "voltage_v": 0.0001,
+        "power_w": 0.02,
+        "motor_applied_power_w": 0.02,
+        "motor_available_power_w": 0.02
+      }
+    },
+    "integral_differences": [
+      {
+        "id": 0,
+        "current_ah": 0.0,
+        "consumed_ah": 0.0,
+        "delivered_j": 0.0,
+        "motor_j": 0.0
+      },
+      {
+        "id": 1,
+        "current_ah": 0.0,
+        "consumed_ah": 0.0,
+        "delivered_j": 0.0,
+        "motor_j": 0.0
+      },
+      {
+        "id": 2,
+        "current_ah": 0.0,
+        "consumed_ah": 0.0,
+        "delivered_j": 0.0,
+        "motor_j": 0.0
+      },
+      {
+        "id": 3,
+        "current_ah": 0.0,
+        "consumed_ah": 0.0,
+        "delivered_j": 0.0,
+        "motor_j": 0.0
+      },
+      {
+        "id": 4,
+        "current_ah": 0.0,
+        "consumed_ah": 0.0,
+        "delivered_j": 0.0,
+        "motor_j": 0.0
+      },
+      {
+        "id": 5,
+        "current_ah": 0.0,
+        "consumed_ah": 0.0,
+        "delivered_j": 0.0,
+        "motor_j": 0.0
+      },
+      {
+        "id": 6,
+        "current_ah": 0.0,
+        "consumed_ah": 0.0,
+        "delivered_j": 0.0,
+        "motor_j": 0.0
+      },
+      {
+        "id": 7,
+        "current_ah": 0.0,
+        "consumed_ah": 0.0,
+        "delivered_j": 0.0,
+        "motor_j": 0.0
+      },
+      {
+        "id": 8,
+        "current_ah": 0.0,
+        "consumed_ah": 0.0,
+        "delivered_j": 0.0,
+        "motor_j": 0.0
+      },
+      {
+        "id": 9,
+        "current_ah": 0.0,
+        "consumed_ah": 0.0,
+        "delivered_j": 0.0,
+        "motor_j": 0.0
+      }
+    ],
+    "runs": {
+      "baseline": {
+        "directory": "Saved/Verification/flight-trace-20261027-093345-744322/60-baseline",
+        "rows": 25800,
+        "csv_sha256": "767c95e7b5cd43e2d33a7aabfdbf7fb7f9da5bf1ddcc699877426d0333304365",
+        "flight_metrics": {
+          "ok": true,
+          "drones": 10,
+          "hover_error_cm": 3.15,
+          "hover_max_z_cm": 231.869,
+          "hover_min_z_cm": 219.915,
+          "floor_wall_contact": true,
+          "net_contact": true,
+          "net_peak_m": 0.06753,
+          "net_visible_peak_m": 0.0646,
+          "net_rebound_mps": 1.0562,
+          "striker_physical_goal": true,
+          "blue_score": 1,
+          "csv_export": true,
+          "actual_min_game_dt_s": 0.01666666753590107,
+          "actual_max_game_dt_s": 0.01666666753590107
+        }
+      },
+      "observed": {
+        "directory": "Saved/Verification/flight-trace-20261027-093345-744322/60-observed",
+        "rows": 25800,
+        "csv_sha256": "767c95e7b5cd43e2d33a7aabfdbf7fb7f9da5bf1ddcc699877426d0333304365",
+        "flight_metrics": {
+          "ok": true,
+          "drones": 10,
+          "hover_error_cm": 3.15,
+          "hover_max_z_cm": 231.869,
+          "hover_min_z_cm": 219.915,
+          "floor_wall_contact": true,
+          "net_contact": true,
+          "net_peak_m": 0.06753,
+          "net_visible_peak_m": 0.0646,
+          "net_rebound_mps": 1.0562,
+          "striker_physical_goal": true,
+          "blue_score": 1,
+          "csv_export": true,
+          "actual_min_game_dt_s": 0.01666666753590107,
+          "actual_max_game_dt_s": 0.01666666753590107
+        }
+      }
+    }
+  },
+  "portable": {
+    "ok": true,
+    "checks": [
+      {
+        "name": "all released file hashes match",
+        "passed": true
+      },
+      {
+        "name": "standalone feedback form exists, is checksummed and matches reviewed source",
+        "passed": true
+      },
+      {
+        "name": "no pilot settings or generated Saved directory",
+        "passed": true
+      },
+      {
+        "name": "native launcher resolves relocated files without developer tools",
+        "passed": true
+      },
+      {
+        "name": "frozen APF starts with no installed Python or Git on PATH",
+        "passed": true
+      },
+      {
+        "name": "frozen APF provenance matches released upstream",
+        "passed": true
+      },
+      {
+        "name": "actual bundled APF responds to ten-aircraft protocol 2",
+        "passed": true
+      },
+      {
+        "name": "bounded APF test exits cleanly",
+        "passed": true
+      },
+      {
+        "name": "fresh standalone Unreal storage result",
+        "passed": true
+      },
+      {
+        "name": "fresh keyboard startup and profile safety",
+        "passed": true
+      },
+      {
+        "name": "fresh writes only to explicit per-user data path",
+        "passed": true
+      },
+      {
+        "name": "first use never invents a controller profile",
+        "passed": true
+      },
+      {
+        "name": "package remains free of generated pilot data after execution",
+        "passed": true
+      }
+    ],
+    "raw_result_path": "Saved/Verification/portable-bridge-r1/result.json",
+    "raw_result_sha256": "6edfc1b13e28fc84134be232bf9d2a9580deb8ae92582a8e8d1496da96c0ff78"
+  },
+  "max_coast_velocity_error_mps": 0,
+  "max_coast_angular_velocity_error_radps": 0,
+  "local_qa_archive": {
+    "filename": "ImperialWings-Windows-v0.7.5-dev-bridge-r1.zip",
+    "bytes": 374825451,
+    "sha256": "d1afd549e8ffc622d07692e1dfa03f263905588049e2d9a2d6516318bf4235f9",
+    "published_as_release": false
+  },
+  "real_calibration_unchanged": true,
+  "test_source_sha256": {
+    "solver_bridge_analysis.py": "c1f312570e1410f529fe79001fe9a92aa5ad710d1cfb017c90af2d6871a243f9",
+    "run-solver-bridge.py": "c234a0668e0362a78654c300f144cf0f9b722b8ef5fc33c90bd2d0bd02696784"
+  },
+  "limitations": [
+    "Only the explicit diagnostic drives a separate centered 2kg sphere; production drone PID/forces/settings remain unchanged.",
+    "Variable synchronous solver steps, not fixed120 flight.",
+    "Command expiry uses deliberately old simulation timestamps, not wall-clock freeze or USB latency.",
+    "Displaced COM, live reset/destruction/rebinding, async lifecycle, missing/future input, drone motor/power/sensor migration remain unverified here.",
+    "No physical controller input, GPU rendering/performance, new hardware, or other physical PC validation."
+  ]
+}

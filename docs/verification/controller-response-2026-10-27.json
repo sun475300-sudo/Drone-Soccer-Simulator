@@ -1,0 +1,2140 @@
+{
+  "date_kst": "2026-10-27",
+  "version": "0.7.6-dev",
+  "branch": "codex/pilot-feedback",
+  "source_sha256": "c7a12551fe7381f834c09ba22f753d0964f5ff191732e9149e9eeb7fab7cdbf5",
+  "input_count": 132,
+  "build_commit_note": "Test binaries embed parent 89b3e52939c1d9def2a08a2df18ec99a9cf4653f with source_dirty=true; source hash is the content identity, not a post-publication commit claim.",
+  "unit_tests": {
+    "pilot_response": {
+      "checks": 4881,
+      "failures": 0
+    },
+    "radio_calibration": {
+      "checks": 205,
+      "failures": 0
+    }
+  },
+  "local_qa_zip": {
+    "file": "ImperialWings-Windows-v0.7.6-dev-controls-r3.zip",
+    "bytes": 374833197,
+    "sha256": "2d1ebea61c69759cc768e3d45d3f0e72f1a22489d2876021e904055e87e0e54c",
+    "public_release": false
+  },
+  "failures_and_corrections": [
+    {
+      "failure": "First runtime test required positive Roll after 0.6 seconds. ANGLE recovery legitimately commanded negative Roll.",
+      "fix": "Measure absolute rate on every flight tick, require reaching the selected limit and never exceeding it."
+    },
+    {
+      "failure": "R1 existing real-profile storage integration could find the saved profile but could not activate its physical device; ok=false.",
+      "status": "Hardware integration remains pending; not waived as a pass. New-user package checks are a separate 13-check suite."
+    },
+    {
+      "failure": "UE FileManager::Move pre-deletes destination, risking loss on a failed replacement.",
+      "fix": "Use Windows same-volume replace without pre-deletion; verify both successful overwrite and an actual sharing-lock failure preserves original bytes and live response."
+    },
+    {
+      "failure": "One Shipping test started before r3 archive completed and was rejected for build mismatch.",
+      "fix": "Waited for packaging completion and repeated all relevant suites on matching r3 binary."
+    }
+  ],
+  "limits": [
+    "No physical HID button learning, USB flight, cable loss or different physical PC verified.",
+    "Current WinMM backend: six axes, 32 buttons; not all USB devices.",
+    "AI difficulty/3-4 opponents, Topgun S course/records/online rooms are pending.",
+    "Other feedback items and CTL-13 full migration remain pending."
+  ],
+  "reports": {
+    "editor_response": {
+      "path": "Saved/Verification/pilot-response-20261027-131235-1d83c75a/results.json",
+      "sha256": "faf6fb18841d0b6578184b4f9a960b880fe108673e0dd08fe38314cc8dfdb51f",
+      "result": {
+        "ok": true,
+        "build": {
+          "version": "0.7.6-dev",
+          "source_commit": "89b3e52939c1d9def2a08a2df18ec99a9cf4653f",
+          "source_dirty": true,
+          "source_sha256": "c7a12551fe7381f834c09ba22f753d0964f5ff191732e9149e9eeb7fab7cdbf5",
+          "input_count": 132
+        },
+        "cases": [
+          {
+            "case": "fresh",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "cancel does not change response or save",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "HUD saves response and switch mode",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "raw calibration never created",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "out of range settings rejected",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "unknown controller binding rejected",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "explicit zero-throttle ARM",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "armed editing refused",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "actual yaw target reflects Expo and selected rate",
+                "ok": true,
+                "value": 84.00000000000003
+              },
+              {
+                "check": "actual roll target reaches and obeys selected ANGLE rate throughout flight",
+                "ok": true,
+                "value": 29.999999165173968
+              },
+              {
+                "check": "real motor forces present",
+                "ok": true,
+                "value": 11.55058479309082
+              },
+              {
+                "check": "ANGLE tilt limit retained",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "raw throttle unmodified",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131235-1d83c75a/fresh/result.json",
+            "result_sha256": "79070ba11ad90b5a7b6d1cf6d0750aeaf961778961e1022fdbbb17296c22b783"
+          },
+          {
+            "case": "reload",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "raw calibration never created",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "out of range settings rejected",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "unknown controller binding rejected",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "explicit zero-throttle ARM",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "armed editing refused",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "actual yaw target reflects Expo and selected rate",
+                "ok": true,
+                "value": 84.00000000000003
+              },
+              {
+                "check": "actual roll target reaches and obeys selected ANGLE rate throughout flight",
+                "ok": true,
+                "value": 29.999999165173968
+              },
+              {
+                "check": "real motor forces present",
+                "ok": true,
+                "value": 11.550630569458008
+              },
+              {
+                "check": "ANGLE tilt limit retained",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "raw throttle unmodified",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131235-1d83c75a/reload/result.json",
+            "result_sha256": "db2a5fd4980473fcaeb1eb62c46ddb2991ab79db04d1ed5efd47ac83b79e553b"
+          },
+          {
+            "case": "replace",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "existing settings replacement result",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "live response changes only on successful replacement",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131235-1d83c75a/replace/result.json",
+            "result_sha256": "914f2202c061874895b1b00e91b01d8648a88d11e36eccb331779c1f9ea4a34e"
+          },
+          {
+            "case": "replacefail",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "existing settings replacement result",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "live response changes only on successful replacement",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131235-1d83c75a/replacefail/result.json",
+            "result_sha256": "2cd3cec6ea679136434b750bd889a8525bc6b755c80ebe2914a2c369b973e24a"
+          },
+          {
+            "case": "unsupported_version",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131235-1d83c75a/unsupported_version/result.json",
+            "result_sha256": "8c059d02ec88e8baa7382e48c1b4e50be57035c34afe17f474ae2a6a108526a3"
+          },
+          {
+            "case": "string_expo",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131235-1d83c75a/string_expo/result.json",
+            "result_sha256": "8c059d02ec88e8baa7382e48c1b4e50be57035c34afe17f474ae2a6a108526a3"
+          },
+          {
+            "case": "invalid_rate",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131235-1d83c75a/invalid_rate/result.json",
+            "result_sha256": "8c059d02ec88e8baa7382e48c1b4e50be57035c34afe17f474ae2a6a108526a3"
+          },
+          {
+            "case": "invalid_expo",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131235-1d83c75a/invalid_expo/result.json",
+            "result_sha256": "8c059d02ec88e8baa7382e48c1b4e50be57035c34afe17f474ae2a6a108526a3"
+          },
+          {
+            "case": "fractional_button",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131235-1d83c75a/fractional_button/result.json",
+            "result_sha256": "8c059d02ec88e8baa7382e48c1b4e50be57035c34afe17f474ae2a6a108526a3"
+          },
+          {
+            "case": "unbound_button",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131235-1d83c75a/unbound_button/result.json",
+            "result_sha256": "8c059d02ec88e8baa7382e48c1b4e50be57035c34afe17f474ae2a6a108526a3"
+          },
+          {
+            "case": "bad_bool",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131235-1d83c75a/bad_bool/result.json",
+            "result_sha256": "8c059d02ec88e8baa7382e48c1b4e50be57035c34afe17f474ae2a6a108526a3"
+          },
+          {
+            "case": "missing_axis",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131235-1d83c75a/missing_axis/result.json",
+            "result_sha256": "8c059d02ec88e8baa7382e48c1b4e50be57035c34afe17f474ae2a6a108526a3"
+          },
+          {
+            "case": "save_failure",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "failed write leaves live response unchanged",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131235-1d83c75a/save_failure/result.json",
+            "result_sha256": "18ed16c891269b21f81ed6e891ee7dded79f051e6a0e7c6e7a13e5879b2152b4"
+          }
+        ],
+        "scope": "Synthetic native menu/settings and actual ANGLE target/motor force checks, no real HID button or calibration."
+      }
+    },
+    "shipping_response": {
+      "path": "Saved/Verification/pilot-response-20261027-131301-d26c9de3/results.json",
+      "sha256": "8df3f313754f9aa25aea328d959000e27d589f81013743d7a122d085c53af9bf",
+      "result": {
+        "ok": true,
+        "build": {
+          "version": "0.7.6-dev",
+          "source_commit": "89b3e52939c1d9def2a08a2df18ec99a9cf4653f",
+          "source_dirty": true,
+          "source_sha256": "c7a12551fe7381f834c09ba22f753d0964f5ff191732e9149e9eeb7fab7cdbf5",
+          "input_count": 132
+        },
+        "cases": [
+          {
+            "case": "fresh",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "cancel does not change response or save",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "HUD saves response and switch mode",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "raw calibration never created",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "out of range settings rejected",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "unknown controller binding rejected",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "explicit zero-throttle ARM",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "armed editing refused",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "actual yaw target reflects Expo and selected rate",
+                "ok": true,
+                "value": 84.00000000000001
+              },
+              {
+                "check": "actual roll target reaches and obeys selected ANGLE rate throughout flight",
+                "ok": true,
+                "value": 29.999999165173968
+              },
+              {
+                "check": "real motor forces present",
+                "ok": true,
+                "value": 11.550633430480957
+              },
+              {
+                "check": "ANGLE tilt limit retained",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "raw throttle unmodified",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131301-d26c9de3/fresh/result.json",
+            "result_sha256": "c63896be6babe992e64e25137ae6f4ccca72e6d6e679a79f849fa9c5e9333c06"
+          },
+          {
+            "case": "reload",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "raw calibration never created",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "out of range settings rejected",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "unknown controller binding rejected",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "explicit zero-throttle ARM",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "armed editing refused",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "actual yaw target reflects Expo and selected rate",
+                "ok": true,
+                "value": 84.00000000000001
+              },
+              {
+                "check": "actual roll target reaches and obeys selected ANGLE rate throughout flight",
+                "ok": true,
+                "value": 29.999999165173968
+              },
+              {
+                "check": "real motor forces present",
+                "ok": true,
+                "value": 11.550633430480957
+              },
+              {
+                "check": "ANGLE tilt limit retained",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "raw throttle unmodified",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131301-d26c9de3/reload/result.json",
+            "result_sha256": "c3aaf70c078b2f78645492b93b0686bc37c55389d9e5c310d5708f081ded51ce"
+          },
+          {
+            "case": "replace",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "existing settings replacement result",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "live response changes only on successful replacement",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131301-d26c9de3/replace/result.json",
+            "result_sha256": "f16531f0f0df732932c560db5741e8f22f0eec32339c2ebf7d553f204a18e21b"
+          },
+          {
+            "case": "replacefail",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "existing settings replacement result",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "live response changes only on successful replacement",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131301-d26c9de3/replacefail/result.json",
+            "result_sha256": "4493787fbf9c3947d1366ebf7406fcf745cc8a1c2dceef8a6d19be5aa3dd6d26"
+          },
+          {
+            "case": "unsupported_version",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131301-d26c9de3/unsupported_version/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "string_expo",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131301-d26c9de3/string_expo/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "invalid_rate",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131301-d26c9de3/invalid_rate/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "invalid_expo",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131301-d26c9de3/invalid_expo/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "fractional_button",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131301-d26c9de3/fractional_button/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "unbound_button",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131301-d26c9de3/unbound_button/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "bad_bool",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131301-d26c9de3/bad_bool/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "missing_axis",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131301-d26c9de3/missing_axis/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "save_failure",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "failed write leaves live response unchanged",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131301-d26c9de3/save_failure/result.json",
+            "result_sha256": "322a73b6562f562cddd32d7b143f1e2a33e89759d8abffc5c60ad672f988d688"
+          }
+        ],
+        "scope": "Synthetic native menu/settings and actual ANGLE target/motor force checks, no real HID button or calibration."
+      }
+    },
+    "relocated_response": {
+      "path": "Saved/Verification/pilot-response-20261027-131412-bf44d716/results.json",
+      "sha256": "63f3214a56da77aa62fa00ed3c0d1e57751aee98f4da0dadc1cf78b0df2f0e4d",
+      "result": {
+        "ok": true,
+        "build": {
+          "version": "0.7.6-dev",
+          "source_commit": "89b3e52939c1d9def2a08a2df18ec99a9cf4653f",
+          "source_dirty": true,
+          "source_sha256": "c7a12551fe7381f834c09ba22f753d0964f5ff191732e9149e9eeb7fab7cdbf5",
+          "input_count": 132
+        },
+        "cases": [
+          {
+            "case": "fresh",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "cancel does not change response or save",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "HUD saves response and switch mode",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "raw calibration never created",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "out of range settings rejected",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "unknown controller binding rejected",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "explicit zero-throttle ARM",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "armed editing refused",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "actual yaw target reflects Expo and selected rate",
+                "ok": true,
+                "value": 84.00000000000001
+              },
+              {
+                "check": "actual roll target reaches and obeys selected ANGLE rate throughout flight",
+                "ok": true,
+                "value": 29.999999165173968
+              },
+              {
+                "check": "real motor forces present",
+                "ok": true,
+                "value": 11.550623893737793
+              },
+              {
+                "check": "ANGLE tilt limit retained",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "raw throttle unmodified",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131412-bf44d716/fresh/result.json",
+            "result_sha256": "15b8645f0c9c5a7a7dd0edc88356843f632fabb8626659752d449a38d3f54706"
+          },
+          {
+            "case": "reload",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "raw calibration never created",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "out of range settings rejected",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "unknown controller binding rejected",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "explicit zero-throttle ARM",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "armed editing refused",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "actual yaw target reflects Expo and selected rate",
+                "ok": true,
+                "value": 84.00000000000001
+              },
+              {
+                "check": "actual roll target reaches and obeys selected ANGLE rate throughout flight",
+                "ok": true,
+                "value": 29.999999165173968
+              },
+              {
+                "check": "real motor forces present",
+                "ok": true,
+                "value": 11.55063247680664
+              },
+              {
+                "check": "ANGLE tilt limit retained",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "raw throttle unmodified",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131412-bf44d716/reload/result.json",
+            "result_sha256": "f07177a0be74518e283326bf020a4dcdb4ed418ef708a4d5a6f62c94b9777d84"
+          },
+          {
+            "case": "replace",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "existing settings replacement result",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "live response changes only on successful replacement",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131412-bf44d716/replace/result.json",
+            "result_sha256": "f16531f0f0df732932c560db5741e8f22f0eec32339c2ebf7d553f204a18e21b"
+          },
+          {
+            "case": "replacefail",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "existing settings replacement result",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "live response changes only on successful replacement",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131412-bf44d716/replacefail/result.json",
+            "result_sha256": "4493787fbf9c3947d1366ebf7406fcf745cc8a1c2dceef8a6d19be5aa3dd6d26"
+          },
+          {
+            "case": "unsupported_version",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131412-bf44d716/unsupported_version/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "string_expo",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131412-bf44d716/string_expo/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "invalid_rate",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131412-bf44d716/invalid_rate/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "invalid_expo",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131412-bf44d716/invalid_expo/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "fractional_button",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131412-bf44d716/fractional_button/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "unbound_button",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131412-bf44d716/unbound_button/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "bad_bool",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131412-bf44d716/bad_bool/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "missing_axis",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131412-bf44d716/missing_axis/result.json",
+            "result_sha256": "bb141d345de751d7cf03bffd835161a34db8db4c6f0c2419743bbc623e2a8aa1"
+          },
+          {
+            "case": "save_failure",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "failed write leaves live response unchanged",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131412-bf44d716/save_failure/result.json",
+            "result_sha256": "322a73b6562f562cddd32d7b143f1e2a33e89759d8abffc5c60ad672f988d688"
+          }
+        ],
+        "scope": "Synthetic native menu/settings and actual ANGLE target/motor force checks, no real HID button or calibration."
+      }
+    },
+    "editor_input_safety": {
+      "path": "Saved/Verification/input-safety-20261027-131435-204/result.json",
+      "sha256": "642e29239fd7981ae849f4353b184d1893df61724d5fdbbdbaa11d53fdb2e5d5",
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "check": "fixture starts with a manual keyboard aircraft",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "explicit low-throttle ARM accepted",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "real engine bindings accumulated keyboard throttle",
+            "ok": true,
+            "actual": 0.1400126814842224
+          },
+          {
+            "check": "engine saw held roll key",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "viewport focus loss immediately disarms manual aircraft",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "viewport focus loss immediately clears stored throttle",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "viewport focus loss immediately clears motor demand",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "native radio remains disabled",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "old repeated keys cannot restore throttle",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "old repeated roll key stays released in engine",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "queued pre-interruption key press is rejected",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "GameAndUI always requests focus-loss key flushing",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "repeat cannot re-arm after focus loss",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "focus regain does not re-arm",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "fresh Space press re-arms at zero throttle",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "observer view preserves manual ARM",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "overview preserves manual ARM",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "opening radio menu disarms selected aircraft",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "menu typing cannot arm or add throttle",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "closing menu rejects old repeated throttle/ARM",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "focus loss preserves explicit practice autonomy",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "autonomous forces still run after focus loss",
+            "ok": true,
+            "actual": 9.83298110961914
+          },
+          {
+            "check": "second throttle setup reached engine bindings",
+            "ok": true,
+            "actual": 0.1050015538930893
+          },
+          {
+            "check": "aircraft selection clears held-input throttle on new aircraft",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "equipment inspection opened disarmed",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "equipment view blocks held flight keys",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "equipment exit rejects stale throttle/ARM repeats",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "reset setup accumulated keyboard throttle",
+            "ok": true,
+            "actual": 0.1050051599740982
+          },
+          {
+            "check": "Backspace reset clears pending throttle repeats",
+            "ok": true,
+            "actual": 0
+          }
+        ],
+        "scope": "explicit Unreal simulated keyboard events and real viewport/controller APIs; not physical keyboard, OS Alt-Tab or USB/HID input",
+        "build": {
+          "version": "0.7.6-dev",
+          "source_commit": "89b3e52939c1d9def2a08a2df18ec99a9cf4653f",
+          "source_dirty": true,
+          "source_sha256": "c7a12551fe7381f834c09ba22f753d0964f5ff191732e9149e9eeb7fab7cdbf5",
+          "build_utc": "2026-10-27T13:11:33Z",
+          "target": "ImperialWingsSimulatorEditor"
+        }
+      }
+    },
+    "shipping_input_safety": {
+      "path": "Saved/Verification/input-safety-20261027-131331-841/result.json",
+      "sha256": "177726794e25dc5c30797a118a19be69ef8a84c11cc6f18491beba78303907ea",
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "check": "fixture starts with a manual keyboard aircraft",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "explicit low-throttle ARM accepted",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "real engine bindings accumulated keyboard throttle",
+            "ok": true,
+            "actual": 0.1400032788515091
+          },
+          {
+            "check": "engine saw held roll key",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "viewport focus loss immediately disarms manual aircraft",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "viewport focus loss immediately clears stored throttle",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "viewport focus loss immediately clears motor demand",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "native radio remains disabled",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "old repeated keys cannot restore throttle",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "old repeated roll key stays released in engine",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "queued pre-interruption key press is rejected",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "GameAndUI always requests focus-loss key flushing",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "repeat cannot re-arm after focus loss",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "focus regain does not re-arm",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "fresh Space press re-arms at zero throttle",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "observer view preserves manual ARM",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "overview preserves manual ARM",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "opening radio menu disarms selected aircraft",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "menu typing cannot arm or add throttle",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "closing menu rejects old repeated throttle/ARM",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "focus loss preserves explicit practice autonomy",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "autonomous forces still run after focus loss",
+            "ok": true,
+            "actual": 9.832846641540527
+          },
+          {
+            "check": "second throttle setup reached engine bindings",
+            "ok": true,
+            "actual": 0.10510356724262238
+          },
+          {
+            "check": "aircraft selection clears held-input throttle on new aircraft",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "equipment inspection opened disarmed",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "equipment view blocks held flight keys",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "equipment exit rejects stale throttle/ARM repeats",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "reset setup accumulated keyboard throttle",
+            "ok": true,
+            "actual": 0.10500146448612213
+          },
+          {
+            "check": "Backspace reset clears pending throttle repeats",
+            "ok": true,
+            "actual": 0
+          }
+        ],
+        "scope": "explicit Unreal simulated keyboard events and real viewport/controller APIs; not physical keyboard, OS Alt-Tab or USB/HID input",
+        "build": {
+          "version": "0.7.6-dev",
+          "source_commit": "89b3e52939c1d9def2a08a2df18ec99a9cf4653f",
+          "source_dirty": true,
+          "source_sha256": "c7a12551fe7381f834c09ba22f753d0964f5ff191732e9149e9eeb7fab7cdbf5",
+          "build_utc": "2026-10-27T13:11:42Z",
+          "target": "ImperialWingsSimulator"
+        }
+      }
+    },
+    "editor_mode_ui": {
+      "path": "Saved/Verification/radio-modes-20261027-131449-469-e0ea1654/result.json",
+      "sha256": "e6510fb58f90fa94080895a4ff35b61255b025ba5c50b665b81b0e98378a4360",
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "check": "Mode 1 JSON round trip",
+            "ok": true
+          },
+          {
+            "check": "Mode 2 JSON round trip",
+            "ok": true
+          },
+          {
+            "check": "legacy profile without stick_mode loads as Mode 2",
+            "ok": true
+          },
+          {
+            "check": "reject invalid metadata {\"stick_mode\":0} without changing output",
+            "ok": true
+          },
+          {
+            "check": "reject invalid metadata {\"stick_mode\":3} without changing output",
+            "ok": true
+          },
+          {
+            "check": "reject invalid metadata {\"stick_mode\":1.5} without changing output",
+            "ok": true
+          },
+          {
+            "check": "reject invalid metadata {\"stick_mode\":\"1\"} without changing output",
+            "ok": true
+          },
+          {
+            "check": "reject invalid metadata {\"stick_mode\":null} without changing output",
+            "ok": true
+          },
+          {
+            "check": "reject invalid metadata {\"stick_mode\":true} without changing output",
+            "ok": true
+          },
+          {
+            "check": "new user defaults to Mode 2 and disabled USB",
+            "ok": true
+          },
+          {
+            "check": "fixture starts with low throttle ARM",
+            "ok": true
+          },
+          {
+            "check": "opening settings disarms selected aircraft",
+            "ok": true
+          },
+          {
+            "check": "Mode 1 HUD button selects Mode 1",
+            "ok": true
+          },
+          {
+            "check": "mode choice cannot enable USB or arm",
+            "ok": true
+          },
+          {
+            "check": "unsupported mode rejected",
+            "ok": true
+          },
+          {
+            "check": "mode choice does not invent a profile",
+            "ok": true
+          },
+          {
+            "check": "chosen layout survives panel close and reopen",
+            "ok": true
+          },
+          {
+            "check": "Mode 2 HUD button selects Mode 2",
+            "ok": true
+          },
+          {
+            "check": "switching back leaves USB disabled and aircraft disarmed",
+            "ok": true
+          },
+          {
+            "check": "UI test never writes a calibration file",
+            "ok": true
+          }
+        ],
+        "build": {
+          "version": "0.7.6-dev",
+          "source_commit": "89b3e52939c1d9def2a08a2df18ec99a9cf4653f",
+          "source_dirty": true,
+          "source_sha256": "c7a12551fe7381f834c09ba22f753d0964f5ff191732e9149e9eeb7fab7cdbf5",
+          "build_utc": "2026-10-27T13:11:33Z",
+          "target": "ImperialWingsSimulatorEditor"
+        },
+        "scope": "explicit HUD button APIs and actual JSON mode codec in isolated user data; no device selected, no HID injection, no physical-controller verification"
+      }
+    },
+    "shipping_mode_ui": {
+      "path": "Saved/Verification/radio-modes-20261027-131339-175-d51153ee/result.json",
+      "sha256": "6fc46fae83f4272be58d9561a3433e26b2822e55e8691cfca1eae8c9419e868a",
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "check": "Mode 1 JSON round trip",
+            "ok": true
+          },
+          {
+            "check": "Mode 2 JSON round trip",
+            "ok": true
+          },
+          {
+            "check": "legacy profile without stick_mode loads as Mode 2",
+            "ok": true
+          },
+          {
+            "check": "reject invalid metadata {\"stick_mode\":0} without changing output",
+            "ok": true
+          },
+          {
+            "check": "reject invalid metadata {\"stick_mode\":3} without changing output",
+            "ok": true
+          },
+          {
+            "check": "reject invalid metadata {\"stick_mode\":1.5} without changing output",
+            "ok": true
+          },
+          {
+            "check": "reject invalid metadata {\"stick_mode\":\"1\"} without changing output",
+            "ok": true
+          },
+          {
+            "check": "reject invalid metadata {\"stick_mode\":null} without changing output",
+            "ok": true
+          },
+          {
+            "check": "reject invalid metadata {\"stick_mode\":true} without changing output",
+            "ok": true
+          },
+          {
+            "check": "new user defaults to Mode 2 and disabled USB",
+            "ok": true
+          },
+          {
+            "check": "fixture starts with low throttle ARM",
+            "ok": true
+          },
+          {
+            "check": "opening settings disarms selected aircraft",
+            "ok": true
+          },
+          {
+            "check": "Mode 1 HUD button selects Mode 1",
+            "ok": true
+          },
+          {
+            "check": "mode choice cannot enable USB or arm",
+            "ok": true
+          },
+          {
+            "check": "unsupported mode rejected",
+            "ok": true
+          },
+          {
+            "check": "mode choice does not invent a profile",
+            "ok": true
+          },
+          {
+            "check": "chosen layout survives panel close and reopen",
+            "ok": true
+          },
+          {
+            "check": "Mode 2 HUD button selects Mode 2",
+            "ok": true
+          },
+          {
+            "check": "switching back leaves USB disabled and aircraft disarmed",
+            "ok": true
+          },
+          {
+            "check": "UI test never writes a calibration file",
+            "ok": true
+          }
+        ],
+        "build": {
+          "version": "0.7.6-dev",
+          "source_commit": "89b3e52939c1d9def2a08a2df18ec99a9cf4653f",
+          "source_dirty": true,
+          "source_sha256": "c7a12551fe7381f834c09ba22f753d0964f5ff191732e9149e9eeb7fab7cdbf5",
+          "build_utc": "2026-10-27T13:11:42Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "scope": "explicit HUD button APIs and actual JSON mode codec in isolated user data; no device selected, no HID injection, no physical-controller verification"
+      }
+    },
+    "shipping_gpu_capture": {
+      "path": "Saved/Verification/pilot-response-20261027-131351-64e1427d/results.json",
+      "sha256": "3a33e74a82621332c45811f5c12e0156a05c5f20f7d0b16cbd9f2a5f57a2b4fe",
+      "result": {
+        "ok": true,
+        "build": {
+          "version": "0.7.6-dev",
+          "source_commit": "89b3e52939c1d9def2a08a2df18ec99a9cf4653f",
+          "source_dirty": true,
+          "source_sha256": "c7a12551fe7381f834c09ba22f753d0964f5ff191732e9149e9eeb7fab7cdbf5",
+          "input_count": 132
+        },
+        "cases": [
+          {
+            "case": "fresh",
+            "checks": [
+              {
+                "check": "cold start USB disabled and disarmed",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "restored or default response",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "ARM unassigned on isolated profile",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "cancel does not change response or save",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "HUD saves response and switch mode",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "raw calibration never created",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "out of range settings rejected",
+                "ok": true,
+                "value": 0
+              },
+              {
+                "check": "unknown controller binding rejected",
+                "ok": true,
+                "value": 0
+              }
+            ],
+            "result_path": "Saved/Verification/pilot-response-20261027-131351-64e1427d/fresh/result.json",
+            "result_sha256": "7d3ff0cde255c7fbae2bcb40b17ad44bac29b85b8965a25d325cf48d102c5df0"
+          }
+        ],
+        "scope": "Synthetic native menu/settings and actual ANGLE target/motor force checks, no real HID button or calibration."
+      }
+    },
+    "relocated_portable": {
+      "path": "Saved/Verification/portable-controls-r3/result.json",
+      "sha256": "6edfc1b13e28fc84134be232bf9d2a9580deb8ae92582a8e8d1496da96c0ff78",
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "name": "all released file hashes match",
+            "passed": true
+          },
+          {
+            "name": "standalone feedback form exists, is checksummed and matches reviewed source",
+            "passed": true
+          },
+          {
+            "name": "no pilot settings or generated Saved directory",
+            "passed": true
+          },
+          {
+            "name": "native launcher resolves relocated files without developer tools",
+            "passed": true
+          },
+          {
+            "name": "frozen APF starts with no installed Python or Git on PATH",
+            "passed": true
+          },
+          {
+            "name": "frozen APF provenance matches released upstream",
+            "passed": true
+          },
+          {
+            "name": "actual bundled APF responds to ten-aircraft protocol 2",
+            "passed": true
+          },
+          {
+            "name": "bounded APF test exits cleanly",
+            "passed": true
+          },
+          {
+            "name": "fresh standalone Unreal storage result",
+            "passed": true
+          },
+          {
+            "name": "fresh keyboard startup and profile safety",
+            "passed": true
+          },
+          {
+            "name": "fresh writes only to explicit per-user data path",
+            "passed": true
+          },
+          {
+            "name": "first use never invents a controller profile",
+            "passed": true
+          },
+          {
+            "name": "package remains free of generated pilot data after execution",
+            "passed": true
+          }
+        ]
+      }
+    },
+    "angle_20": {
+      "path": "Saved/Verification/angle-20261027-131344-611/angle-20.json",
+      "sha256": "0e2835545e3b4b10b361ed9bedced309eb307ed218ec5c4118c6790ecfc00bac",
+      "result": {
+        "ok": true,
+        "drones": 10,
+        "initial_self_level": true,
+        "stick_tilt_peak_deg": 16.645713806152344,
+        "overall_tilt_peak_deg": 30.674293518066406,
+        "released_worst_tilt_deg": 0.6090840101242065,
+        "released_self_level": true,
+        "input_source": "explicit non-USB verification fixture; vertical compensation isolates angle control",
+        "build": {
+          "version": "0.7.6-dev",
+          "source_commit": "89b3e52939c1d9def2a08a2df18ec99a9cf4653f",
+          "source_dirty": true,
+          "source_sha256": "c7a12551fe7381f834c09ba22f753d0964f5ff191732e9149e9eeb7fab7cdbf5",
+          "build_utc": "2026-10-27T13:11:42Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "actual_min_game_dt_s": 0.05000000074505806,
+        "actual_max_game_dt_s": 0.05000000074505806,
+        "physics_defaults": {
+          "model": "STRIKER V3 reference-inspired, experimental coefficients",
+          "measured_airframe_data": false,
+          "motor_pwm_exponent": 2,
+          "motor_response_s": 0.035,
+          "battery_capacity_ah": 1.5,
+          "battery_internal_resistance_ohm": 0.035,
+          "battery_maximum_current_a": 80,
+          "drag_effective_cd_area_m2": 0.015,
+          "sensor_latency_s": 0.005,
+          "gyro_noise_rad_s": 0.0005,
+          "wake_coupling": 0.18,
+          "net_stiffness_n_per_m": 300,
+          "net_damping_ns_per_m": 22,
+          "guard_energy_capacity_j": 80,
+          "guard_damage_threshold_j": 0.6,
+          "goal_mass_kg": 12.5,
+          "goal_suspension_angular_damping": 1.4
+        }
+      }
+    },
+    "angle_60": {
+      "path": "Saved/Verification/angle-20261027-131344-611/angle-60.json",
+      "sha256": "1eb432d364738eb6356ec58d7c3f64515c2d869286142bf222d67d5b28280500",
+      "result": {
+        "ok": true,
+        "drones": 10,
+        "initial_self_level": true,
+        "stick_tilt_peak_deg": 17.499120712280273,
+        "overall_tilt_peak_deg": 24.81421661376953,
+        "released_worst_tilt_deg": 0.20486728847026825,
+        "released_self_level": true,
+        "input_source": "explicit non-USB verification fixture; vertical compensation isolates angle control",
+        "build": {
+          "version": "0.7.6-dev",
+          "source_commit": "89b3e52939c1d9def2a08a2df18ec99a9cf4653f",
+          "source_dirty": true,
+          "source_sha256": "c7a12551fe7381f834c09ba22f753d0964f5ff191732e9149e9eeb7fab7cdbf5",
+          "build_utc": "2026-10-27T13:11:42Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "actual_min_game_dt_s": 0.01666666753590107,
+        "actual_max_game_dt_s": 0.01666666753590107,
+        "physics_defaults": {
+          "model": "STRIKER V3 reference-inspired, experimental coefficients",
+          "measured_airframe_data": false,
+          "motor_pwm_exponent": 2,
+          "motor_response_s": 0.035,
+          "battery_capacity_ah": 1.5,
+          "battery_internal_resistance_ohm": 0.035,
+          "battery_maximum_current_a": 80,
+          "drag_effective_cd_area_m2": 0.015,
+          "sensor_latency_s": 0.005,
+          "gyro_noise_rad_s": 0.0005,
+          "wake_coupling": 0.18,
+          "net_stiffness_n_per_m": 300,
+          "net_damping_ns_per_m": 22,
+          "guard_energy_capacity_j": 80,
+          "guard_damage_threshold_j": 0.6,
+          "goal_mass_kg": 12.5,
+          "goal_suspension_angular_damping": 1.4
+        }
+      }
+    },
+    "angle_240": {
+      "path": "Saved/Verification/angle-20261027-131344-611/angle-240.json",
+      "sha256": "2857b74e7f035dd3bc37a8ae8d2de1e80e3c4dd0e0734c22255cadbfeebe6d1f",
+      "result": {
+        "ok": true,
+        "drones": 10,
+        "initial_self_level": true,
+        "stick_tilt_peak_deg": 17.728303909301758,
+        "overall_tilt_peak_deg": 24.81421661376953,
+        "released_worst_tilt_deg": 0.2312590628862381,
+        "released_self_level": true,
+        "input_source": "explicit non-USB verification fixture; vertical compensation isolates angle control",
+        "build": {
+          "version": "0.7.6-dev",
+          "source_commit": "89b3e52939c1d9def2a08a2df18ec99a9cf4653f",
+          "source_dirty": true,
+          "source_sha256": "c7a12551fe7381f834c09ba22f753d0964f5ff191732e9149e9eeb7fab7cdbf5",
+          "build_utc": "2026-10-27T13:11:42Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "actual_min_game_dt_s": 0.004166666883975267,
+        "actual_max_game_dt_s": 0.004166666883975267,
+        "physics_defaults": {
+          "model": "STRIKER V3 reference-inspired, experimental coefficients",
+          "measured_airframe_data": false,
+          "motor_pwm_exponent": 2,
+          "motor_response_s": 0.035,
+          "battery_capacity_ah": 1.5,
+          "battery_internal_resistance_ohm": 0.035,
+          "battery_maximum_current_a": 80,
+          "drag_effective_cd_area_m2": 0.015,
+          "sensor_latency_s": 0.005,
+          "gyro_noise_rad_s": 0.0005,
+          "wake_coupling": 0.18,
+          "net_stiffness_n_per_m": 300,
+          "net_damping_ns_per_m": 22,
+          "guard_energy_capacity_j": 80,
+          "guard_damage_threshold_j": 0.6,
+          "goal_mass_kg": 12.5,
+          "goal_suspension_angular_damping": 1.4
+        }
+      }
+    }
+  }
+}

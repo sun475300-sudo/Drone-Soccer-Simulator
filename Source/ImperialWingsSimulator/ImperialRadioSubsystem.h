@@ -4,6 +4,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Tickable.h"
 #include "RadioCalibration.h"
+#include "PilotResponse.h"
 #include "ImperialRadioSubsystem.generated.h"
 
 /** The WinMM-reported identity is retained verbatim. It does not certify a brand or USB serial. */
@@ -52,6 +53,11 @@ public:
     bool IsPrecisionThrottleEnabled() const { return bPrecisionThrottle; }
     bool SetPrecisionThrottleEnabled(bool bEnable);
     float ApplyManualThrottle(float Input) const;
+    const ImperialInput::PilotResponse& GetPilotResponse() const { return Response; }
+    bool SavePilotResponse(const ImperialInput::PilotResponse& Candidate,int32 ArmButton,const FString& ArmDevice,bool bToggle);
+    int32 GetArmButton() const { return ArmingButton; }
+    const FString& GetArmDevice() const { return ArmingDevice; }
+    bool IsArmToggle() const { return bArmingToggle; }
     ImperialRadio::StickMode GetStickMode() const { return SelectedMode; }
     bool SetStickMode(ImperialRadio::StickMode Mode);
     bool IsCalibrating() const { return bCalibrationActive || Guided.Active(); }
@@ -104,6 +110,10 @@ private:
     ImperialRadio::StickMode SelectedMode = ImperialRadio::StickMode::Mode2;
     bool bStickModeChosen = false;
     bool bPrecisionThrottle = false;
+    ImperialInput::PilotResponse Response;
+    int32 ArmingButton=INDEX_NONE;
+    FString ArmingDevice;
+    bool bArmingToggle=true;
     ImperialRadio::Capture RangeCapture;
     ImperialRadio::GuidedCapture Guided;
     bool bConnected = false;
@@ -126,4 +136,5 @@ private:
     bool WriteProfile();
     FString ProfilePath() const;
     void LoadPilotControls();
+    void LoadPilotResponse();
 };

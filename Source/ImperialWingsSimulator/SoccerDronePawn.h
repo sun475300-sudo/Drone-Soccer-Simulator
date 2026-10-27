@@ -107,6 +107,12 @@ public:
     void SetWakeSources(const TArray<FVector>& PositionsM,const TArray<float>& ThrustsN);
     float GetBatteryPercent() const { return static_cast<float>(BatteryState.Soc*100.); }
     float GetBatteryVoltage() const { return static_cast<float>(BatteryState.VoltageV); }
+    double GetBatterySoc() const { return BatteryState.Soc; }
+    double GetBatteryVoltageV() const { return BatteryState.VoltageV; }
+    double GetBatteryCapacityAh() const { return PhysicalParams.Battery.CapacityAh; }
+    bool IsBatteryModelEnabled() const { return bBatteryModel; }
+    uint64 GetBatteryResetEpoch() const { return BatteryResetEpoch; }
+    uint64 GetPhysicsStepSequence() const { return PhysicsStepSequence; }
     double GetFlightModelSeconds() const { return FlightModelSeconds; }
     double GetSensorModelSeconds() const { return SensorElapsedSeconds; }
     double GetBatteryConsumedAh() const { return BatteryState.ConsumedAh; }
@@ -128,6 +134,7 @@ public:
     FString GetFlightModeName() const { return TEXT("ANGLE"); }
     float GetTiltDegrees() const;
     float GetAngleLimitDegrees() const { return MaximumTiltDegrees; }
+    FVector GetManualTargetRateDegrees() const { return LastManualTargetRateDegrees; }
     /** Explicit in-engine verification fixture; unavailable without its test flag. */
     void SetAngleVerificationInput(FVector Stick, float Throttle);
 
@@ -218,6 +225,7 @@ protected:
     bool bInvertThrottle = false;
 
 private:
+    FVector LastManualTargetRateDegrees=FVector::ZeroVector;
     bool bAngleVerificationInput=false;
     FVector AngleVerificationStick=FVector::ZeroVector;
     float AngleVerificationThrottle=0;
@@ -286,6 +294,8 @@ private:
     float AutonomousHeading = 0.0f;
     float RotorAngle = 0.0f;
     double FlightModelSeconds = 0;
+    uint64 BatteryResetEpoch = 0;
+    uint64 PhysicsStepSequence = 0;
     double SensorElapsedSeconds = 0;
     float PreviousPhysicsSeconds = 0;
     void PhysicsStep(FPhysScene_Chaos* Scene,float Dt);

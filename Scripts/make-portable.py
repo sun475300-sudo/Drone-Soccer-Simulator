@@ -91,7 +91,7 @@ def make(args):
                   portable_bridge=True,private_profiles_included=False,feedback_form=feedback_form)
     (output/'release-manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
     files=sorted(p for p in output.rglob('*') if p.is_file())
-    if any(p.name.casefold() in {'radioprofile.json','pilotcontrols.json'} or 'Saved' in p.relative_to(output).parts for p in files):
+    if any(p.name.casefold() in {'radioprofile.json','pilotcontrols.json','pilotresponse.json'} or 'Saved' in p.relative_to(output).parts for p in files):
         raise ValueError('Private/generated user data found in distribution')
     (output/'SHA256SUMS.txt').write_text(''.join(digest(p)+'  '+p.relative_to(output).as_posix()+'\n' for p in files),encoding='utf-8')
     archive=Path(str(output)+'.zip')

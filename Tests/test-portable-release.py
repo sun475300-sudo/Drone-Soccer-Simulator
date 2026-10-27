@@ -50,7 +50,7 @@ def run(args):
     check('all released file hashes match',True)
     verify_feedback_form(root,manifest,args.feedback_source.resolve(),hashed_paths)
     check('standalone feedback form exists, is checksummed and matches reviewed source',True)
-    check('no pilot settings or generated Saved directory',not any(p.name.casefold() in {'radioprofile.json','pilotcontrols.json'} or p.name=='Saved' for p in root.rglob('*')))
+    check('no pilot settings or generated Saved directory',not any(p.name.casefold() in {'radioprofile.json','pilotcontrols.json','pilotresponse.json'} or p.name=='Saved' for p in root.rglob('*')))
     inspection=output/'launcher-inspection.json'
     p=subprocess.run([str(root/'ImperialWingsLauncher.exe'),'--inspect',str(inspection)],env=clean,cwd=str(output),timeout=15)
     state=json.loads(inspection.read_text(encoding='utf-8-sig'))
@@ -95,7 +95,7 @@ def run(args):
     if args.real_profile:
         # Genuine existing local calibration, isolated QA only; never copied to the release.
         storage('existing-real-profile',args.real_profile.resolve())
-    check('package remains free of generated pilot data after execution',not any(p.name.casefold() in {'radioprofile.json','pilotcontrols.json'} or p.name=='Saved' for p in root.rglob('*')))
+    check('package remains free of generated pilot data after execution',not any(p.name.casefold() in {'radioprofile.json','pilotcontrols.json','pilotresponse.json'} or p.name=='Saved' for p in root.rglob('*')))
     print(str(output/'result.json'))
 
 if __name__=='__main__':

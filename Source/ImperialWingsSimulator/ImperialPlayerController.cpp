@@ -40,6 +40,7 @@ void AImperialPlayerController::FlushPilotContextKeys()
 }
 void AImperialPlayerController::FlushPressedKeys()
 {
+    RadioArmGate.Reset();
     InputResetAtCycles=FPlatformTime::Cycles64();InputResetFrame=GFrameCounter;FreshFlightKeys.Empty();bHeadDragging=false;
     Super::FlushPressedKeys();
     if(auto* Drone=Cast<ASoccerDronePawn>(GetPawn()))Drone->ClearManualPilotInput(TEXT("INPUT RESET / DISARMED. RELEASE KEYS, THEN ARM AGAIN."));
@@ -106,6 +107,7 @@ void AImperialPlayerController::PlayerTick(float Dt)
     }
     const auto* HUD=Cast<AImperialHUD>(GetHUD());
     const bool RadioOpen=HUD&&HUD->IsRadioPanelOpen();
+    UpdateRadioArming();
     float X=0,Y=0;
     if((ActiveView==1||ActiveView==2||ActiveView==4||ActiveView==5)&&!RadioOpen&&IsInputKeyDown(EKeys::RightMouseButton)&&GetMousePosition(X,Y))
     {
@@ -134,6 +136,20 @@ void AImperialPlayerController::PlayerTick(float Dt)
     // View 2 is an external training observer, even if legacy pawn camera input is pressed.
     if(ActiveView==2&&Match&&Match->GetSelectedDrone())Match->GetSelectedDrone()->SetChaseView(true);
 }
+void AImperialPlayerController::UpdateRadioArming()
+{
+    auto* R=GetGameInstance()?GetGameInstance()->GetSubsystem<UImperialRadioSubsystem>():nullptr;
+    auto* D=Cast<ASoccerDronePawn>(GetPawn());const auto* Device=R?R->GetSelectedDevice():nullptr;
+    const int32 Button=R?R->GetArmButton():INDEX_NONE;
+    const bool Valid=R&&D&&Device&&R->IsEnabled()&&Button>=0&&Button<FMath::Min(32,Device->ButtonCount)&&
+        R->GetArmDevice()==Device->Identity&&!HasRadioModal()&&!IsReadOnlyView()&&!IsEquipmentInspection()&&
+        !IsInputResetThisFrame()&&!D->IsAutonomousEnabled();
+    const bool Pressed=Valid&&(R->GetButtons()&(uint32(1)<<Button))!=0;
+    const auto Request=RadioArmGate.Step(Valid,Pressed,R?R->IsArmToggle():true,D&&D->IsArmed(),R?R->GetThrottle():1);
+    if(Request==ImperialInput::ArmRequest::Disarm&&D)D->SetArmed(false);
+    else if(Request==ImperialInput::ArmRequest::Arm&&D)D->SetArmed(true); // Existing low-throttle/match/view gates still apply.
+}
+
 void AImperialPlayerController::UpdateRoleCameras()
 {
     if(ObserverCamera&&Match&&Match->GetSelectedDrone())

@@ -549,6 +549,7 @@ void ASoccerDronePawn::SetPowerVerificationConditions(double MaximumCurrentA,dou
 {
     if(!FParse::Param(FCommandLine::Get(),TEXT("ImperialPowerSmoke")))return;
     PhysicalParams.Battery.MaximumCurrentA=FMath::Clamp(MaximumCurrentA,0.,200.);
+    ++BatteryResetEpoch;
     BatteryState=ImperialPhysics::BatteryState{};BatteryState.Soc=FMath::Clamp(Soc,0.,1.);
     BatteryState.VoltageV=FMath::Lerp(PhysicalParams.Battery.EmptyVoltageV,PhysicalParams.Battery.FullVoltageV,BatteryState.Soc);
 }
@@ -568,7 +569,7 @@ float ASoccerDronePawn::GetTiltDegrees() const
 }
 void ASoccerDronePawn::SetAngleVerificationInput(FVector Stick,float Throttle)
 {
-    if(!FParse::Param(FCommandLine::Get(),TEXT("ImperialAngleSmoke"))&&!FParse::Param(FCommandLine::Get(),TEXT("ImperialPowerSmoke"))&&!FParse::Param(FCommandLine::Get(),TEXT("ImperialThrottleSmoke")))return;
+    if(!FParse::Param(FCommandLine::Get(),TEXT("ImperialAngleSmoke"))&&!FParse::Param(FCommandLine::Get(),TEXT("ImperialPowerSmoke"))&&!FParse::Param(FCommandLine::Get(),TEXT("ImperialThrottleSmoke"))&&!FParse::Param(FCommandLine::Get(),TEXT("ImperialResponseSmoke")))return;
     bAngleVerificationInput=true;
     AngleVerificationStick=Stick.GetClampedToMaxSize(1);
     AngleVerificationThrottle=FMath::Clamp(Throttle,0.f,1.f);
@@ -801,6 +802,7 @@ void ASoccerDronePawn::ResetDrone()
     KeyboardThrottle = 0.0f;
     KeyboardThrottleStep = 0.0f;
     Body->SetPhysicsLinearVelocity(FVector::ZeroVector);
+    ++BatteryResetEpoch;
     BatteryState=ImperialPhysics::BatteryState{};PowerBudget={};MotorStates={};NetStates={};Sensors.Reset(FCrc::StrCrc32(*GetName()));PhysicalTime=0;PreviousVelocityMS=FVector::ZeroVector;CageCompression=0;
     GuardState={};LastWearOther.Reset();LastWearContactTime=-100;GuardScuffs->ClearInstances();UpdateGuardMaterial();SetEquipmentInspection(false);
     Body->SetPhysicsAngularVelocityInRadians(FVector::ZeroVector);
@@ -859,6 +861,7 @@ void ASoccerDronePawn::PhysicsStep(FPhysScene_Chaos* Scene,float Dt)
     // Scene supplies the actual synchronous Chaos frame budget after its clamp.
     // One control update per physics frame, NOT a PID update per Chaos substep.
     if(Dt<=KINDA_SMALL_NUMBER||!Body->IsSimulatingPhysics())return;
+    ++PhysicsStepSequence;
     const FVector VelocityMS=Body->GetPhysicsLinearVelocity()/100.;const FQuat Rotation=Body->GetComponentQuat();
     const float SampleSeconds=PreviousPhysicsSeconds>0?PreviousPhysicsSeconds:Dt;
     const FVector Specific=Rotation.UnrotateVector((VelocityMS-PreviousVelocityMS)/FMath::Max(.001f,SampleSeconds)-FVector(0,0,GetWorld()->GetGravityZ()/100.));PreviousVelocityMS=VelocityMS;
@@ -1046,11 +1049,14 @@ void ASoccerDronePawn::ApplyFlightForces(float Dt)
         const float Roll=bAngleVerificationInput?AngleVerificationStick.X:(USB?Radio->GetNormalizedRoll():(bUseBoxer?NormalizeUsb(UsbRoll,bInvertRoll):KeyRoll));
         const float Pitch=bAngleVerificationInput?AngleVerificationStick.Y:(USB?Radio->GetNormalizedPitch():(bUseBoxer?NormalizeUsb(UsbPitch,bInvertPitch):KeyPitch));
         const float Yaw=bAngleVerificationInput?AngleVerificationStick.Z:(USB?Radio->GetNormalizedYaw():(bUseBoxer?NormalizeUsb(UsbYaw,bInvertYaw):KeyYaw));
-        const auto Desired=ImperialPhysics::AngleDesiredUp(Roll,Pitch,MaximumTiltDegrees);
+        const ImperialInput::PilotResponse Response=Radio?Radio->GetPilotResponse():ImperialInput::PilotResponse{};
+        const auto Desired=ImperialPhysics::AngleDesiredUp(Response.Shape(0,Roll),Response.Shape(1,Pitch),MaximumTiltDegrees);
         const FQuat Heading(FRotator(0,Body->GetComponentRotation().Yaw,0));
         const FVector DesiredUpBody=R.UnrotateVector(Heading.RotateVector(FVector(Desired.X,Desired.Y,Desired.Z)));
-        const auto TiltRate=ImperialPhysics::AngleBodyRate({DesiredUpBody.X,DesiredUpBody.Y,DesiredUpBody.Z},AngleGainPerSecond,FMath::DegreesToRadians(MaximumAngleRateDegrees));
-        TargetRate=FVector(TiltRate.X,TiltRate.Y,Yaw*FMath::Min(MaxRateDegrees.Z,180.)*(PI/180.));
+        const auto TiltRate=ImperialPhysics::AngleBodyRate({DesiredUpBody.X,DesiredUpBody.Y,DesiredUpBody.Z},AngleGainPerSecond,FMath::DegreesToRadians(360.));
+        const auto Limited=Response.LimitTiltRates(TiltRate.X,TiltRate.Y);
+        TargetRate=FVector(Limited[0],Limited[1],Response.Shape(2,Yaw)*Response.RateDegrees[2]*(PI/180.));
+        LastManualTargetRateDegrees=TargetRate*(180./PI);
     }
     const FVector Error=TargetRate-Rate;
     const FVector Derivative=(Rate-PreviousBodyRate)/(PreviousPhysicsSeconds>0?PreviousPhysicsSeconds:Step);PreviousBodyRate=Rate;

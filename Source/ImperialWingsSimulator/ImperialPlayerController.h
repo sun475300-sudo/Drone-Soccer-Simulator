@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "PilotResponse.h"
 #include "ImperialPlayerController.generated.h"
 class ACameraActor;
 class AImperialMatchManager;
@@ -55,6 +56,8 @@ private:
     void ConfigureInput();
     void UpdatePilotCamera();
     void UpdateRoleCameras();
+    void UpdateRadioArming();
+    ImperialInput::ArmingEdgeGate RadioArmGate;
     void Audience();void Referee();
     bool HasRadioModal() const;
     void ZoomIn(); void ZoomOut();

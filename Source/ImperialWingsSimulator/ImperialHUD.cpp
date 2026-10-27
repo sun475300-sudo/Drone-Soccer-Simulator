@@ -91,6 +91,7 @@ UImperialRadioSubsystem* AImperialHUD::GetRadio() const
 void AImperialHUD::ToggleRadioPanel()
 {
     bRadioPanelOpen=!bRadioPanelOpen;
+    bResponsePanel=false;bLearnArm=false;
     if(bRadioPanelOpen){bRadioAdvanced=false;if(auto* Manager=FindMatch())Manager->ManualSelected();}
     if(!bRadioPanelOpen)if(auto* Radio=GetRadio())Radio->CancelGuidedCalibration();
     // Preserve a radio deliberately enabled in this menu when closing it.
@@ -272,6 +273,7 @@ void AImperialHUD::DrawRadioPanel(AImperialMatchManager& Manager)
     Button(TEXT("Radio_Close"),TEXT("CLOSE"),1172,148,80,32);
     UImperialRadioSubsystem* Radio=GetRadio();
     if(!Radio){Text(TEXT("USB controller service is unavailable."),348,212,16,Amber);ButtonPriority=10;return;}
+    if(bResponsePanel){DrawResponsePanel(*Radio);ButtonPriority=10;return;}
     const FImperialRadioDevice* Device=Radio->GetSelectedDevice();
     const bool Connected=Radio->IsConnected();
     const bool Guided=Radio->IsGuidedActive();
@@ -461,7 +463,7 @@ void AImperialHUD::DrawRadioPanel(AImperialMatchManager& Manager)
         Button(TEXT("Radio_PrecisionThrottle"),Radio->IsPrecisionThrottleEnabled()?TEXT("THROTTLE: PRECISION"):TEXT("THROTTLE: DIRECT"),348,704,245,28,Radio->IsPrecisionThrottleEnabled());
     else
         Text(TEXT("THROTTLE: LOCKED DURING SETUP"),348,712,10,Muted);
-    Text(Radio->IsCalibrating()?TEXT("Finish calibration before changing response."):TEXT("Precision: softer near 55% input. Height stays manual."),610,712,11,Muted);
+    if(!Radio->IsCalibrating())Button(TEXT("Radio_Response"),TEXT("RATES / EXPO / ARM BUTTON"),850,704,402,28);
     Rect(348,740,904,32,FLinearColor(.035f,.065f,.09f,1));Rect(348,740,3,32,Radio->IsCalibrated()?Green:Amber);
     Text(Fit(Radio->GetStatus(),12,865),364,750,12,Radio->IsCalibrated()?Green:Amber);
     Button(TEXT("Radio_Keyboard"),TEXT("USE KEYBOARD"),348,783,164,36,!Radio->IsEnabled());
@@ -477,6 +479,62 @@ void AImperialHUD::DrawRadioPanel(AImperialMatchManager& Manager)
     ButtonPriority=10;
 }
 
+void AImperialHUD::BeginResponsePanel()
+{
+    auto* R=GetRadio();if(!R||R->IsCalibrating())return;
+    DraftResponse=R->GetPilotResponse();DraftArmButton=R->GetArmButton();DraftArmDevice=R->GetArmDevice();
+    bDraftArmToggle=R->IsArmToggle();bResponsePanel=true;bLearnArm=false;ResponseMessage=TEXT("Changes are a preview until SAVE. CANCEL keeps your saved settings.");
+}
+
+void AImperialHUD::DrawResponsePanel(UImperialRadioSubsystem& R)
+{
+    Text(TEXT("CONTROL RESPONSE / ANGLE"),348,198,18,Cyan);
+    Text(TEXT("Roll/Pitch rate limits tilt response; full stick still targets 35 deg. Yaw rate is deg/s."),348,226,12,Muted);
+    Text(TEXT("Expo softens the centre; minimum/maximum stick positions stay unchanged."),348,248,12,Muted);
+    const TCHAR* Names[]={TEXT("ROLL"),TEXT("PITCH"),TEXT("YAW")};
+    for(int I=0;I<3;++I)
+    {
+        const float Y=288+I*92;Text(Names[I],348,Y+15,15,White);
+        Text(FString::Printf(TEXT("RATE %.0f deg/s"),DraftResponse.RateDegrees[I]),450,Y,12,White);
+        Button(*FString::Printf(TEXT("Response_RateDown_%d"),I),TEXT("-"),450,Y+25,42,28);
+        Button(*FString::Printf(TEXT("Response_RateUp_%d"),I),TEXT("+"),502,Y+25,42,28);
+        Text(FString::Printf(TEXT("EXPO %.0f%%"),DraftResponse.Expo[I]*100),592,Y,12,White);
+        Button(*FString::Printf(TEXT("Response_ExpoDown_%d"),I),TEXT("-"),592,Y+25,42,28);
+        Button(*FString::Printf(TEXT("Response_ExpoUp_%d"),I),TEXT("+"),644,Y+25,42,28);
+        const float Left=750,Top=Y-3,Width=230,Height=65;
+        Rect(Left,Top,Width,Height,FLinearColor(.015,.025,.04,1));
+        Rect(Left,Top+Height/2,Width,1,Edge);Rect(Left+Width/2,Top,1,Height,Edge);
+        for(int P=0;P<=100;++P)
+        {const double Input=P/50.-1;Rect(Left+P*Width/100.,Top+Height*(1-DraftResponse.Shape(I,Input))*.5,2,2,Cyan);}
+        const float Raw=I==0?R.GetNormalizedRoll():I==1?R.GetNormalizedPitch():R.GetNormalizedYaw();
+        Text(FString::Printf(TEXT("IN %+.2f  OUT %+.2f"),Raw,DraftResponse.Shape(I,Raw)),1002,Y+17,11,Muted);
+    }
+    Rect(348,570,904,1,Edge);
+    const auto* Device=R.GetSelectedDevice();
+    if(bLearnArm)
+    {
+        if(!R.IsConnected()||!Device||Device->Identity!=ArmLearningDevice){bLearnArm=false;ResponseMessage=TEXT("Controller disconnected or changed. Previous binding kept.");}
+        else
+        {
+            const int32 Index=ArmLearner.Sample(R.GetButtons());
+            if(Index>=0&&Index<FMath::Min(32,Device->ButtonCount))
+            {DraftArmButton=Index;DraftArmDevice=Device->Identity;bLearnArm=false;ResponseMessage=TEXT("Button learned. Choose TOGGLE or SWITCH, then SAVE. Motors stay disarmed.");}
+        }
+    }
+    const bool MatchDevice=Device&&Device->Identity==DraftArmDevice;
+    Text(DraftArmButton<0?TEXT("ARM BUTTON: NOT ASSIGNED"):FString::Printf(TEXT("ARM BUTTON: %d  /  %s"),DraftArmButton+1,MatchDevice?TEXT("SELECTED CONTROLLER"):TEXT("SAVED OTHER CONTROLLER")),348,594,14,White);
+    Button(TEXT("Response_Learn"),bLearnArm?TEXT("CANCEL LEARNING"):TEXT("LEARN ARM BUTTON"),348,625,245,34,bLearnArm);
+    Button(TEXT("Response_Clear"),TEXT("REMOVE BINDING"),605,625,205,34);
+    Button(TEXT("Response_ArmMode"),bDraftArmToggle?TEXT("TOGGLE BUTTON"):TEXT("2-POSITION SWITCH"),822,625,260,34);
+    Text(bLearnArm?TEXT("Release the ARM button / switch OFF, then press it ON. Keep other switches unchanged."):
+        (bDraftArmToggle?TEXT("Each press toggles ARM/DISARM. ARM needs low throttle and a fresh press."):TEXT("Switch ON arms at low throttle. Switch OFF disarms. OFF required after reconnect.")),348,677,12,Cyan);
+    Text(Fit(ResponseMessage,12,895),348,718,12,Muted);
+    Button(TEXT("Response_Defaults"),TEXT("RESET RATES / EXPO"),348,783,248,36);
+    Button(TEXT("Response_Save"),TEXT("SAVE & RETURN"),730,783,260,36);
+    Button(TEXT("Response_Cancel"),TEXT("CANCEL"),1002,783,250,36);
+    Text(TEXT("30-360 deg/s / Expo 0-80%. USB is disabled after save; enable again at low throttle."),348,844,11,Muted);
+}
+
 void AImperialHUD::NotifyHitBoxClick(FName BoxName)
 {
     Super::NotifyHitBoxClick(BoxName);auto* M=FindMatch();if(!M)return;const FString N=BoxName.ToString();
@@ -490,6 +548,35 @@ void AImperialHUD::NotifyHitBoxClick(FName BoxName)
     {
         if(N==TEXT("Radio_Close")){ToggleRadioPanel();return;}
         auto* R=GetRadio();if(!R)return;
+        if(N==TEXT("Radio_Response")){BeginResponsePanel();return;}
+        if(bResponsePanel)
+        {
+            if(N==TEXT("Response_Cancel")){bResponsePanel=false;bLearnArm=false;return;}
+            if(N==TEXT("Response_Save"))
+            {
+                if(R->SavePilotResponse(DraftResponse,DraftArmButton,DraftArmDevice,bDraftArmToggle))
+                {bResponsePanel=false;bLearnArm=false;if(auto* PC=Cast<AImperialPlayerController>(PlayerOwner))PC->FlushPilotContextKeys();}
+                else ResponseMessage=R->GetStatus();return;
+            }
+            if(N==TEXT("Response_Defaults"))DraftResponse={};
+            else if(N==TEXT("Response_Learn"))
+            {
+                if(bLearnArm)bLearnArm=false;
+                else if(const auto* Device=R->GetSelectedDevice();Device&&R->IsConnected())
+                {bLearnArm=true;ArmLearningDevice=Device->Identity;ArmLearner.Begin(R->GetButtons());ResponseMessage=TEXT("Move only the intended ARM button: OFF / release, then ON / press.");}
+                else ResponseMessage=TEXT("Connect and select a controller before learning an ARM button.");
+            }
+            else if(N==TEXT("Response_Clear")){DraftArmButton=INDEX_NONE;DraftArmDevice.Empty();bLearnArm=false;}
+            else if(N==TEXT("Response_ArmMode"))bDraftArmToggle=!bDraftArmToggle;
+            else if(N.StartsWith(TEXT("Response_Rate"))||N.StartsWith(TEXT("Response_Expo")))
+            {
+                const int32 Axis=FCString::Atoi(*N.Right(1));if(Axis<0||Axis>2)return;
+                const double Direction=N.Contains(TEXT("Up"))?1:-1;
+                if(N.StartsWith(TEXT("Response_Rate")))DraftResponse.RateDegrees[Axis]=FMath::Clamp(DraftResponse.RateDegrees[Axis]+Direction*15,30.,360.);
+                else DraftResponse.Expo[Axis]=FMath::Clamp(DraftResponse.Expo[Axis]+Direction*.05,0.,.8);
+            }
+            return;
+        }
         if(N==TEXT("Radio_Refresh"))R->RefreshDevices();
         else if(N==TEXT("Radio_Device"))R->CycleDevice();
         else if(N==TEXT("Radio_Advanced")){if(!R->IsGuidedActive())bRadioAdvanced=!bRadioAdvanced;}
