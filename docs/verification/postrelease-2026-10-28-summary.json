@@ -1,0 +1,323 @@
+{
+  "state": "local_post_release_verified_not_published",
+  "public_release": "v0.7.13-rc1",
+  "public_source_commit": "187e3002dbdecd1c429ca652d106fcc21d69b5b4",
+  "public_source_sha256": "c7feb1cfce27923bcc993e06bfb1736897ffb775858373dc3a88723636afc4c3",
+  "main_docs_commit": "ac3d470774ff88fd02eb4492d81702efdd6e2741",
+  "main_code_version": "0.7.4",
+  "local_build": {
+    "version": "0.7.13-rc1",
+    "source_commit": "187e3002dbdecd1c429ca652d106fcc21d69b5b4",
+    "source_dirty": true,
+    "source_sha256": "0ea9a3fddb95c8c14da5013f4439a2bd436a14add058025c8ddf7f50179b198c",
+    "build_utc": "2026-10-28T18:38:20Z",
+    "target": "ImperialWingsSimulator",
+    "platform": "Win64",
+    "configuration": "Shipping",
+    "input_count": 162
+  },
+  "shipping_exe_sha256": "35434fa2a3dcf4c1f58882c7baaa21015c586ca07f2bb418e86a27581f6fdf48",
+  "tests": {
+    "first_flight_native": {
+      "passed": 172,
+      "configurations": [
+        "Editor60",
+        "Shipping20",
+        "Shipping60",
+        "Shipping240"
+      ]
+    },
+    "recording_native": {
+      "passed": 140,
+      "configurations": [
+        "Editor60",
+        "Shipping20",
+        "Shipping60",
+        "Shipping240"
+      ],
+      "actual_start_obstruction_sample_and_stop_deny_share": true
+    },
+    "ai_practice": 86,
+    "ai_duel": 94,
+    "input_safety": 29,
+    "physics_fixed_fps": [
+      20,
+      30,
+      60,
+      120,
+      240
+    ],
+    "effects_headless_conditions": 10,
+    "effects_actual_render_conditions": 2,
+    "recording_actual_window_native_checks": 35,
+    "first_flight_pure": {
+      "existing": 190,
+      "new": 220,
+      "total": 410,
+      "scope": "Unchanged observation header unit tests, not a full game flight"
+    }
+  },
+  "installer_gui": {
+    "artifact_sha256": "04e01e7bbc2bcfe93a933476651c619bd815fc0024a074d0514aa98e058750e6",
+    "checks": 17,
+    "separate_clean_remove_passed": true,
+    "update_scope": "same version GUI; old-to-new upgrade tested separately by historical CLI, not this GUI pass"
+  },
+  "performance": {
+    "scenario": "idle",
+    "quality": "High",
+    "language": "ko",
+    "pairs_per_resolution": 2,
+    "actual_runtime_processes": 8,
+    "fixed_timestep": false,
+    "comparisons": [
+      {
+        "resolution": [
+          1280,
+          720
+        ],
+        "paired_repeats": 2,
+        "excluded_warmups_per_build": 0,
+        "metrics": {
+          "average_frame_ms": {
+            "baseline": {
+              "values": [
+                8.334,
+                8.334
+              ],
+              "median": 8.334,
+              "minimum": 8.334,
+              "maximum": 8.334
+            },
+            "current": {
+              "values": [
+                8.334,
+                8.334
+              ],
+              "median": 8.334,
+              "minimum": 8.334,
+              "maximum": 8.334
+            },
+            "median_percent_delta": 0.0,
+            "paired_percent_deltas": [
+              0.0,
+              0.0
+            ],
+            "delta_definition": "current minus baseline; lower ms is better, higher FPS is better"
+          },
+          "p95_frame_ms": {
+            "baseline": {
+              "values": [
+                8.334,
+                8.334
+              ],
+              "median": 8.334,
+              "minimum": 8.334,
+              "maximum": 8.334
+            },
+            "current": {
+              "values": [
+                8.334,
+                8.334
+              ],
+              "median": 8.334,
+              "minimum": 8.334,
+              "maximum": 8.334
+            },
+            "median_percent_delta": 0.0,
+            "paired_percent_deltas": [
+              0.0,
+              0.0
+            ],
+            "delta_definition": "current minus baseline; lower ms is better, higher FPS is better"
+          },
+          "average_fps": {
+            "baseline": {
+              "values": [
+                119.99,
+                120
+              ],
+              "median": 119.995,
+              "minimum": 119.99,
+              "maximum": 120
+            },
+            "current": {
+              "values": [
+                119.99,
+                119.99
+              ],
+              "median": 119.99,
+              "minimum": 119.99,
+              "maximum": 119.99
+            },
+            "median_percent_delta": -0.0041668402850199284,
+            "paired_percent_deltas": [
+              0.0,
+              -0.008333333333337597
+            ],
+            "delta_definition": "current minus baseline; lower ms is better, higher FPS is better"
+          }
+        }
+      },
+      {
+        "resolution": [
+          1920,
+          1080
+        ],
+        "paired_repeats": 2,
+        "excluded_warmups_per_build": 0,
+        "metrics": {
+          "average_frame_ms": {
+            "baseline": {
+              "values": [
+                9.496,
+                9.533
+              ],
+              "median": 9.5145,
+              "minimum": 9.496,
+              "maximum": 9.533
+            },
+            "current": {
+              "values": [
+                9.543,
+                9.502
+              ],
+              "median": 9.5225,
+              "minimum": 9.502,
+              "maximum": 9.543
+            },
+            "median_percent_delta": 0.08408219034106779,
+            "paired_percent_deltas": [
+              0.49494524010108276,
+              -0.3251861953215023
+            ],
+            "delta_definition": "current minus baseline; lower ms is better, higher FPS is better"
+          },
+          "p95_frame_ms": {
+            "baseline": {
+              "values": [
+                10.397,
+                10.432
+              ],
+              "median": 10.4145,
+              "minimum": 10.397,
+              "maximum": 10.432
+            },
+            "current": {
+              "values": [
+                10.451,
+                10.377
+              ],
+              "median": 10.414000000000001,
+              "minimum": 10.377,
+              "maximum": 10.451
+            },
+            "median_percent_delta": -0.004800998607699214,
+            "paired_percent_deltas": [
+              0.5193805905549704,
+              -0.5272239263803653
+            ],
+            "delta_definition": "current minus baseline; lower ms is better, higher FPS is better"
+          },
+          "average_fps": {
+            "baseline": {
+              "values": [
+                105.31,
+                104.9
+              ],
+              "median": 105.105,
+              "minimum": 104.9,
+              "maximum": 105.31
+            },
+            "current": {
+              "values": [
+                104.79,
+                105.24
+              ],
+              "median": 105.015,
+              "minimum": 104.79,
+              "maximum": 105.24
+            },
+            "median_percent_delta": -0.08562865705723173,
+            "paired_percent_deltas": [
+              -0.4937802677808337,
+              0.3241182078169582
+            ],
+            "delta_definition": "current minus baseline; lower ms is better, higher FPS is better"
+          }
+        }
+      }
+    ],
+    "conclusion": "Idle instance updates removed; no demonstrated FPS improvement or statistically supported regression conclusion from two pairs.",
+    "limitations": [
+      "120FPS ceiling at 720p",
+      "No p99/hitch or recording-on/off comparison",
+      "Same PC; GPU adapter not independently confirmed",
+      "No excluded warmups; shared caches and background OS load not fully controlled"
+    ]
+  },
+  "evidence": {
+    "build": "shipping-build-20261028-183818-5764ee6f/result.json",
+    "first_flight": "postrelease-r2-firstflight-native-20261028-184338-67d8bc0b/summary.json",
+    "recording_ai": "flight-recording-r2-20261028-184912-993b8629/audit.json",
+    "effects_physics_input": "effects-physics-input-r2-20261028-184302-39d8ac5f/summary.json",
+    "effects_gpu": "gpu-postrelease-20261028-184457-3de9a85f/summary.json",
+    "recording_window": "recording-gpu-window-20261028-184858-c9368f90/review.json",
+    "installer_gui": "InstallerGui-20261028-183132/final-audit.json",
+    "performance": "perf-guardchips/runs-20261028-185131-93a0d881/summary.json",
+    "capture_pixel_audit": "ui-capture-pixel-audit.json"
+  },
+  "historical_failures_preserved": [
+    "57e529 recorder fixture parsed trailing empty JSONL line as an error; corrected only terminal empty line, not interior invalid records",
+    "First runner marker used CRLF; corrected to exact LF bytes",
+    "Offscreen recorder capture option exited game before wall-clock fixture completed; replaced by native window observation",
+    "Initial window capture helper lacked PIL; used existing Windows GDI APIs without installing packages"
+  ],
+  "pending": [
+    "Whole six-step actual pilot flight",
+    "Physical Boxer sticks/buttons/USB loss-reconnect; another PC/GPU/user",
+    "Independent uninstaller full GUI, cross-version GUI update and power-loss/partial-write/disk-full tests",
+    "Actual device name translation and small HUD text/DPI/readability remain",
+    "F7 feedback, Topgun integration, leaderboards, added languages and other unimplemented plan areas",
+    "Default main code/history integration with release tag"
+  ],
+  "library_comparison_tool": {
+    "state": "officially_materialized_pending_schema_review",
+    "filename": "drone-soccer-ai-result-comparison-cf3430a.zip",
+    "prepare_materialize_succeeded": true,
+    "final_zip_created": true,
+    "patch_read_or_applied": false,
+    "approval_denied": false,
+    "windows_error_preserved": "Official helper failed on Windows: AttributeError module os has no attribute setxattr",
+    "official_resolution": "Existing WSL Ubuntu Python and persistent /var/tmp, Windows workspace destination explicit prepare_materialize then unchanged official helper materialize with complete transfer on stdin",
+    "sha256": "860e473c0d563914afef936d4dee2f7ec1deb12413a4d7bd36a516b09dbbce8a",
+    "bytes": 66432,
+    "library_metadata_verified": true,
+    "new_tools_installed_or_settings_changed": false
+  },
+  "preservation": {
+    "original_personal_radio_profile_unchanged": true,
+    "original_project_radio_profile_remains_absent": true,
+    "installer_pointer_restored_absent": true,
+    "public_artifacts_unchanged": true
+  },
+  "completed_utc": "2026-10-28T19:02:48.279689+00:00",
+  "capture_glyph_observation": {
+    "state": "corrected_visual_misreading_not_an_original_png_defect",
+    "original_png_files": 8,
+    "same_mask_per_resolution": true,
+    "regions": [
+      "title",
+      "title prefix IM",
+      "clock",
+      "speed"
+    ],
+    "evidence": "ui-capture-pixel-audit.json",
+    "actual_window_reproduction_newly_run": false,
+    "language": "ko",
+    "quality": "High",
+    "scenario": "idle",
+    "capture": "offscreen engine screenshot",
+    "selected_gpu_independently_identified": false
+  }
+}

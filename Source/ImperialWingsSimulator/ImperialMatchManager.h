@@ -142,7 +142,7 @@ private:
     FString Notice=TEXT("Keyboard ready. Select AUTO FLEET for SDACS autonomous guidance.");
     FString FlightLogPath;
     double LastFlightRecord=0;
-    void RecordFlightSample(const FString& Event);
+    bool RecordFlightSample(const FString& Event);
     void RequestGuidance();
     void OnGuidance(FHttpRequestPtr Request,FHttpResponsePtr Response,bool bSuccess,ImperialGuidance::Ticket Ticket);
     void AdvanceGuidanceCommand();

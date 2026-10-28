@@ -12,6 +12,7 @@
 #include "ImperialFirstFlightGuide.h"
 #include "ImperialAIMotionVerifier.h"
 #include "ImperialFirstFlightVerifier.h"
+#include "ImperialFlightRecordingVerifier.h"
 #include "ImperialPowerVerifier.h"
 #include "ImperialThrottleVerifier.h"
 #include "ImperialSolverProbe.h"
@@ -36,7 +37,11 @@ void AImperialGameMode::StartPlay()
     GetWorld()->SpawnActor<AImperialPresentationEffects>();
     GetWorld()->SpawnActor<AImperialRoleRibbons>();
     // The bridge validates conflicting diagnostic flags itself, before another verifier can start.
-    if(FParse::Param(FCommandLine::Get(),TEXT("ImperialSolverBridgeSmoke")))
+    if(FParse::Param(FCommandLine::Get(),TEXT("ImperialFlightRecordingSmoke")))
+    {
+        GetWorld()->SpawnActor<AImperialFlightRecordingVerifier>();
+    }
+    else if(FParse::Param(FCommandLine::Get(),TEXT("ImperialSolverBridgeSmoke")))
     {
         GetWorld()->SpawnActor<AImperialSolverBridgeVerifier>();
     }

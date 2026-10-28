@@ -378,15 +378,15 @@ void AImperialMatchManager::RecordGuardImpact(ASoccerDronePawn* Drone,float Diss
 }
 void AImperialMatchManager::ToggleFlightRecording()
 {
-    if(IsRecordingFlight()){RecordFlightSample(TEXT("stop"));FlightLogPath.Empty();Log(TEXT("Flight recording saved in Saved/FlightLogs."));return;}
+    if(IsRecordingFlight()){if(!RecordFlightSample(TEXT("stop")))return;FlightLogPath.Empty();Log(TEXT("Flight recording saved in Saved/FlightLogs."));return;}
     const FString Directory=FPaths::Combine(ImperialUserData::Directory(),TEXT("FlightLogs"));
     IFileManager::Get().MakeDirectory(*Directory,true);
     FlightLogPath=FPaths::Combine(Directory,FDateTime::UtcNow().ToString(TEXT("%Y%m%d-%H%M%S"))+TEXT("-")+FGuid::NewGuid().ToString(EGuidFormats::Digits)+TEXT(".jsonl"));
-    LastFlightRecord=0;RecordFlightSample(TEXT("start"));Log(TEXT("Recording actual controls and physics. F6 stops recording."));
+    LastFlightRecord=0;if(RecordFlightSample(TEXT("start")))Log(TEXT("Recording actual controls and physics. F6 stops recording."));
 }
-void AImperialMatchManager::RecordFlightSample(const FString& Event)
+bool AImperialMatchManager::RecordFlightSample(const FString& Event)
 {
-    if(FlightLogPath.IsEmpty())return;
+    if(FlightLogPath.IsEmpty())return false;
     auto Root=MakeShared<FJsonObject>();Root->SetStringField(TEXT("event"),Event);
     Root->SetStringField(TEXT("utc"),FDateTime::UtcNow().ToIso8601());Root->SetNumberField(TEXT("wall_s"),FPlatformTime::Seconds());
     Root->SetNumberField(TEXT("game_s"),Elapsed);Root->SetNumberField(TEXT("selected"),Selected);
@@ -420,7 +420,8 @@ void AImperialMatchManager::RecordFlightSample(const FString& Event)
     Root->SetArrayField(TEXT("aircraft"),Rows);FString Text;FJsonSerializer::Serialize(Root,TJsonWriterFactory<TCHAR,TCondensedJsonPrintPolicy<TCHAR>>::Create(&Text));
     Text+=TEXT("\n");
     if(!FFileHelper::SaveStringToFile(Text,*FlightLogPath,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM,&IFileManager::Get(),FILEWRITE_Append))
-    {FlightLogPath.Empty();Log(TEXT("Flight recording stopped: could not write to Saved/FlightLogs."));}
+    {FlightLogPath.Empty();Log(TEXT("Flight recording stopped: could not write to Saved/FlightLogs."));return false;}
+    return true;
 }
 void AImperialMatchManager::ContactSmokeTick(float Dt)
 {

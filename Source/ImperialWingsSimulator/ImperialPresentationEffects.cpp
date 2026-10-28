@@ -248,6 +248,9 @@ void AImperialPresentationEffects::Tick(float Dt)
     {
         for (int32 I = 0; I < 24; ++I) EmitImpact(FVector(0, 0, 0), FVector::UpVector, 500);
         FixturePeak = Motes.Num(); bFixtureRun = true;
+        for (int32 I = 0; I < 3; ++I) EmitGuardChips(FVector(0, 0, 30), FVector::UpVector, 12.f);
+        FixtureGuardPeak = Chips.Num();
+        FixtureGuardStage = 1;
     }
     for (int32 I = Motes.Num() - 1; I >= 0; --I)
     {
@@ -274,17 +277,106 @@ void AImperialPresentationEffects::Tick(float Dt)
     PreviousVisible = Motes.Num();
     for(int32 I=Chips.Num()-1;I>=0;--I)
     {auto& Chip=Chips[I];Chip.Age+=Dt;if(Chip.Age>=Chip.Lifetime){Chips.RemoveAtSwap(I);continue;}const float Step=FMath::Min(Dt,.05f);Chip.Velocity.Z-=981*Step;Chip.Position+=Chip.Velocity*Step;}
-    for(int32 I=0;I<32;++I)
-    {FTransform T(FQuat::Identity,FVector::ZeroVector,FVector::ZeroVector);if(Chips.IsValidIndex(I)){const auto& Chip=Chips[I];const float Scale=Chip.Size/100.f;T=FTransform(FRotator(Chip.Age*370,Chip.Age*290,Chip.Age*130),Chip.Position,FVector(Scale,Scale*.5f,Scale*.2f));}GuardChips->UpdateInstanceTransform(I,T,false,I==31,true);}
+    // Retire formerly visible slots once; an empty pool needs no instance updates.
+    const int32 ChipUpdates = FMath::Max(PreviousVisibleChips, Chips.Num());
+    for(int32 I=0;I<ChipUpdates;++I)
+    {FTransform T(FQuat::Identity,FVector::ZeroVector,FVector::ZeroVector);if(Chips.IsValidIndex(I)){const auto& Chip=Chips[I];const float Scale=Chip.Size/100.f;T=FTransform(FRotator(Chip.Age*370,Chip.Age*290,Chip.Age*130),Chip.Position,FVector(Scale,Scale*.5f,Scale*.2f));}GuardChips->UpdateInstanceTransform(I,T,false,I==ChipUpdates-1,true);}
+    PreviousVisibleChips = Chips.Num();
+    if (bVerification && bFixtureRun)
+    {
+        FixtureGuardUpdateCalls += ChipUpdates;
+        bFixtureGuardTransformsMatch &= GuardChips->GetInstanceCount() == 32;
+        for (int32 I = 0; I < GuardChips->GetInstanceCount(); ++I)
+        {
+            FTransform Actual;
+            const bool bRead = GuardChips->GetInstanceTransform(I, Actual, false);
+            if (Chips.IsValidIndex(I))
+            {
+                const auto& Chip = Chips[I];
+                const float Scale = Chip.Size / 100.f;
+                bFixtureGuardTransformsMatch &= bRead && Actual.GetTranslation().Equals(Chip.Position, .01f)
+                    && Actual.GetScale3D().Equals(FVector(Scale, Scale * .5f, Scale * .2f), 1.e-6f);
+            }
+            else bFixtureGuardTransformsMatch &= bRead && Actual.GetScale3D().IsNearlyZero(1.e-6f);
+        }
+        if (FixtureGuardStage == 1 && Chips.IsEmpty())
+        {
+            bFixtureGuardInitialCleared = true;
+            FixtureGuardStage = 2;
+        }
+        else if (FixtureGuardStage == 2 && ChipUpdates == 0 && Motes.IsEmpty())
+        {
+            bFixtureGuardIdleZeroUpdates = true;
+            EmitGuardChips(FVector(0, 0, 30), FVector::UpVector, 6.f);
+            FixtureGuardReappearanceCount = Chips.Num();
+            FixtureGuardStage = 3;
+        }
+        else if (FixtureGuardStage == 3)
+        {
+            if (!Chips.IsEmpty())
+            {
+                bFixtureGuardReappeared = true;
+                if (!bFixtureGuardQualityChecked)
+                {
+                    bFixtureGuardQualityChecked = true;
+                    const FString InitialQuality = QualityName;
+                    const int32 InitialPrevious = PreviousVisibleChips;
+                    const int32 InitialCount = Chips.Num();
+                    TArray<FTransform> Before;
+                    bool bQualityOk = true;
+                    for (int32 I = 0; I < GuardChips->GetInstanceCount(); ++I)
+                    {
+                        FTransform Actual;
+                        bQualityOk &= GuardChips->GetInstanceTransform(I, Actual, false);
+                        Before.Add(Actual);
+                    }
+                    for (const TCHAR* Name : {TEXT("High"), TEXT("Balanced"), TEXT("Cinematic")})
+                        bQualityOk &= SetVisualQuality(Name, false);
+                    bQualityOk &= SetVisualQuality(InitialQuality, false);
+                    bQualityOk &= Chips.Num() == InitialCount && PreviousVisibleChips == InitialPrevious
+                        && GuardChips->GetInstanceCount() == Before.Num();
+                    for (int32 I = 0; I < Before.Num(); ++I)
+                    {
+                        FTransform Actual;
+                        bQualityOk &= GuardChips->GetInstanceTransform(I, Actual, false) && Actual.Equals(Before[I], .001f);
+                    }
+                    bFixtureGuardQualityPreserved = bQualityOk;
+                }
+            }
+            else
+            {
+                bFixtureGuardFinalCleared = true;
+                FixtureGuardStage = 4;
+            }
+        }
+        else if (FixtureGuardStage == 4 && ChipUpdates == 0)
+            bFixtureGuardFinalIdleZeroUpdates = true;
+    }
     if (bVerification && !bFixtureReported && Elapsed >= 3)
     {
         bFixtureReported = true;
-        const bool bOk = bEffectsEnabled && FixturePeak == Capacity && Motes.IsEmpty() && Dust->GetInstanceCount() == Capacity;
+        const bool bGuardOk = FixtureGuardPeak == 32 && FixtureGuardReappearanceCount > 0
+            && bFixtureGuardInitialCleared && bFixtureGuardIdleZeroUpdates && bFixtureGuardReappeared
+            && bFixtureGuardFinalCleared && bFixtureGuardFinalIdleZeroUpdates
+            && bFixtureGuardTransformsMatch && bFixtureGuardQualityPreserved;
+        const bool bOk = bEffectsEnabled && FixturePeak == Capacity && Motes.IsEmpty()
+            && Dust->GetInstanceCount() == Capacity && bGuardOk;
         auto Result=MakeShared<FJsonObject>();
         Result->SetBoolField(TEXT("ok"),bOk);Result->SetStringField(TEXT("fixture"),TEXT("cosmetic pool only; not flight physics"));
         Result->SetNumberField(TEXT("capacity"),Capacity);Result->SetNumberField(TEXT("peak"),FixturePeak);
         Result->SetNumberField(TEXT("remaining"),Motes.Num());Result->SetNumberField(TEXT("instances"),Dust->GetInstanceCount());
         Result->SetStringField(TEXT("quality"),QualityName);Result->SetObjectField(TEXT("build"),ImperialBuildInfo::Json());
+        Result->SetNumberField(TEXT("guard_chip_peak"), FixtureGuardPeak);
+        Result->SetNumberField(TEXT("guard_chip_reappearance_count"), FixtureGuardReappearanceCount);
+        Result->SetNumberField(TEXT("guard_chip_instances"), GuardChips->GetInstanceCount());
+        Result->SetNumberField(TEXT("guard_chip_update_calls"), FixtureGuardUpdateCalls);
+        Result->SetBoolField(TEXT("guard_chip_initial_cleared"), bFixtureGuardInitialCleared);
+        Result->SetBoolField(TEXT("guard_chip_idle_zero_updates"), bFixtureGuardIdleZeroUpdates);
+        Result->SetBoolField(TEXT("guard_chip_reappeared"), bFixtureGuardReappeared);
+        Result->SetBoolField(TEXT("guard_chip_final_cleared"), bFixtureGuardFinalCleared);
+        Result->SetBoolField(TEXT("guard_chip_final_idle_zero_updates"), bFixtureGuardFinalIdleZeroUpdates);
+        Result->SetBoolField(TEXT("guard_chip_transforms_match"), bFixtureGuardTransformsMatch);
+        Result->SetBoolField(TEXT("guard_chip_quality_preserved"), bFixtureGuardQualityPreserved);
         FString Report;FJsonSerializer::Serialize(Result,TJsonWriterFactory<>::Create(&Report));
         FString ResultPath = FPaths::Combine(ImperialUserData::Directory(), TEXT("presentation-effects-smoke.json"));
         FParse::Value(FCommandLine::Get(), TEXT("ImperialEffectsResult="), ResultPath);

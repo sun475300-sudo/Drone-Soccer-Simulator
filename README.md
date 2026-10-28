@@ -1,5 +1,7 @@
 # Imperial Wings · 드론축구 시뮬레이터
 
+> **후속 로컬 작업본 · 미배포**: 이 폴더의 0ea9a3 실행본은 아래 공개 C7 실행본과 다릅니다. 내부 표시 버전은 아직0.7.13-rc1이며, F6 저장 실패 수정·파편 개선의 [검사 결과와 남은 작업](docs/post-release-review-2026-10-28.md)을 먼저 확인하세요. 공개 다운로드·태그·기존 사용자 설정은 유지했습니다.
+
 Windows에서 키보드나 USB 조종기로 연습하는 드론축구 시뮬레이터입니다. 기본 시점은 경기장 밖 LOS, 기본 비행은 ANGLE입니다. 모터 힘과 강체 물리로 비행하며, 실제 기체의 실측 특성을 보증하는 모델은 아닙니다.
 
 **[설치 EXE](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.13-rc1/ImperialWings-Setup-v0.7.13-rc1.exe)** · **[Windows v0.7.13-rc1 ZIP](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.13-rc1/ImperialWings-Windows-v0.7.13-rc1.zip)** · [릴리스와 검증 범위](docs/releases/v0.7.13-rc1.md) · [검증 기록](docs/verification.md#v0713-rc1)

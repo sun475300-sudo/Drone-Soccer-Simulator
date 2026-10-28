@@ -1,5 +1,10 @@
 # 검증 기록
 
+<a id="postrelease-20261028"></a>
+## 공개 후 로컬 후속0ea9a3 R2 — 미배포
+
+F6실패notice 보존·파편 빈풀 갱신을 수정하고 Editor/Shipping 빌드와 새지문 회귀를 확인했다. [이번 결과·이전실패·프레임비교·잔여차단](post-release-review-2026-10-28.md)과 [기계요약](verification/postrelease-2026-10-28-summary.json)을 기준으로 본다. 표기버전은0.7.13-rc1이지만 공개C7와다른 로컬실험본이며 아래공개기록을덮어쓰지않는다.
+
 <a id="v0713-rc1"></a>
 ## v0.7.13-rc1 · 첫 비행·조종기 그림·한국어 AI
 
