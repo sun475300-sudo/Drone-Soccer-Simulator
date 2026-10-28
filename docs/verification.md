@@ -1,5 +1,10 @@
 # 검증 기록
 
+<a id="ai-result-comparison-local"></a>
+## AI 결과 비교 CLI · 699cb918/163입력 · Unreal미빌드
+
+개발용비교도구의37개·기존분석5개검사,실제0ea자동QA4쌍차단/F6범위거부·원문보존을확인했다. [사용법·현재검증과과거이력](ai-result-comparison.md)을따른다. CLI미배포·게임UI미통합·사람기록미검증이며아래0ea실행검사는새163개실행본성과가아니다.
+
 <a id="postrelease-20261028"></a>
 ## 공개 후 로컬 후속0ea9a3 R2 — 미배포
 
