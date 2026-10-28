@@ -9,6 +9,9 @@
 #include "ImperialTimeVerifier.h"
 #include "ImperialRadioModeVerifier.h"
 #include "ImperialRadioUXVerifier.h"
+#include "ImperialFirstFlightGuide.h"
+#include "ImperialAIMotionVerifier.h"
+#include "ImperialFirstFlightVerifier.h"
 #include "ImperialPowerVerifier.h"
 #include "ImperialThrottleVerifier.h"
 #include "ImperialSolverProbe.h"
@@ -29,6 +32,7 @@ void AImperialGameMode::StartPlay()
 {
     GetWorld()->SpawnActor<APrototypeArenaBuilder>();
     GetWorld()->SpawnActor<AImperialMatchManager>();
+    GetWorld()->SpawnActor<AImperialFirstFlightGuide>();
     GetWorld()->SpawnActor<AImperialPresentationEffects>();
     GetWorld()->SpawnActor<AImperialRoleRibbons>();
     // The bridge validates conflicting diagnostic flags itself, before another verifier can start.
@@ -38,6 +42,8 @@ void AImperialGameMode::StartPlay()
     }
     else
     {
+    if(FParse::Param(FCommandLine::Get(),TEXT("ImperialAIMotionSmoke")))GetWorld()->SpawnActor<AImperialAIMotionVerifier>();
+    if(FParse::Param(FCommandLine::Get(),TEXT("ImperialFirstFlightSmoke")))GetWorld()->SpawnActor<AImperialFirstFlightVerifier>();
     if(FParse::Param(FCommandLine::Get(),TEXT("ImperialAIDuelSmoke")))GetWorld()->SpawnActor<AImperialAIDuelVerifier>();
     if(FParse::Param(FCommandLine::Get(),TEXT("ImperialAIRecoverySmoke")))GetWorld()->SpawnActor<AImperialAIRecoveryVerifier>();
     if(FParse::Param(FCommandLine::Get(),TEXT("ImperialAIResultsSmoke")))GetWorld()->SpawnActor<AImperialAIResultsVerifier>();

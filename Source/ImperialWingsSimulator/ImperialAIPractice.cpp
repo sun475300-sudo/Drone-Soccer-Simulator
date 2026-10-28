@@ -23,7 +23,7 @@ bool AImperialMatchManager::StartAIPractice(ImperialAI::Settings Settings)
     AIAge=AILandingAge=0;bAILandingFault=false;Mode=EImperialMode::AIPractice;
     CurrentAIResult={};CurrentAIResult.SessionId=FGuid::NewGuid().ToString(EGuidFormats::Digits);CurrentAIResult.Settings=Settings;
     CurrentAIResult.StartedUtc=FDateTime::UtcNow().ToIso8601();CurrentAIResult.SourceHash=ImperialBuildInfo::SourceHash();CurrentAIResult.BuildVersion=ImperialBuildInfo::Version();
-    CurrentAIResult.bTestSession=FParse::Param(FCommandLine::Get(),TEXT("ImperialAIPracticeSmoke"))||FParse::Param(FCommandLine::Get(),TEXT("ImperialAIResultsSmoke"))||FParse::Param(FCommandLine::Get(),TEXT("ImperialAIRecoverySmoke"))||FParse::Param(FCommandLine::Get(),TEXT("ImperialAIDuelSmoke"));
+    CurrentAIResult.bTestSession=FParse::Param(FCommandLine::Get(),TEXT("ImperialAIMotionSmoke"))||FParse::Param(FCommandLine::Get(),TEXT("ImperialFirstFlightSmoke"))||FParse::Param(FCommandLine::Get(),TEXT("ImperialAIPracticeSmoke"))||FParse::Param(FCommandLine::Get(),TEXT("ImperialAIResultsSmoke"))||FParse::Param(FCommandLine::Get(),TEXT("ImperialAIRecoverySmoke"))||FParse::Param(FCommandLine::Get(),TEXT("ImperialAIDuelSmoke"));
     for(int32 I=0;I<Drones.Num();++I)Rules.SetActive(I,I==0||(I>=Settings.FirstId()&&I<Settings.FirstId()+Settings.Count));
     for(int32 I=0;I<Settings.Count;++I)
     {
@@ -37,7 +37,12 @@ void AImperialMatchManager::StopAIPractice()
     if(Mode!=EImperialMode::AIPractice)return;
     SnapshotAIResult(TEXT("manual_stop"));
     Mode=EImperialMode::AILanding;AILandingAge=0;AILandingTargets.Reset();
-    for(int32 I=0;I<AISettings.Count;++I)AILandingTargets.Add(GetDrone(AISettings.FirstId()+I)->GetActorLocation());
+    for(int32 I=0;I<AISettings.Count;++I)
+    {
+        auto* D=GetDrone(AISettings.FirstId()+I);
+        D->ResetAutonomousHorizontalLimits();
+        AILandingTargets.Add(D->GetActorLocation());
+    }
     Log(TEXT("AI opponents landing vertically. Land your blue striker manually; RESET is an immediate session reset."));
 }
 void AImperialMatchManager::TickAIPractice(float Dt)
@@ -71,6 +76,13 @@ void AImperialMatchManager::TickAIPractice(float Dt)
                 if(Action==ImperialAI::RecoveryAction::Grounded)D->SetAutonomousEnabled(false);
                 StopAIPractice();Log(FString::Printf(TEXT("AI aircraft %d cannot continue. Landing the team; see LAST RESULT for the reason."),I+1));break;
             }
+            // Only the duel striker's transit phases use the tier ceilings. Precision
+            // approach alignment/crossing, recovery escapes and every defender retain defaults.
+            if(AISettings.Duel&&I==0&&Action!=ImperialAI::RecoveryAction::Escape)
+                D->SetAutonomousHorizontalLimits(
+                    static_cast<float>(AIAttacker.GetHorizontalSpeedLimitMps()),
+                    static_cast<float>(AIAttacker.GetHorizontalAccelerationLimitMps2()));
+            else D->ResetAutonomousHorizontalLimits();
             if(Action==ImperialAI::RecoveryAction::Escape)T=AIRecovery[I].GetTarget();
             if(AIRecovery[I].GetAttempts()>Before)Log(FString::Printf(TEXT("AI aircraft %d is blocked: trying a short escape route."),I+1));
             D->SetAutonomousTarget(FVector(T.X,T.Y,T.Z)*100.);

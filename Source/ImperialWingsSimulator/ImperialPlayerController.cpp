@@ -41,7 +41,7 @@ void AImperialPlayerController::FlushPilotContextKeys()
 void AImperialPlayerController::FlushPressedKeys()
 {
     RadioArmGate.Reset();
-    InputResetAtCycles=FPlatformTime::Cycles64();InputResetFrame=GFrameCounter;FreshFlightKeys.Empty();bHeadDragging=false;
+    InputResetAtCycles=FPlatformTime::Cycles64();InputResetFrame=GFrameCounter;++InputContextGeneration;FreshFlightKeys.Empty();bHeadDragging=false;
     Super::FlushPressedKeys();
     if(auto* Drone=Cast<ASoccerDronePawn>(GetPawn()))Drone->ClearManualPilotInput(TEXT("INPUT RESET / DISARMED. RELEASE KEYS, THEN ARM AGAIN."));
     if(!bPreserveRadioWhileFlushing&&GetGameInstance())
@@ -204,6 +204,7 @@ void AImperialPlayerController::SetupInputComponent()
     InputComponent->BindKey(EKeys::H,IE_Pressed,this,&AImperialPlayerController::Hold);
     InputComponent->BindKey(EKeys::R,IE_Pressed,this,&AImperialPlayerController::Return);
     InputComponent->BindKey(EKeys::Home,IE_Pressed,this,&AImperialPlayerController::Reset);
+    InputComponent->BindKey(EKeys::F1,IE_Pressed,this,&AImperialPlayerController::FirstFlightGuide);
     InputComponent->BindKey(EKeys::F5,IE_Pressed,this,&AImperialPlayerController::Export);
     InputComponent->BindKey(EKeys::F6,IE_Pressed,this,&AImperialPlayerController::RecordFlight);
     InputComponent->BindKey(EKeys::F8,IE_Pressed,this,&AImperialPlayerController::SavedRadio);
@@ -246,3 +247,5 @@ void AImperialPlayerController::SavedRadio()
 void AImperialPlayerController::Radio(){if(auto* H=Cast<AImperialHUD>(GetHUD()))H->ToggleRadioPanel();}
 void AImperialPlayerController::ClickHUD(){if(auto* H=Cast<AImperialHUD>(GetHUD()))H->ClickPointer();}
 void AImperialPlayerController::CompactHUD(){if(auto* H=Cast<AImperialHUD>(GetHUD()))H->ToggleCompactView();}
+
+void AImperialPlayerController::FirstFlightGuide(){if(auto* H=Cast<AImperialHUD>(GetHUD()))H->ToggleFirstFlightGuide();}

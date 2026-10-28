@@ -19,5 +19,6 @@ private:
     TArray<TSharedPtr<FJsonValue>> Checks;
     void Check(const TCHAR* Name,bool Passed);
     void CheckStorage();
+    void CheckResponse(class AImperialHUD& Hud, class UImperialRadioSubsystem& Radio, class AImperialMatchManager& Match);
     void Finish();
 };

@@ -46,6 +46,15 @@ public:
     UFUNCTION(BlueprintCallable, Category="Drone|Autonomy")
     void SetAutonomousEnabled(bool bEnabled);
 
+    /** Session-scoped horizontal controller ceilings; no motor/vertical/manual tuning.
+     *  Finite values in 0.1-3.0 m/s and 0.1-4.0 m/s^2 only; rejection retains prior limits.
+     *  AI duel transit is the only production caller. Reset/disable/end restore defaults.
+     */
+    bool SetAutonomousHorizontalLimits(float SpeedMps,float AccelerationMps2);
+    void ResetAutonomousHorizontalLimits();
+    float GetAutonomousHorizontalSpeedLimitMps() const { return AutonomousHorizontalSpeedLimitMps; }
+    float GetAutonomousHorizontalAccelerationLimitMps2() const { return AutonomousHorizontalAccelerationLimitMps2; }
+
     UFUNCTION(BlueprintCallable, Category="Drone|Safety")
     bool SetArmed(bool bShouldArm);
 
@@ -290,6 +299,8 @@ private:
     float UsbPitch = 0.0f;
     float UsbYaw = 0.0f;
     float UsbThrottle = 0.0f;
+    float AutonomousHorizontalSpeedLimitMps = 2.2f;
+    float AutonomousHorizontalAccelerationLimitMps2 = 3.2f;
     float AutonomousThrottle = 0.0f;
     float AutonomousHeading = 0.0f;
     float RotorAngle = 0.0f;

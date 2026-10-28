@@ -35,7 +35,7 @@ def run(args):
     checks=[]
     def check(name,condition):
         checks.append(dict(name=name,passed=bool(condition)))
-        (output/'result.json').write_text(json.dumps(dict(ok=all(c['passed'] for c in checks),checks=checks),indent=2),encoding='utf-8')
+        (output/'result.json').write_text(json.dumps(dict(ok=False,completed=False,checks=checks),indent=2),encoding='utf-8')
         if not condition:raise AssertionError(name)
         print('PASS '+name,flush=True)
     manifest=json.loads((root/'release-manifest.json').read_text(encoding='utf-8-sig'))
@@ -96,6 +96,9 @@ def run(args):
         # Genuine existing local calibration, isolated QA only; never copied to the release.
         storage('existing-real-profile',args.real_profile.resolve())
     check('package remains free of generated pilot data after execution',not any(p.name.casefold() in {'radioprofile.json','pilotcontrols.json','pilotresponse.json'} or p.name=='Saved' for p in root.rglob('*')))
+    expected=16 if args.real_profile else 13
+    assert len(checks)==expected and all(c['passed'] for c in checks),'Incomplete portable verification'
+    (output/'result.json').write_text(json.dumps(dict(ok=True,completed=True,expected_check_count=expected,checks=checks,build=manifest['build']),indent=2),encoding='utf-8')
     print(str(output/'result.json'))
 
 if __name__=='__main__':
@@ -105,4 +108,16 @@ if __name__=='__main__':
     parser.add_argument('--real-profile',type=Path)
     parser.add_argument('--feedback-source',type=Path,default=Path(__file__).resolve().parents[1]/'docs'/'feedback-form.html',
                         help='Reviewed original HTML used to check the bundled feedback form')
-    run(parser.parse_args())
+    args=parser.parse_args()
+    output_preexisting=args.output.exists()
+    try:
+        run(args)
+    except Exception as error:
+        # Preserve previous test runs; mark only this fresh run as failed.
+        if not output_preexisting and args.output.is_dir():
+            result=args.output/'result.json'
+            try: state=json.loads(result.read_text(encoding='utf-8')) if result.exists() else {}
+            except (ValueError,OSError): state={}
+            state.update(ok=False,completed=False,failure=str(error))
+            result.write_text(json.dumps(state,indent=2),encoding='utf-8')
+        raise

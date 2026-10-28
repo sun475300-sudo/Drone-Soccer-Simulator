@@ -9,6 +9,20 @@ int main()
     using namespace ImperialAI;
     Check(!Settings{2,0,1}.Valid());Check(!Settings{5,0,1}.Valid());Check(!Settings{3,-1,1}.Valid());Check(!Settings{3,3,1}.Valid());Check(!Settings{3,0,0}.Valid());
     Check(Speed(0)<Speed(1)&&Speed(1)<Speed(2));Check(Reaction(0)>Reaction(1)&&Reaction(1)>Reaction(2));
+    const double Speeds[]={.50,.85,1.20},Reactions[]={1.65,.80,.35};
+    int Decisions[3]={};
+    for(int Level=0;Level<3;++Level)
+    {
+        Check(std::abs(Speed(Level)-Speeds[Level])<1e-12);
+        Check(std::abs(Reaction(Level)-Reactions[Level])<1e-12);
+        Planner P;Check(P.Reset({3,Level,1}));
+        for(int I=0;I<15;++I)P.Step(.25,{0,0,2.5},{});
+        const auto Before=P.GetTargets();P.Step(.25,{0,0,2.5},{});
+        for(int I=0;I<3;++I)Check(std::abs(Distance(Before[I],P.GetTargets()[I])-Speed(Level)*.25)<1e-10);
+        for(int I=0;I<12;++I)P.Step(.25,{0,0,2.5},{});
+        Decisions[Level]=P.DecisionCount();
+    }
+    Check(Decisions[0]<Decisions[1]&&Decisions[1]<Decisions[2]);
     for(int Count=3;Count<=4;++Count)for(int Level=0;Level<3;++Level)for(std::uint32_t Seed=1;Seed<=32;++Seed)
     {
         Planner A,B;Check(A.Reset({Count,Level,Seed})&&B.Reset({Count,Level,Seed}));

@@ -650,8 +650,25 @@ void ASoccerDronePawn::SetAutonomousTarget(const FVector& WorldPosition)
     }
 }
 
+bool ASoccerDronePawn::SetAutonomousHorizontalLimits(float SpeedMps,float AccelerationMps2)
+{
+    if(!FMath::IsFinite(SpeedMps)||!FMath::IsFinite(AccelerationMps2)||
+       SpeedMps<.1f||SpeedMps>3.f||AccelerationMps2<.1f||AccelerationMps2>4.f)return false;
+    AutonomousHorizontalSpeedLimitMps=SpeedMps;
+    AutonomousHorizontalAccelerationLimitMps2=AccelerationMps2;
+    return true;
+}
+
+void ASoccerDronePawn::ResetAutonomousHorizontalLimits()
+{
+    AutonomousHorizontalSpeedLimitMps=2.2f;
+    AutonomousHorizontalAccelerationLimitMps2=3.2f;
+}
+
 void ASoccerDronePawn::SetAutonomousEnabled(bool bEnabled)
 {
+    // Also restore on an idempotent disable so a later SDACS/HOLD launch cannot inherit AI limits.
+    if(!bEnabled)ResetAutonomousHorizontalLimits();
     if(bEnabled)if(const auto* Match=Cast<AImperialMatchManager>(UGameplayStatics::GetActorOfClass(GetWorld(),AImperialMatchManager::StaticClass()));Match&&!Match->IsAutonomyAllowed())
     {LastSafetyMessage=TEXT("AUTONOMY BLOCKED: PRACTICE ONLY");return;}
     if (bAutonomousEnabled == bEnabled)
@@ -795,6 +812,7 @@ void ASoccerDronePawn::ClearController()
 
 void ASoccerDronePawn::ResetDrone()
 {
+    ResetAutonomousHorizontalLimits();
     bAngleVerificationInput=false;AngleVerificationThrottle=0;AngleVerificationStick=FVector::ZeroVector;
     bAutonomousEnabled = false;
     SetArmed(false);
@@ -878,7 +896,9 @@ FVector ASoccerDronePawn::CalculateAutonomousRate(float& OutCollectiveThrustN,fl
     // Position -> velocity -> acceleration cascade with speed/tilt limits. This keeps
     // planner waypoint changes physically bounded instead of snapping the aircraft.
     FVector DesiredVelocity = PositionErrorM * 0.8;
-    const FVector Horizontal = FVector(DesiredVelocity.X, DesiredVelocity.Y, 0).GetClampedToMaxSize(2.2);
+    // Preserve the original double-valued defaults exactly for all non-transit control.
+    const double HorizontalSpeedLimit = AutonomousHorizontalSpeedLimitMps==2.2f?2.2:static_cast<double>(AutonomousHorizontalSpeedLimitMps);
+    const FVector Horizontal = FVector(DesiredVelocity.X, DesiredVelocity.Y, 0).GetClampedToMaxSize(HorizontalSpeedLimit);
     DesiredVelocity.X = Horizontal.X;
     DesiredVelocity.Y = Horizontal.Y;
     DesiredVelocity.Z = FMath::Clamp(DesiredVelocity.Z, -1.2, 1.5);
@@ -888,7 +908,8 @@ FVector ASoccerDronePawn::CalculateAutonomousRate(float& OutCollectiveThrustN,fl
     AutonomousVelocityIntegral+=VelocityError*(Step*.25);
     for(int32 Axis=0;Axis<3;++Axis)AutonomousVelocityIntegral[Axis]=FMath::Clamp(AutonomousVelocityIntegral[Axis],-.8,.8);
     FVector DesiredAcceleration = VelocityError * 1.6 + AutonomousVelocityIntegral;
-    const FVector HorizontalAcceleration = FVector(DesiredAcceleration.X, DesiredAcceleration.Y, 0).GetClampedToMaxSize(3.2);
+    const double HorizontalAccelerationLimit = AutonomousHorizontalAccelerationLimitMps2==3.2f?3.2:static_cast<double>(AutonomousHorizontalAccelerationLimitMps2);
+    const FVector HorizontalAcceleration = FVector(DesiredAcceleration.X, DesiredAcceleration.Y, 0).GetClampedToMaxSize(HorizontalAccelerationLimit);
     DesiredAcceleration.X = HorizontalAcceleration.X;
     DesiredAcceleration.Y = HorizontalAcceleration.Y;
     DesiredAcceleration.Z = FMath::Clamp(DesiredAcceleration.Z, -3.0, 4.0);

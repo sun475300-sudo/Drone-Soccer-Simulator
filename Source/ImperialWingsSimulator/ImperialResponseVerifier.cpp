@@ -64,9 +64,10 @@ void AImperialResponseVerifier::Tick(float Dt)
         if(!Reload)
         {
             if(!H->IsRadioPanelOpen())H->ToggleRadioPanel();
-            H->NotifyHitBoxClick(TEXT("Radio_Response"));H->NotifyHitBoxClick(TEXT("Response_ExpoUp_0"));H->NotifyHitBoxClick(TEXT("Response_Cancel"));
+            H->NotifyHitBoxClick(TEXT("Radio_Response"));H->NotifyHitBoxClick(TEXT("Response_Advanced"));H->NotifyHitBoxClick(TEXT("Response_ExpoUp_0"));H->NotifyHitBoxClick(TEXT("Response_Cancel"));
             Check(TEXT("cancel does not change response or save"),R->GetPilotResponse().Expo[0]==0&&!IFileManager::Get().FileExists(*ImperialUserData::Path(TEXT("Config/PilotResponse.json"))));
             H->NotifyHitBoxClick(TEXT("Radio_Response"));
+            H->NotifyHitBoxClick(TEXT("Response_Advanced"));
             for(int I=0;I<4;++I)H->NotifyHitBoxClick(TEXT("Response_ExpoUp_0"));
             for(int I=0;I<8;++I)H->NotifyHitBoxClick(TEXT("Response_ExpoUp_2"));
             for(int I=0;I<10;++I)H->NotifyHitBoxClick(TEXT("Response_RateDown_0"));

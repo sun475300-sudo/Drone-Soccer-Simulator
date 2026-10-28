@@ -26,7 +26,7 @@ public:
             Target=Front;Stable=Distance(Position,Front)<.06&&SpeedMps<.12&&UpZ>.98?Stable+Dt:0;
             if(Stable>.6){CrossX=Front.X;Enter(AttackPhase::Cross);}break;
         case AttackPhase::Cross:
-            CrossX=std::max(Goal.X-.8,CrossX-(.35+.1*Level)*Dt);Target={CrossX,Goal.Y,Goal.Z};
+            CrossX=std::max(Goal.X-.8,CrossX-GetCrossTargetSpeedMps()*Dt);Target={CrossX,Goal.Y,Goal.Z};
             if(Position.X<Goal.X-.55||PhaseAge>12)Enter(AttackPhase::Clear);break;
         case AttackPhase::Clear:
             Target={Goal.X-.8,Goal.Y-1.3,Goal.Z-.5};if(Distance(Position,Target)<.3)Enter(AttackPhase::Return);break;
@@ -37,6 +37,17 @@ public:
     }
     AttackPhase GetPhase() const { return Phase; }
     int GetCycles() const { return Cycles; }
+    // Planned crossing speed, not a promise about the physical body's measured speed.
+    double GetCrossTargetSpeedMps() const { return .40+.15*Level; }
+    bool UsesTransitLimits() const
+    { return Phase==AttackPhase::Approach||Phase==AttackPhase::Clear||Phase==AttackPhase::Return; }
+    double GetHorizontalSpeedLimitMps() const
+    { return UsesTransitLimits()?2.35+.20*Level:2.2; }
+    double GetHorizontalAccelerationLimitMps2() const
+    {
+        static constexpr double Acceleration[]={3.35,3.60,3.90};
+        return UsesTransitLimits()?Acceleration[Level]:3.2;
+    }
 private:
     void Enter(AttackPhase P){Phase=P;PhaseAge=Stable=0;}
     AttackPhase Phase=AttackPhase::Lift;

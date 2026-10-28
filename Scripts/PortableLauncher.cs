@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -12,7 +12,7 @@ internal static class PortableLauncher
 {
     static readonly JavaScriptSerializer Json = new JavaScriptSerializer();
     static readonly string Root = AppDomain.CurrentDomain.BaseDirectory;
-    static readonly string Data = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ImperialWingsSimulator", "Saved");
+    static string Data = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ImperialWingsSimulator", "Saved");
     static readonly string Game = Path.Combine(Root,"Windows","ImperialWingsSimulator.exe");
     static bool RuntimeInstalled()
     {
@@ -31,17 +31,33 @@ internal static class PortableLauncher
         foreach(char c in value){if(c=='\\'){slashes++;continue;}if(c=='"'){output.Append('\\',slashes*2+1);output.Append(c);}else{output.Append('\\',slashes);output.Append(c);}slashes=0;}
         output.Append('\\',slashes*2);return output.Append('"').ToString();
     }
+    static string ExplicitDirectory(string[] args, string option)
+    {
+        int index=Array.IndexOf(args,option);
+        if(index<0)return null;
+        if(index+1>=args.Length)throw new ArgumentException(option+" requires an absolute directory.");
+        string value=args[index+1];
+        if(value.Length<3 || value[1]!=':' || (value[2]!='\\' && value[2]!='/'))
+            throw new ArgumentException(option+" requires an absolute local drive path.");
+        return Path.GetFullPath(value);
+    }
     [STAThread] static int Main(string[] args)
     {
         Process bridge=null;string log=null;
         try
         {
-            if(args.Length==2 && args[0]=="--inspect")
+            // Explicit per-process QA/portable paths; the normal user data default is retained.
+            string explicitData=ExplicitDirectory(args,"--data-dir");
+            string engineUserDirectory=ExplicitDirectory(args,"--engine-user-dir");
+            if(explicitData!=null)Data=explicitData;
+            int inspectionIndex=Array.IndexOf(args,"--inspect");
+            if(inspectionIndex>=0)
             {
+                if(inspectionIndex+1>=args.Length)throw new ArgumentException("--inspect requires a result path.");
                 var state=new {windows64=Environment.Is64BitOperatingSystem,game_exists=File.Exists(Game),vc_runtime_installed=RuntimeInstalled(),
                     bridge_exists=File.Exists(Path.Combine(Root,"Guidance","ImperialGuidance.exe")),data_directory=Data,game=Game,
                     requires_installed_python=false,requires_installed_git=false,requires_installed_unreal=false};
-                File.WriteAllText(args[1],Json.Serialize(state),new System.Text.UTF8Encoding(false));
+                File.WriteAllText(args[inspectionIndex+1],Json.Serialize(state),new System.Text.UTF8Encoding(false));
                 return state.windows64 && state.game_exists && state.bridge_exists ? 0 : 2;
             }
             if(!Environment.Is64BitOperatingSystem)throw new Exception("Windows 10/11 64비트 PC가 필요합니다.");
@@ -83,6 +99,7 @@ internal static class PortableLauncher
             if(bridgeUrl==null && Array.IndexOf(args,"--manual-only")<0)
                 MessageBox.Show("자율 훈련 연결을 시작하지 못했습니다. 수동 키보드·USB 조종은 사용할 수 있습니다.\n진단 폴더: "+run,"Imperial Wings",MessageBoxButtons.OK,MessageBoxIcon.Information);
             string options="-windowed -ResX=1600 -ResY=1000 -ForceRes -NoScreenMessages -SaveToUserDir -ImperialDataDir="+Quote(Data);
+            if(engineUserDirectory!=null)options+=" -UserDir="+Quote(engineUserDirectory);
             // Isolated unused loopback port means an unrelated old bridge is never adopted.
             options+=" -ImperialBridgeUrl="+(bridgeUrl??"http://127.0.0.1:1");
             if(!File.Exists(Path.Combine(Data,"Config","VisualQuality.txt")))options+=" -ImperialVisualQuality=Balanced";

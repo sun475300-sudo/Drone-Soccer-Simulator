@@ -21,6 +21,7 @@ public:
     /** Menu/aircraft changes clear flight keys without undoing explicit USB enable. */
     void FlushPilotContextKeys();
     bool IsInputResetThisFrame() const;
+    uint64 GetInputContextGeneration() const { return InputContextGeneration; }
     void SetView(int32 View);
     FVector GetPilotStationPosition() const;
     void ToggleEquipmentInspection();
@@ -51,6 +52,7 @@ private:
     bool bPreserveRadioWhileFlushing=false;
     uint64 InputResetAtCycles=0;
     uint64 InputResetFrame=MAX_uint64;
+    uint64 InputContextGeneration=0;
     TSet<FKey> FreshFlightKeys;
     FVector2D LastHeadPointer=FVector2D::ZeroVector;
     void ConfigureInput();
@@ -62,6 +64,7 @@ private:
     bool HasRadioModal() const;
     void ZoomIn(); void ZoomOut();
     void ClickHUD(); void CompactHUD();
+    void FirstFlightGuide();
     void SavedRadio();void RecordFlight();
     void Fpv(); void Chase(); void Arena(); void Next(); void Auto(); void Hold(); void Return(); void Reset(); void Export(); void Radio();
 };

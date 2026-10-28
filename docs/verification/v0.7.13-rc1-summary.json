@@ -1,0 +1,209 @@
+{
+  "schema": 1,
+  "version": "0.7.13-rc1",
+  "release_tag": "v0.7.13-rc1",
+  "game_build": {
+    "version": "0.7.13-rc1",
+    "source_commit": "df358d8388243d2b447a441e6f840a1b8c8914a6",
+    "source_dirty": true,
+    "source_sha256": "c7feb1cfce27923bcc993e06bfb1736897ffb775858373dc3a88723636afc4c3",
+    "build_utc": "2026-10-28T15:16:25Z",
+    "target": "ImperialWingsSimulator",
+    "platform": "Win64",
+    "configuration": "Shipping",
+    "input_count": 160
+  },
+  "artifacts": [
+    {
+      "name": "ImperialWings-Windows-v0.7.13-rc1.zip",
+      "bytes": 374942586,
+      "sha256": "b9243ad70bb3f6094cd71ed9a491dc95b7be10474688911be7aaa89565aebecd"
+    },
+    {
+      "name": "ImperialWings-Setup-v0.7.13-rc1.exe",
+      "bytes": 375011840,
+      "sha256": "04e01e7bbc2bcfe93a933476651c619bd815fc0024a074d0514aa98e058750e6"
+    }
+  ],
+  "checks": {
+    "first_flight_native": {
+      "checks_per_run": 43,
+      "runs": 4,
+      "fps": [
+        "Editor60",
+        "Shipping20",
+        "Shipping60",
+        "Shipping240"
+      ],
+      "full_six_step_runtime_verified": false
+    },
+    "ai_motion_native": {
+      "checks_per_run": 40,
+      "runs": 3,
+      "fps": [
+        20,
+        60,
+        240
+      ]
+    },
+    "physics": {
+      "scenarios": 5,
+      "external_conditions_per_scenario": 16,
+      "fps": [
+        20,
+        30,
+        60,
+        120,
+        240
+      ],
+      "fixed_timestep_not_render_benchmark": true
+    },
+    "controls": {
+      "editor": 184,
+      "shipping": 184,
+      "game_processes": 36,
+      "game_and_wrapper_returncodes_zero": true
+    },
+    "ai": {
+      "practice": 86,
+      "recovery": 35,
+      "results": 66,
+      "duel": 94,
+      "game_processes": 31,
+      "dt_measured_processes": 9,
+      "dt_not_exported_processes": 22
+    },
+    "ai_gpu": {
+      "checks": 55,
+      "resolution": [
+        1280,
+        720
+      ]
+    },
+    "os_ui": {
+      "checks": 105,
+      "english_guide_checks": 3,
+      "actual_launcher_game_exit_code": 0,
+      "no_physical_stick_calibration": true
+    },
+    "portable": {
+      "checks": 13,
+      "completed": true,
+      "exit_code": 0,
+      "different_physical_pc": false
+    },
+    "installer": {
+      "full_payload_checks": 65,
+      "path_uninstall_helper_checks": 92,
+      "cross_version_checks": 34,
+      "installed_game_checks": 57,
+      "choice_gui_reviewed": true,
+      "gui_install_uninstall_end_to_end": false
+    }
+  },
+  "installer_source_sha256": {
+    "test_installer_fullpayload.py": "3100fcf9610b720ff43169e731da00ba3150f1fc6d3cafae201a404f31e8a3a8",
+    "INSTALLER_TEST_PLAN.md": "7afe770e353a7d363cde37b6bbb714a95233fc5fb40674ffe7d746bbb86b6cd7",
+    "Build-Installer.ps1": "fdf662b548508617f3c01eaca1b6f22fad3fa94516f151bbe0f621f455189ebb",
+    "INSTALLER.md": "fcc46b36c13f10d67de933cb3c55056dfc5b2cd69a66cfd183eae0856284d902",
+    "InstallerSetup.cs": "656d46a254418766cc793e106c032415352a18ed110988d5535f6b5cef6f0dbf"
+  },
+  "performance": {
+    "same_pc": true,
+    "high_ko_arena_apf": true,
+    "repeats_per_condition": 1,
+    "fps_ceiling": 120,
+    "selected_gpu_independently_verified": false,
+    "p99_hitch_recording_on_off_measured": false,
+    "rows": [
+      {
+        "resolution": [
+          1280,
+          720
+        ],
+        "baseline": {
+          "avg_ms": 8.334,
+          "p95_ms": 8.334,
+          "fps": 119.99
+        },
+        "current": {
+          "avg_ms": 8.334,
+          "p95_ms": 8.334,
+          "fps": 119.99
+        }
+      },
+      {
+        "resolution": [
+          1920,
+          1080
+        ],
+        "baseline": {
+          "avg_ms": 10.021,
+          "p95_ms": 10.946,
+          "fps": 99.79
+        },
+        "current": {
+          "avg_ms": 10.018,
+          "p95_ms": 10.973,
+          "fps": 99.82
+        }
+      }
+    ],
+    "interpretation": "One pair per condition; no performance improvement, regression or CPU/GPU bottleneck conclusion."
+  },
+  "evidence": [
+    {
+      "scope": "native",
+      "local_relative_path": "Saved/Verification/rc1-r3-final-native-20261028-152250-3c432026/summary.json",
+      "sha256": "88a680db93515b9bf2d9771de86e51b2c226109b304ce05d2a0837557c59767a"
+    },
+    {
+      "scope": "controls",
+      "local_relative_path": "Saved/Verification/ui-headless-r3-c7feb-mvs9kh81/summary.json",
+      "sha256": "40d0b3f4be8a99f25f18d95fbf47f42893565296e725c513a0b59a026263a35b"
+    },
+    {
+      "scope": "ai",
+      "local_relative_path": "Saved/Verification/r3-ai-independent-20261028-152329-cba1010d/audit-summary.json",
+      "sha256": "06c0809374e90733e681b106c2ab578f05f4eacd1c4aab281d14eca75cceab50"
+    },
+    {
+      "scope": "ai_gpu",
+      "local_relative_path": "Saved/Verification/ai-ui-flow-20261028-153526-602-0285c1f1/summary.json",
+      "sha256": "ad4d26668e8bcc578d883de8be67926332a886843c495e40f1dd0f99303cda40"
+    },
+    {
+      "scope": "os_ui",
+      "local_relative_path": "Saved/Verification/native-final-c7/imperial-ui-smoke-result.json",
+      "sha256": "922e21bd3b266c0098d3beff6f2fe2fac2b7fbf1d2106af9a985bcd04d0528f9"
+    },
+    {
+      "scope": "english_ui",
+      "local_relative_path": "Saved/Verification/native-final-english/ui-20261029-003457-716/result.json",
+      "sha256": "23a189bdf97fa483b3d62440f2f5630402f07ccc5ff7464dc65d3dfeda9c4a79"
+    },
+    {
+      "scope": "portable",
+      "local_relative_path": "Saved/Verification/portable-final-c7-20261028/result.json",
+      "sha256": "7adf5f743976769d7299a33b77e1fbb9c9535ae97647cd15dbe65c01fa90c312"
+    },
+    {
+      "scope": "installer_ui",
+      "local_relative_path": "Saved/Verification/installer-gui-final-20261028/result.json",
+      "sha256": "1f1c43cb24cee958d1e8e9f175e9d4daaae35e4dd9bc35e3180999c7decd8b1b"
+    },
+    {
+      "scope": "performance",
+      "local_relative_path": "Saved/Verification/perf-prepare-20261028-144801-8015a67c/runs-20261028-155610-dab3acd3/summary.json",
+      "sha256": "d7c910572da6b986bc546e493ba73f57ef0e8516b07fb412fd588d61bd4c4e2c"
+    }
+  ],
+  "limitations": [
+    "Complete six-step real keyboard goal/landing chain and novice usability unverified",
+    "Physical Boxer sticks/switches/USB loss and reconnect unverified",
+    "Different physical PC/GPU/Windows account unverified",
+    "Installer unsigned; power-loss recovery and full GUI installation/removal unverified",
+    "All versions share default user data; additional languages/online leaderboards/F7 report dialog not implemented in this release"
+  ],
+  "counting_note": "Repeated checks across scenarios and runtimes, not unique product features. Earlier build identities are excluded."
+}

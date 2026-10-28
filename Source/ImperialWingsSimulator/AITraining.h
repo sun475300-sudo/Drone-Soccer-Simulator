@@ -20,8 +20,8 @@ struct Settings
 };
 inline double Distance(Point A,Point B){return std::sqrt((A.X-B.X)*(A.X-B.X)+(A.Y-B.Y)*(A.Y-B.Y)+(A.Z-B.Z)*(A.Z-B.Z));}
 inline bool Finite(Point P){return std::isfinite(P.X)&&std::isfinite(P.Y)&&std::isfinite(P.Z);}
-inline double Speed(int D){return D==0?.45:(D==1?.75:1.05);}
-inline double Reaction(int D){return D==0?1.8:(D==1?.9:.4);}
+inline double Speed(int D){return D==0?.50:(D==1?.85:1.20);}
+inline double Reaction(int D){return D==0?1.65:(D==1?.80:.35);}
 class Planner
 {
 public:

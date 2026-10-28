@@ -81,6 +81,37 @@ void AImperialRadioUXVerifier::CheckStorage()
     for(const auto& File:Files)if(File.Contains(TEXT(".tmp-")))NoTemps=false;
     Check(TEXT("successful and failed writes leave no temporary siblings"),NoTemps&&Files.Num()==3);
 }
+void AImperialRadioUXVerifier::CheckResponse(AImperialHUD& H,UImperialRadioSubsystem& R,AImperialMatchManager& M)
+{
+    const auto Open=[&](){H.NotifyHitBoxClick(TEXT("Radio_Response"));};
+    const auto Click=[&](const TCHAR* Button){H.NotifyHitBoxClick(Button);};
+    Open();
+    Check(TEXT("response panel starts basic without changing saved response"),!H.IsResponseAdvanced()&&R.GetPilotResponse().RateDegrees[0]==180&&R.GetPilotResponse().Expo[0]==0);
+    Click(TEXT("Response_RateUp_0"));Click(TEXT("Response_ExpoUp_0"));Click(TEXT("Response_Save"));
+    Check(TEXT("hidden advanced controls cannot edit basic response"),R.GetPilotResponse().RateDegrees[0]==180&&R.GetPilotResponse().Expo[0]==0);
+    Open();Click(TEXT("Response_Gentle"));
+    Check(TEXT("basic preset is a draft until explicit save"),R.GetPilotResponse().RateDegrees[0]==180&&R.GetPilotResponse().Expo[0]==0);
+    Click(TEXT("Response_Cancel"));
+    Check(TEXT("cancelling gentle selection retains existing response"),R.GetPilotResponse().RateDegrees[0]==180&&R.GetPilotResponse().Expo[0]==0);
+    Open();Click(TEXT("Response_Advanced"));
+    Check(TEXT("advanced editor opens only on explicit request"),H.IsResponseAdvanced());
+    Click(TEXT("Response_RateUp_0"));Click(TEXT("Response_ExpoUp_1"));Click(TEXT("Response_ArmMode"));
+    Click(TEXT("Response_Advanced"));
+    Check(TEXT("switching to basic does not apply a preset to live response"),!H.IsResponseAdvanced()&&R.GetPilotResponse().RateDegrees[0]==180);
+    Click(TEXT("Response_Save"));
+    Check(TEXT("advanced draft survives switching back to basic and saves custom values"),R.GetPilotResponse().RateDegrees[0]==195&&FMath::IsNearlyEqual(R.GetPilotResponse().Expo[1],.05)&&!R.IsArmToggle());
+    Open();Click(TEXT("Response_Save"));
+    Check(TEXT("opening and saving basic preserves custom response and ARM mode"),R.GetPilotResponse().RateDegrees[0]==195&&FMath::IsNearlyEqual(R.GetPilotResponse().Expo[1],.05)&&!R.IsArmToggle());
+    Open();Click(TEXT("Response_Gentle"));Click(TEXT("Response_Save"));
+    bool Gentle=true;
+    for(int I=0;I<3;++I)Gentle&=R.GetPilotResponse().RateDegrees[I]==(I==2?90:120)&&FMath::IsNearlyEqual(R.GetPilotResponse().Expo[I],.35);
+    Check(TEXT("explicit basic gentle save applies all three documented responses"),Gentle);
+    Check(TEXT("response presets preserve separate ARM binding and mode"),R.GetArmButton()==INDEX_NONE&&!R.IsArmToggle());
+    Open();Click(TEXT("Response_Defaults"));Click(TEXT("Response_Save"));
+    Check(TEXT("basic standard response restores original response only"),R.GetPilotResponse().RateDegrees==ImperialInput::PilotResponse{}.RateDegrees&&R.GetPilotResponse().Expo==ImperialInput::PilotResponse{}.Expo&&!R.IsArmToggle());
+    Check(TEXT("all response edits leave USB disabled and ten aircraft disarmed"),!R.IsEnabled()&&AllDisarmed(M));
+    Open();Click(TEXT("Response_Gentle"));
+}
 void AImperialRadioUXVerifier::Finish()
 {
     auto Result=MakeShared<FJsonObject>();Result->SetBoolField(TEXT("ok"),bOk);Result->SetArrayField(TEXT("checks"),Checks);
@@ -123,10 +154,21 @@ void AImperialRadioUXVerifier::Tick(float Dt)
         Check(TEXT("opening controller panel leaves all ten aircraft disarmed"),H->IsRadioPanelOpen()&&AllDisarmed(*M));
         for(const TCHAR* Label:{TEXT("ENABLE RADIO"),TEXT("RADIO / USB CONTROLLER"),TEXT("THROTTLE"),TEXT("YAW")})
             Check(*FString::Printf(TEXT("Korean controller label translates: %s"),Label),ContainsHangul(ImperialLocalization::Translate(Label)));
+        Check(TEXT("first flight measured percentage is translated without losing its numeric value"),ImperialLocalization::Translate(TEXT("MEASURED 42%"))==TEXT("측정 42%"));
+        Check(TEXT("first flight height and speed translate with both measured decimals preserved"),ImperialLocalization::Translate(TEXT("ALT 0.73 m / SPEED 0.21 m/s"))==TEXT("높이 0.73m / 속도 0.21m/s"));
+
         Check(TEXT("formatted leading count translates and preserves its value"),ImperialLocalization::Translate(TEXT("1 device(s) found. Choose your radio below, or use NEXT DEVICE."))==TEXT("장치 1개를 찾았습니다. 사용할 조종기를 아래에서 선택하세요."));
         Check(TEXT("formatted saved mode message translates and preserves Mode 2"),ContainsHangul(ImperialLocalization::Translate(TEXT("Mode 2 device calibration loaded. Keyboard active; minimum throttle and explicit ENABLE USB required.")))&&ImperialLocalization::Translate(TEXT("Mode 2 device calibration loaded. Keyboard active; minimum throttle and explicit ENABLE USB required.")).Contains(TEXT("2")));
         Check(TEXT("physical-controller ARM failure is translated"),ContainsHangul(ImperialLocalization::Translate(TEXT("USB INPUT LOST / DISARMED"))));
         Check(TEXT("unrecognized device name remains unchanged"),ImperialLocalization::Translate(TEXT("USER USB DEVICE 123"))==TEXT("USER USB DEVICE 123"));
+        const FString* StartupEvent=M->GetEvents().FindByPredicate([](const FString& Event){return Event.StartsWith(TEXT("10 aircraft ready."));});
+        Check(TEXT("startup notice is localized without changing the manager's stored event"),StartupEvent&&ContainsHangul(ImperialLocalization::Translate(*StartupEvent)));
+        Check(TEXT("score notice preserves unequal team scores and return instruction"),ImperialLocalization::Translate(TEXT("GOAL! Blue 12 : 3 Red. Scoring team must all retreat."))==TEXT("골! 파랑 12 : 3 빨강 · 득점 팀은 모두 자기 진영으로 돌아오세요."));
+        Check(TEXT("guard event preserves aircraft ID, percent and decimal energy"),ImperialLocalization::Translate(TEXT("IW-03 guard contact: 78% integrity, 2.5 J estimated dissipated work."))==TEXT("IW-03 가드 충돌 · 내구도 78% · 추정 흡수 에너지 2.5 J"));
+        Check(TEXT("calibration ARM rejection uses generic controller wording"),ImperialLocalization::Translate(TEXT("ARM BLOCKED: CALIBRATE BOXER"))==TEXT("시동 불가: 조종기 스틱을 먼저 보정하세요"));
+        Check(TEXT("set-ended notice preserves manual landing and no new ARM distinction"),ImperialLocalization::Translate(TEXT("Set ended. Manual landing control retained; new ARM and autonomous aids are locked."))==TEXT("세트 종료 · 직접 조종해 착륙하세요. 새 시동과 자율비행은 잠겼습니다."));
+        Check(TEXT("reset failure notice retains unsaved-result warning"),ImperialLocalization::Translate(TEXT("Training reset. AI result NOT SAVED: open LAST RESULT to retry or discard.")).Contains(TEXT("저장되지")));
+        Check(TEXT("formatted set number is preserved"),ImperialLocalization::Translate(TEXT("SET 3 / FIDA CLASS 40"))==TEXT("3세트 / FIDA Class 40"));
         R->DisableRadio();
         Check(TEXT("controller status is translated in Korean"),ContainsHangul(R->GetStatus()));
         H->NotifyHitBoxClick(TEXT("Radio_Mode1"));
@@ -143,6 +185,7 @@ void AImperialRadioUXVerifier::Tick(float Dt)
         H->NotifyHitBoxClick(TEXT("Radio_Language"));
         Check(TEXT("language button switches to English and saves only language preference"),!ImperialLocalization::IsKorean()&&ReadEquals(LanguagePath,TEXT("en")));
         Check(TEXT("English controller label is unchanged"),ImperialLocalization::Translate(TEXT("ENABLE RADIO"))==TEXT("ENABLE RADIO"));
+        Check(TEXT("English score notice stays unchanged after language switch"),ImperialLocalization::Translate(TEXT("GOAL! Blue 12 : 3 Red. Scoring team must all retreat."))==TEXT("GOAL! Blue 12 : 3 Red. Scoring team must all retreat."));
         R->DisableRadio();
         Check(TEXT("existing status renders English after changing language"),!ContainsHangul(R->GetStatus())&&R->GetStatus().Contains(TEXT("Keyboard input selected")));
 #if PLATFORM_WINDOWS
@@ -167,13 +210,30 @@ void AImperialRadioUXVerifier::Tick(float Dt)
         if(!CaptureDir.IsEmpty())FScreenshotRequest::RequestScreenshot(FPaths::Combine(CaptureDir,TEXT("controller-en.png")),true,false);
         Stage=4;Age=0;return;
     }
+    if(Stage==5&&Age>.75)
+    {
+        if(!CaptureDir.IsEmpty())FScreenshotRequest::RequestScreenshot(FPaths::Combine(CaptureDir,TEXT("response-basic-ko.png")),true,false);
+        Stage=6;Age=0;return;
+    }
+    if(Stage==6&&Age>.75)
+    {H->NotifyHitBoxClick(TEXT("Response_Advanced"));Stage=7;Age=0;return;}
+    if(Stage==7&&Age>.75)
+    {
+        if(!CaptureDir.IsEmpty())FScreenshotRequest::RequestScreenshot(FPaths::Combine(CaptureDir,TEXT("response-advanced-ko.png")),true,false);
+        Stage=8;Age=0;return;
+    }
+    if(Stage==8&&Age>.75)
+    {
+        H->NotifyHitBoxClick(TEXT("Response_Cancel"));
+        H->NotifyHitBoxClick(TEXT("Radio_Language"));
+        Check(TEXT("fixture leaves English persisted for independent process reload"),!ImperialLocalization::IsKorean()&&ReadEquals(LanguagePath,TEXT("en")));
+        Check(TEXT("UI and storage tests never create a calibration file"),!IFileManager::Get().FileExists(*R->GetProfilePath()));
+        Finish();return;
+    }
     if(Stage!=4||Age<.75)return;
     H->NotifyHitBoxClick(TEXT("Radio_Language"));
     Check(TEXT("switching back to Korean persists ko"),ImperialLocalization::IsKorean()&&ReadEquals(LanguagePath,TEXT("ko")));
     H->NotifyHitBoxClick(TEXT("Radio_Mode2"));
     Check(TEXT("Korean UI preserves Mode 2 selection without changing motor/input gates"),R->GetStickMode()==ImperialRadio::StickMode::Mode2&&!R->IsEnabled()&&AllDisarmed(*M));
-    H->NotifyHitBoxClick(TEXT("Radio_Language"));
-    Check(TEXT("fixture leaves English persisted for independent process reload"),!ImperialLocalization::IsKorean()&&ReadEquals(LanguagePath,TEXT("en")));
-    Check(TEXT("UI and storage tests never create a calibration file"),!IFileManager::Get().FileExists(*R->GetProfilePath()));
-    Finish();
+    CheckResponse(*H,*R,*M);Stage=5;Age=0;
 }

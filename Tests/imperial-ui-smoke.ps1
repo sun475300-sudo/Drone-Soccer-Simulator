@@ -18,7 +18,9 @@ param(
     [switch]$LayoutOnly,
     [string]$ExpectedSourceSha256 = '',
     [switch]$PrepareBoxer,
-    [switch]$ControllerOnly
+    [switch]$ControllerOnly,
+    [switch]$CheckResponseSetup,
+    [switch]$CheckFirstFlightSetup
 )
 
 Set-StrictMode -Version Latest
@@ -121,9 +123,18 @@ function Assert-TargetForeground {
     }
 }
 
-function Invoke-HudClick([double]$X, [double]$Y) {
+function Invoke-HudClick([double]$X, [double]$Y, [ValidateSet('Main','Radio','Guide')][string]$Space='Main') {
     Assert-TargetForeground
     $bounds = Get-ClientBounds
+    if($Space -eq 'Radio'){
+        $bounds.Scale=[Math]::Max($bounds.Scale,[Math]::Min(1.0,[Math]::Min(($bounds.Width-32)/960.0,($bounds.Height-32)/748.0)))
+        $bounds.OffsetX=$bounds.Width/2.0-800*$bounds.Scale
+        $bounds.OffsetY=$bounds.Height/2.0-500*$bounds.Scale
+    } elseif($Space -eq 'Guide'){
+        $bounds.Scale=[Math]::Max($bounds.Scale,[Math]::Min(1.0,($bounds.Width-32)/902.0))
+        $bounds.OffsetX=$bounds.Width/2.0-757*$bounds.Scale
+        $bounds.OffsetY=$bounds.Height-16-938*$bounds.Scale
+    }
     $screenX = [int][Math]::Round($bounds.X + $bounds.OffsetX + $X * $bounds.Scale)
     $screenY = [int][Math]::Round($bounds.Y + $bounds.OffsetY + $Y * $bounds.Scale)
     $before = [ImperialWingsSimulator.UiPoint]::new()
@@ -153,7 +164,7 @@ function Invoke-HudClick([double]$X, [double]$Y) {
         [ImperialWingsSimulator.NativeUi]::mouse_event(0x0004, 0, 0, 0, [UIntPtr]::Zero)
     }
     Start-Sleep -Milliseconds 180
-    $script:inputActions.Add([ordered]@{ action = 'HUD click'; time_utc = [DateTime]::UtcNow.ToString('o'); logical_x = $X; logical_y = $Y; screen_x = $screenX; screen_y = $screenY; cursor_before_down_x = $before.X; cursor_before_down_y = $before.Y; cursor_while_down_x = $pressed.X; cursor_while_down_y = $pressed.Y })
+    $script:inputActions.Add([ordered]@{ action = 'HUD click'; time_utc = [DateTime]::UtcNow.ToString('o'); logical_x = $X; logical_y = $Y; layout_space = $Space; screen_x = $screenX; screen_y = $screenY; cursor_before_down_x = $before.X; cursor_before_down_y = $before.Y; cursor_while_down_x = $pressed.X; cursor_while_down_y = $pressed.Y })
     Assert-TargetForeground
 }
 
@@ -248,6 +259,16 @@ try {
     if ($processInfo.Name -match $packagedProcessPattern -and (-not $processInfo.ExecutablePath -or -not $processInfo.ExecutablePath.StartsWith($projectDirectory + '\', [StringComparison]::OrdinalIgnoreCase))) {
         throw 'The requested packaged executable must be inside this ImperialWingsSimulator project directory.'
     }
+    if($CheckResponseSetup -or $CheckFirstFlightSetup){
+        $isolatedData=Split-Path -Parent $reportsDirectory
+        $argument=[regex]::Match($processInfo.CommandLine,'(?i)(?:^|\s)"-ImperialDataDir=([^"]+)"(?:\s|$)|(?:^|\s)-ImperialDataDir=([^\s"]+)(?:\s|$)')
+        $runtimeData=if($argument.Groups[1].Success){$argument.Groups[1].Value}else{$argument.Groups[2].Value}
+        if(-not $ControllerOnly -or -not $runtimeData -or -not $isolatedData.StartsWith($savedDirectory+'\',[StringComparison]::OrdinalIgnoreCase) -or [IO.Path]::GetFullPath($runtimeData) -ne $isolatedData){
+            throw 'Response screen tests require ControllerOnly and matching explicit isolated data inside project Saved.'
+        }
+        $responsePath=Join-Path $isolatedData 'Config\PilotResponse.json'
+        if((Test-Path -LiteralPath $responsePath) -or (Test-Path -LiteralPath (Join-Path $isolatedData 'Config\RadioProfile.json'))){throw 'Response screen test requires new QA settings, never an existing user profile.'}
+    }
     $windows = [Collections.Generic.List[object]]::new()
     $callback = [ImperialWingsSimulator.NativeUi+EnumWindowsCallback]{
         param([IntPtr]$candidate, [IntPtr]$extra)
@@ -318,7 +339,7 @@ try {
     if($ControllerOnly){
         $profilePath=Join-Path (Split-Path -Parent $reportsDirectory) 'Config\RadioProfile.json'
         $controllerProfileBefore=if(Test-Path -LiteralPath $profilePath){(Get-FileHash -LiteralPath $profilePath).Hash}else{'ABSENT'}
-        Invoke-HudClick 515 676 # Explicit saved-radio connection, never automatic ARM.
+        Invoke-HudClick 515 676 -Space Radio # Explicit saved-radio connection, never automatic ARM.
         $savedAttempt=Export-FleetSnapshot 'controller-saved-connect' -ViaShortcut
         Assert-Check 'Saved connection never arms aircraft' (Test-DisarmedFleet $savedAttempt) 'The explicit reconnect action leaves all ten motors disarmed.'
         if($controllerProfileBefore -eq 'ABSENT'){
@@ -326,27 +347,50 @@ try {
         }
         $diagnostics=Join-Path (Split-Path -Parent $reportsDirectory) 'Diagnostics'
         $oldReports=@(Get-ChildItem -LiteralPath $diagnostics -Filter 'radio-*.json' -ErrorAction SilentlyContinue | ForEach-Object FullName)
-        Invoke-HudClick 1140 849
+        Invoke-HudClick 1140 849 -Space Radio
         Start-Sleep -Milliseconds 450
         $newReport=Get-ChildItem -LiteralPath $diagnostics -Filter 'radio-*.json' | Where-Object {$_.FullName -notin $oldReports} | Sort-Object LastWriteTime -Descending | Select-Object -First 1
         Assert-Check 'Device report exports actual Windows devices' ($null -ne $newReport) 'The real diagnostic action produced a new JSON file.'
         $deviceReport=Get-Content -LiteralPath $newReport.FullName -Raw|ConvertFrom-Json
         if($controllerProfileBefore -eq 'ABSENT' -and @($deviceReport.devices).Count -gt 0){
-            Invoke-HudClick 565 342 # First actual device card, not a guessed Windows slot.
+            Invoke-HudClick 565 342 -Space Radio # First actual device card, not a guessed Windows slot.
             $card=Export-FleetSnapshot 'controller-device-card' -ViaShortcut
-            Assert-Check 'Device card selects listed physical controller' ($card.Rows[0].radio_connected -eq '1' -and $card.Rows[0].radio_device_id -eq $deviceReport.devices[0].driver_id) 'Selected driver ID matches the first device in the Windows diagnostic list.'
+            Assert-Check 'Device card selects a listed Windows device' ($card.Rows[0].radio_connected -eq '1' -and $card.Rows[0].radio_device_id -eq $deviceReport.devices[0].driver_id) 'Selected driver ID matches the first device in the Windows diagnostic list.'
             Assert-Check 'Device selection does not enable or arm' ((Test-DisarmedFleet $card) -and $card.Rows[0].radio_enabled -eq '0') 'Selecting a device does not bypass physical calibration.'
         }
         Save-ClientScreenshot 'controller-simple-view'
-        Invoke-HudClick 1070 164
+        Invoke-HudClick 1070 164 -Space Radio
         Save-ClientScreenshot 'controller-advanced-view'
-        Invoke-HudClick 1070 164
+        Invoke-HudClick 1070 164 -Space Radio
         Save-ClientScreenshot 'controller-simple-restored'
+        if($CheckResponseSetup){
+            Invoke-HudClick 1030 718 -Space Radio # Basic response opens without applying a preset.
+            Save-ClientScreenshot 'response-basic'
+            Assert-Check 'Opening basic response does not save defaults' (-not(Test-Path -LiteralPath $responsePath)) 'Custom settings are not replaced just by entering the screen.'
+            Invoke-HudClick 560 338 -Space Radio # Gentle preview.
+            Invoke-HudClick 1120 801 -Space Radio # Cancel.
+            Assert-Check 'Cancelling basic preset creates no settings' (-not(Test-Path -LiteralPath $responsePath)) 'Native mouse selection remains a draft.'
+            Invoke-HudClick 1030 718 -Space Radio
+            Invoke-HudClick 560 338 -Space Radio
+            Invoke-HudClick 860 801 -Space Radio # Explicit save.
+            $gentle=Get-Content -LiteralPath $responsePath -Raw | ConvertFrom-Json
+            Assert-Check 'Native basic save applies gentle response' ($gentle.rate_0 -eq 120 -and $gentle.rate_1 -eq 120 -and $gentle.rate_2 -eq 90 -and $gentle.expo_0 -eq .35) 'QA settings contain the chosen response, with no calibration changes.'
+            Invoke-HudClick 1030 718 -Space Radio
+            Invoke-HudClick 1120 210 -Space Radio # Advanced response.
+            Invoke-HudClick 523 327 -Space Radio # Roll rate +15.
+            Save-ClientScreenshot 'response-advanced'
+            Invoke-HudClick 1120 210 -Space Radio # Basic retains the custom draft.
+            Invoke-HudClick 860 801 -Space Radio
+            $custom=Get-Content -LiteralPath $responsePath -Raw | ConvertFrom-Json
+            Assert-Check 'Native basic-advanced switch preserves custom draft' ($custom.rate_0 -eq 135 -and $custom.rate_1 -eq 120 -and $custom.expo_0 -eq .35) 'Saving from basic retains the edit made in advanced.'
+            $responseFleet=Export-FleetSnapshot 'controller-response-saved' -ViaShortcut
+            Assert-Check 'Native response save keeps USB disabled and motors stopped' ((Test-DisarmedFleet $responseFleet) -and $responseFleet.Rows[0].radio_enabled -eq '0') 'Saving never activates or arms a controller.'
+        }
     }
     Invoke-HudClick 109 171 # Underlying AUTO must be consumed by the modal backdrop.
     $uncalibratedAtStart = $ready.Rows[0].radio_calibrated -eq '0'
     if ($uncalibratedAtStart) {
-        Invoke-HudClick 615 801 # ENABLE RADIO before physical calibration must fail.
+        Invoke-HudClick 615 801 -Space Radio # ENABLE RADIO before physical calibration must fail.
         Save-ClientScreenshot '01b-uncalibrated-radio-refused'
     } else {
         $script:checks.Add([ordered]@{ name = 'Uncalibrated radio activation refusal'; passed = $null; skipped = $true; detail = 'An existing calibrated device profile was preserved; no calibration state or physical stick movement was synthesized.' })
@@ -359,15 +403,38 @@ try {
         Assert-Check 'Uncalibrated radio activation is rejected' (@($radioClosed.Rows | Where-Object { $_.radio_enabled -ne '0' -or $_.radio_calibrated -ne '0' }).Count -eq 0) 'An explicit ENABLE RADIO attempt kept the real uncalibrated USB source disabled.'
     }
     Assert-MatchUiState $radioClosed 'IW-01' 1
+    if($CheckFirstFlightSetup){
+        Invoke-NativeKey 0x70 # F1 opens only the non-modal guide.
+        Save-ClientScreenshot 'guide-native-ready'
+        $guideOpened=Export-FleetSnapshot 'guide-native-opened' -ViaShortcut
+        Assert-Check 'F1 guide opening preserves manual disarmed fleet' ((Test-DisarmedFleet $guideOpened) -and $guideOpened.Rows[0].radio_enabled -eq '0') 'Opening help does not select, arm, enable USB or change pilot input.'
+        Assert-MatchUiState $guideOpened 'IW-01' 1
+        Invoke-HudClick 550 912 -Space Guide # Explicit measured-guide START.
+        $guideStart=Export-FleetSnapshot 'guide-native-start' -ViaShortcut
+        Assert-Check 'Native measured guide start leaves ARM separate' ((Test-DisarmedFleet $guideStart) -and $guideStart.Rows[0].radio_enabled -eq '0') 'The observer starts; the pilot still controls all motors.'
+        Save-ClientScreenshot 'guide-native-takeoff'
+        Invoke-HudClick 460 912 -Space Guide # NEXT is disabled until measured completion.
+        $guideIncomplete=Export-FleetSnapshot 'guide-native-incomplete' -ViaShortcut
+        Assert-Check 'Incomplete guide NEXT cannot fly or arm' (Test-DisarmedFleet $guideIncomplete) 'An incomplete measurement does not advance or issue flight commands.'
+        Invoke-HudClick 704 912 -Space Guide # Retry only this observation step.
+        $guideRetry=Export-FleetSnapshot 'guide-native-retry' -ViaShortcut
+        Assert-Check 'Retrying the guide step preserves motor safety' (Test-DisarmedFleet $guideRetry) 'Retry observes the current position and never flies.'
+        Invoke-NativeKey 0x70 # F1 closes only guidance.
+        $guideClosed=Export-FleetSnapshot 'guide-native-closed' -ViaShortcut
+        Assert-Check 'F1 closes guidance without arming or enabling USB' ((Test-DisarmedFleet $guideClosed) -and $guideClosed.Rows[0].radio_enabled -eq '0') 'Closing observation does not change flight ownership.'
+        Invoke-NativeKey 0x70
+        Save-ClientScreenshot 'guide-native-reopened'
+        Invoke-HudClick 1164 730 -Space Guide # Close button uses the same visibility-only path.
+    }
     if($PrepareBoxer){
         Invoke-NativeKey 0x43
         $boxerState=Export-FleetSnapshot 'boxer-select-current' -ViaShortcut
         for($step=0;$step -lt 16 -and $boxerState.Rows[0].radio_device_id -ne '1209:4F54';$step++){
-            Invoke-HudClick 1198 222
+            Invoke-HudClick 1198 222 -Space Radio
             $boxerState=Export-FleetSnapshot ('boxer-select-'+$step) -ViaShortcut
         }
         Assert-Check 'Actual Boxer saved profile loaded' ($boxerState.Rows[0].radio_connected -eq '1' -and $boxerState.Rows[0].radio_device_id -eq '1209:4F54' -and $boxerState.Rows[0].radio_calibrated -eq '1') 'The real saved profile was loaded for the selected Windows identity.'
-        Invoke-HudClick 615 801
+        Invoke-HudClick 615 801 -Space Radio
         Save-ClientScreenshot 'boxer-angle-profile-panel'
         Invoke-NativeKey 0x43
         $prepared=Export-FleetSnapshot 'boxer-angle-ready'
@@ -384,12 +451,12 @@ try {
         Invoke-NativeKey 0x43
         $deviceState = Export-FleetSnapshot '01d-guided-device' -ViaShortcut
         for ($attempt = 0; $attempt -lt 16 -and $deviceState.Rows[0].radio_device_id -ne $GuidedDeviceId; $attempt++) {
-            Invoke-HudClick 1198 222 # NEXT DEVICE, actual Windows enumeration only.
+            Invoke-HudClick 1198 222 -Space Radio # NEXT DEVICE, actual Windows enumeration only.
             $deviceState = Export-FleetSnapshot "01d-guided-device-$attempt" -ViaShortcut
         }
         Assert-Check 'Guided setup uses selected physical device' ($deviceState.Rows[0].radio_connected -eq '1' -and $deviceState.Rows[0].radio_device_id -eq $GuidedDeviceId) "Actual selected driver ID is $GuidedDeviceId."
-        Invoke-HudClick 528 536 # Select MODE 2 for this physical Mode 2 fixture.
-        Invoke-HudClick 706 536 # STICK SETUP / MODE 2.
+        Invoke-HudClick 528 536 -Space Radio # Select MODE 2 for this physical Mode 2 fixture.
+        Invoke-HudClick 706 536 -Space Radio # STICK SETUP / MODE 2.
         Save-ClientScreenshot '01e-guided-mode2-ready'
         $guideReady = Export-FleetSnapshot '01e-guided-ready' -ViaShortcut
         Assert-Check 'Guided setup opens at first ready step' ($guideReady.Rows[0].radio_setup_phase -eq '1' -and $guideReady.Rows[0].radio_setup_channel -eq '0') 'No channel assignment is inferred before actual physical movement.'

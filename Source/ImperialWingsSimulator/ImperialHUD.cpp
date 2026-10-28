@@ -1,5 +1,6 @@
 #include "ImperialHUD.h"
 #include "ImperialLocalization.h"
+#include "ImperialFirstFlightGuide.h"
 #include "ImperialMatchManager.h"
 #include "ImperialPlayerController.h"
 #include "SoccerDronePawn.h"
@@ -60,20 +61,42 @@ void AImperialHUD::Panel(float X,float Y,float W,float H)
     Rect(X,Y,W,H,Navy);Rect(X,Y,W,1,Edge);Rect(X,Y+H-1,W,1,Edge);
     Rect(X,Y,1,H,Edge);Rect(X+W-1,Y,1,H,Edge);Bounds.Emplace(Screen(X,Y),Screen(X+W,Y+H));
 }
+void AImperialHUD::StatusText(const FString& Value,float X,float Y,float Width,FLinearColor Color)
+{
+    // Reserve two readable lines instead of removing the end of a safety instruction.
+    FString Remaining=ImperialLocalization::Translate(Value);
+    for(int32 Line=0;Line<2&&!Remaining.IsEmpty();++Line)
+    {
+        int32 Count=Remaining.Len();
+        while(Count>1&&Fit(Remaining.Left(Count),16,Width)!=Remaining.Left(Count))--Count;
+        if(Count<Remaining.Len())
+        {
+            const int32 Space=Remaining.Left(Count).Find(TEXT(" "),ESearchCase::CaseSensitive,ESearchDir::FromEnd);
+            if(Space>Count/2)Count=Space;
+        }
+        Text(Line==1?Fit(Remaining,16,Width):Remaining.Left(Count),X,Y+Line*20,16,Color);
+        Remaining=Remaining.Mid(Count).TrimStart();
+    }
+}
 void AImperialHUD::Button(FName Name,const FString& Label,float X,float Y,float W,float H,bool Active,bool Warning)
 {
     const auto* RoleController=Cast<AImperialPlayerController>(PlayerOwner);
     const bool ReadOnly=RoleController&&RoleController->IsReadOnlyView();
     const bool AutonomousAction=Name==TEXT("Auto")||Name==TEXT("Hold")||Name==TEXT("Return");
+    const bool AIDraftAction=Name==TEXT("AI_Defence")||Name==TEXT("AI_Duel")||Name==TEXT("AI_Count3")||Name==TEXT("AI_Count4")||
+        Name==TEXT("AI_Easy")||Name==TEXT("AI_Medium")||Name==TEXT("AI_Hard")||Name==TEXT("AI_Seed")||Name==TEXT("AI_Start");
+    const auto* GuideNext=Name==TEXT("FirstFlight_Next")?
+        Cast<AImperialFirstFlightGuide>(UGameplayStatics::GetActorOfClass(GetWorld(),AImperialFirstFlightGuide::StaticClass())):nullptr;
     const bool Disabled=(ReadOnly&&(AutonomousAction||Name==TEXT("Manual")||Name==TEXT("Reset")||Name==TEXT("StartMatch")||Name==TEXT("Arm")||Name==TEXT("ArmSelected")))||
-        (Match.IsValid()&&!Match->IsAutonomyAllowed()&&AutonomousAction);
-    const bool Hover=FBox2D(Screen(X,Y),Screen(X+W,Y+H)).IsInside(Pointer);
+        (Match.IsValid()&&((!Match->IsAutonomyAllowed()&&AutonomousAction)||(Match->IsAIPracticeActive()&&AIDraftAction)))||
+        (Name==TEXT("FirstFlight_Next")&&(!GuideNext||!GuideNext->IsActive()||!GuideNext->IsStepComplete()));
+    const bool Hover=!Disabled&&FBox2D(Screen(X,Y),Screen(X+W,Y+H)).IsInside(Pointer);
     const auto Accent=Warning?Orange:Cyan;
     Rect(X,Y,W,H,Active||Hover?FLinearColor(.045f,.23f,.28f,.97f):FLinearColor(.055f,.10f,.15f,.97f));
     Rect(X,Y,W,1,Active||Hover?Accent:Edge);if(Active||Hover)Rect(X,Y,2,H,Accent);
     const FString Display=ImperialLocalization::Translate(Label);
-    float LabelSize=13;
-    while(LabelSize>10&&Fit(Display,LabelSize,W-22)!=Display)LabelSize-=.5f;
+    float LabelSize=ButtonTextSize;
+    while(LabelSize>ButtonTextSize-3&&Fit(Display,LabelSize,W-22)!=Display)LabelSize-=.5f;
     Text(Fit(Display,LabelSize,W-22),X+11,Y+(H-LabelSize)*.5f,LabelSize,Disabled?Muted:(Active||Hover||Warning?Accent:White));
     if(!Disabled)ButtonTargets.Add({Name,FBox2D(Screen(X,Y),Screen(X+W,Y+H)),ButtonPriority});
 }
@@ -138,6 +161,7 @@ void AImperialHUD::DrawHUD()
     Pointer=FVector2D(-1000,-1000);float MX=0,MY=0;
     if(PlayerOwner&&PlayerOwner->GetMousePosition(MX,MY))Pointer=FVector2D(MX,MY);
     auto* M=FindMatch();if(!M)return;
+    const bool FirstFlightVisible=bFirstFlightVisible;
     const auto& Drones=M->GetDrones();auto* Selected=M->GetSelectedDrone();
     if(bCompactView&&!IsPilotMenuOpen())
     {
@@ -150,12 +174,18 @@ void AImperialHUD::DrawHUD()
         Panel(24,934,1552,42);
         if(Selected)Text(FString::Printf(TEXT("%s   %s   ALT %.2f m   THR %.0f%%   BAT %.0f%% / %.1f V"),*UnitName(M->GetSelected()),*Selected->GetPilotStatus(),Selected->GetAltitudeMeters(),Selected->GetThrottle()*100,Selected->GetBatteryPercent(),Selected->GetBatteryVoltage()),40,947,13,White);
         Text(TEXT("F10 PANELS  |  C USB"),1548,950,11,Cyan,true);
+        DrawFirstFlightGuide();
         return;
     }
     Panel(24,24,1552,102);Panel(24,142,1172,58);Panel(1220,142,356,452);
     Panel(1220,610,356,316);Panel(24,218,260,190);Panel(24,424,260,123);
     const bool UnsavedAI=M->GetAIResult().Exists()&&!M->GetAIResult().bSaved;
     Button(TEXT("AI_Open"),M->IsAIPracticeActive()?TEXT("AI PRACTICE / SETTINGS & STOP"):(UnsavedAI?TEXT("AI PRACTICE / UNSAVED RESULT"):TEXT("AI PRACTICE / 3-4 DEFENDERS")),730,736,466,44,M->IsAIPracticeActive(),UnsavedAI);
+    if(!FirstFlightVisible)
+    {
+        const TGuardValue<float> GuideEntrySize(ButtonTextSize,FMath::Clamp(16.f/FMath::Max(Scale,.1f),16.f,24.f));
+        Button(TEXT("FirstFlight_Open"),TEXT("F1 FIRST FLIGHT GUIDE"),730,796,466,38);
+    }
     Panel(24,736,680,44);Panel(24,798,680,128);Panel(24,944,1552,32);
     Rect(24,24,5,102,Cyan);
     Text(TEXT("IMPERIAL WINGS"),45,42,31,White);
@@ -251,7 +281,7 @@ void AImperialHUD::DrawHUD()
     Rect(24,736,3,44,Cyan);Text(Fit(M->GetNotice(),12,636),42,752,12,White);
     Text(TEXT("SESSION EVENTS"),42,814,12,White);Rect(42,839,644,1,Edge);
     const auto& Events=M->GetEvents();int32 Row=0;
-    for(int32 I=Events.Num()-1;I>=0&&Row<3;--I,++Row)Text(Fit(Events[I],12,640),43,851+Row*23,12,Row==0?White:Muted);
+    for(int32 I=Events.Num()-1;!FirstFlightVisible&&I>=0&&Row<3;--I,++Row)Text(Fit(Events[I],12,640),43,851+Row*23,12,Row==0?White:Muted);
     Text(TEXT("SPACE ARM   ARROWS THROTTLE   WASD PITCH / ROLL   QE YAW"),42,956,10,Cyan);
     const auto& Timing=M->GetSimulationTime();
     if(Timing.LimitedFrames>0)Text(FString::Printf(TEXT("PHYSICS LIMITED: %llu frames | %.3f s omitted | match clock continues"),Timing.LimitedFrames,Timing.DroppedSeconds),42,928,11,Cyan);
@@ -271,12 +301,68 @@ void AImperialHUD::DrawHUD()
             const auto U=(P-Origin)/Scale;Text(UnitName(M->GetSelected()),U.X+22,U.Y-8,12,C);
         }
     }
+    DrawFirstFlightGuide();
     if(bRadioPanelOpen)DrawRadioPanel(*M);
     if(bAIPracticePanel)DrawAIPracticePanel(*M);
 }
 
+void AImperialHUD::ToggleFirstFlightGuide()
+{
+    bFirstFlightVisible=!bFirstFlightVisible;
+    // Hiding stops observation only. F1 never flushes input or changes aircraft state.
+    if(!bFirstFlightVisible)
+        if(auto* Guide=Cast<AImperialFirstFlightGuide>(UGameplayStatics::GetActorOfClass(GetWorld(),AImperialFirstFlightGuide::StaticClass()));
+           Guide&&Guide->IsActive())Guide->StopGuide();
+}
+
+void AImperialHUD::DrawFirstFlightGuide()
+{
+    if(!bFirstFlightVisible||IsPilotMenuOpen())return;
+    auto* Guide=Cast<AImperialFirstFlightGuide>(UGameplayStatics::GetActorOfClass(GetWorld(),AImperialFirstFlightGuide::StaticClass()));
+    // At 720p, keep the guide at native scale when its 902px width fits.
+    // Restore the fleet HUD transform after rendering this non-modal bottom strip.
+    const float GuideScale=FMath::Max(Scale,FMath::Min(1.f,(Canvas->SizeX-32.f)/902.f));
+    const TGuardValue<float> ScaleGuard(Scale,GuideScale);
+    const TGuardValue<FVector2D> OriginGuard(Origin,FVector2D(Canvas->SizeX*.5f-757.f*Scale,Canvas->SizeY-16.f-938.f*Scale));
+    const TGuardValue<float> ButtonSizeGuard(ButtonTextSize,16);
+    Rect(306,708,902,230,FLinearColor(.018f,.032f,.052f,1));
+    Panel(306,708,902,230);ButtonPriority=20;
+    ButtonTargets.Add({TEXT("FirstFlight_Backdrop"),FBox2D(Screen(306,708),Screen(1208,938)),20});
+    Button(TEXT("FirstFlight_Close"),TEXT("CLOSE"),1133,716,63,28);
+    if(!Guide)
+    {
+        Text(TEXT("FIRST FLIGHT / KEYBOARD GUIDE"),322,720,18,Cyan);
+        StatusText(TEXT("The first-flight guide is preparing. Try again when the arena is ready."),322,758,870,Amber);
+        ButtonPriority=10;return;
+    }
+    const bool Active=Guide->IsActive(),Complete=Guide->GetStepIndex()==Guide->GetStepCount()&&Guide->IsStepComplete();
+    const FString Title=Active||Complete?Guide->GetTitle():ImperialLocalization::Translate(TEXT("FIRST FLIGHT / KEYBOARD GUIDE"));
+    Text(Fit(Title,18,790),322,720,18,Complete?Green:Cyan);
+    StatusText(Active||Complete?Guide->GetInstruction():FString(TEXT("Start with keyboard, the blue striker, and every aircraft landed and disarmed.")),322,748,870,White);
+    StatusText(Active||Complete?Guide->GetSecondaryHint():FString(TEXT("Choose START GUIDE. It only observes: you control all motors and flight.")),322,792,870,Muted);
+    StatusText(Guide->GetStatus(),322,836,870,Active?(Guide->IsStepComplete()?Green:Cyan):(Complete?Green:Amber));
+    const float Progress=FMath::IsFinite(Guide->GetProgress())?FMath::Clamp(Guide->GetProgress(),0.f,1.f):0.f;
+    Rect(322,882,430,5,Edge);Rect(322,882,430*Progress,5,Guide->IsStepComplete()?Green:Cyan);
+    Text(FString::Printf(TEXT("MEASURED %.0f%%"),Progress*100),766,874,14,Guide->IsStepComplete()?Green:Cyan);
+    if(auto* Manager=FindMatch())if(auto* Drone=Manager->GetDrone(0))
+        Text(FString::Printf(TEXT("ALT %.2f m / SPEED %.2f m/s"),Drone->GetAltitudeMeters(),Drone->GetFlightSpeed()),1192,874,14,White,true);
+    if(Active)
+    {
+        Button(TEXT("FirstFlight_Next"),TEXT("NEXT STEP"),322,896,280,32,Guide->IsStepComplete());
+        Button(TEXT("FirstFlight_RetryStep"),TEXT("RETRY THIS STEP"),614,896,180,32);
+    }
+    else Button(TEXT("FirstFlight_Start"),Complete?TEXT("START GUIDE AGAIN"):TEXT("START GUIDE / MOTORS STAY OFF"),322,896,472,32);
+    Button(TEXT("FirstFlight_Reset"),TEXT("RESET BLUE STRIKER & RESTART"),806,896,386,32,false,true);
+    ButtonPriority=10;
+}
+
 void AImperialHUD::DrawRadioPanel(AImperialMatchManager& Manager)
 {
+    // The modal uses the available window height instead of shrinking with the fleet HUD.
+    const float RadioScale=FMath::Max(Scale,FMath::Min(1.f,FMath::Min((Canvas->SizeX-32.f)/960.f,(Canvas->SizeY-32.f)/748.f)));
+    const TGuardValue<float> ScaleGuard(Scale,RadioScale);
+    const TGuardValue<FVector2D> OriginGuard(Origin,FVector2D(Canvas->SizeX*.5f-800.f*Scale,Canvas->SizeY*.5f-500.f*Scale));
+    const TGuardValue<float> ButtonSizeGuard(ButtonTextSize,16);
     DrawRect(FLinearColor(.006f,.012f,.020f,.82f),0,0,Canvas->SizeX,Canvas->SizeY);
     AddHitBox(FVector2D::ZeroVector,FVector2D(Canvas->SizeX,Canvas->SizeY),TEXT("Radio_Backdrop"),true,100);
     Panel(320,126,960,748);Rect(320,126,4,748,Cyan);ButtonPriority=110;
@@ -305,7 +391,7 @@ void AImperialHUD::DrawRadioPanel(AImperialMatchManager& Manager)
     else if(!Calibrated)NextStep=TEXT("STEP 2 / 4  CHOOSE MODE 1 OR MODE 2, THEN STICK SETUP; FOLLOW EACH STICK GUIDE");
     else if(!Enabled)NextStep=TEXT("STEP 4 / 4  LOWER THROTTLE, THEN CLICK ENABLE RADIO; MOTORS STAY DISARMED");
     else NextStep=TEXT("READY  CLOSE THIS PANEL, THEN SPACE ARMS AT LOW THROTTLE");
-    Text(NextStep,348,181,11,Enabled?Green:Cyan);
+    Text(Fit(NextStep,16,904),348,181,16,Enabled?Green:Cyan);
     Rect(350,205,7,7,Connected?Green:Amber);
     Text(Connected?TEXT("CONNECTED"):TEXT("DISCONNECTED"),369,199,13,Connected?Green:Amber);
     const FString DevicePrompt=Radio->GetDevices().IsEmpty()?TEXT("No joystick: connect USB DATA and select USB Joystick on the radio.")
@@ -314,9 +400,13 @@ void AImperialHUD::DrawRadioPanel(AImperialMatchManager& Manager)
     Text(Device?FString::Printf(TEXT("%d AXES  /  %d BUTTONS  /  DRIVER ID %04X:%04X"),Device->AxisCount,Device->ButtonCount,Device->ManufacturerId,Device->ProductId):TEXT("The device name shown here comes directly from Windows."),348,249,10,Muted);
     Button(TEXT("Radio_Refresh"),TEXT("REFRESH"),1032,205,106,34);
     Button(TEXT("Radio_Device"),TEXT("NEXT DEVICE"),1148,205,104,34);
+    if(!Guided&&!bRadioAdvanced)
+        Button(TEXT("Radio_ConnectionHelp"),bRadioConnectionHelp?
+            (ImperialLocalization::IsKorean()?TEXT("장치 목록"):TEXT("Device list")):
+            (ImperialLocalization::IsKorean()?TEXT("연결 그림"):TEXT("Connection help")),1032,249,220,26,bRadioConnectionHelp);
     Text(TEXT("Rudder turns the nose; throttle controls motor thrust. Recheck every new PC or device."),348,264,10,Muted);
     Rect(348,276,904,1,Edge);
-    const bool ShowDevicePicker=!Device&&!Guided&&!bRadioAdvanced;
+    const bool ShowDevicePicker=(!Device||bRadioConnectionHelp)&&!Guided&&!bRadioAdvanced;
     Text(ShowDevicePicker?TEXT("CHOOSE YOUR USB CONTROLLER"):TEXT("LIVE STICK AXES"),348,292,12,White);
     Text(Calibrated||Guided?TEXT("CHANNEL ASSIGNMENT"):TEXT("STICK SETUP FINDS THE FOUR AXES"),830,292,12,White);
     const TArray<float>& Axes=Radio->GetRawAxes();
@@ -324,21 +414,53 @@ void AImperialHUD::DrawRadioPanel(AImperialMatchManager& Manager)
     if(ShowDevicePicker)
     {
         const auto& Devices=Radio->GetDevices();
-        if(Devices.IsEmpty())
+        if(Devices.IsEmpty()||bRadioConnectionHelp)
         {
-            Text(TEXT("1. Power on the radio and use a USB DATA cable."),348,329,12,White);
-            Text(TEXT("2. Select USB JOYSTICK on the radio screen."),348,354,12,White);
-            Text(TEXT("3. Click REFRESH when Windows detects it."),348,379,12,Cyan);
-            Text(TEXT("Windows test: Win+R, then joy.cpl"),348,425,11,Muted);
+            // Generic instructional icons, not a particular transmitter or a connection test.
+            const bool Korean=ImperialLocalization::IsKorean();
+            const auto Label=[Korean](const TCHAR* Ko,const TCHAR* En)->FString{return Korean?Ko:En;};
+            const auto Line=[&](float X1,float Y1,float X2,float Y2,FLinearColor Color)
+            {const auto A=Screen(X1,Y1),B=Screen(X2,Y2);DrawLine(A.X,A.Y,B.X,B.Y,Color,1.5f*Scale);};
+            for(int32 Step=0;Step<3;++Step)
+            {
+                const float X=348+Step*152.f;
+                Rect(X,317,141,132,FLinearColor(.03f,.065f,.09f,1));
+                Rect(X,317,141,1,Edge);Rect(X,448,141,1,Edge);
+                Text(FString::FromInt(Step+1),X+10,327,16,Cyan);
+                Text(Step==0?Label(TEXT("케이블"),TEXT("CABLE")):(Step==1?Label(TEXT("송신기"),TEXT("RADIO")):FString(TEXT("PC"))),X+35,327,16,White);
+            }
+            // A simple two-stick radio and a separate data cable: no model-specific port.
+            Rect(365,370,65,42,Edge);Rect(366,371,63,40,Navy);
+            Line(397,370,397,357,Muted);Line(397,357,405,351,Muted);
+            Rect(388,376,20,9,Muted);
+            Line(375,395,387,395,Cyan);Line(381,389,381,401,Cyan);
+            Line(410,395,422,395,Cyan);Line(416,389,416,401,Cyan);
+            Rect(439,359,15,10,Muted);Rect(442,355,3,4,Muted);Rect(448,355,3,4,Muted);
+            Line(454,364,467,364,Muted);Line(467,364,467,399,Muted);Line(467,399,454,399,Muted);
+            Text(TEXT("USB DATA"),368,424,16,White);
+            // The on-radio USB mode choice is a diagram; firmware menu layout varies.
+            Rect(515,356,111,58,Edge);Rect(516,357,109,56,Navy);
+            Text(TEXT("USB"),530,363,16,White);
+            Rect(520,385,101,23,FLinearColor(.05f,.18f,.23f,1));
+            Text(TEXT("JOYSTICK"),529,389,16,Cyan);
+            Text(Label(TEXT("모드 선택"),TEXT("Select mode")),519,424,16,White);
+            // An unconfirmed PC input, deliberately shown as a question rather than a tick.
+            Rect(676,356,93,55,Edge);Rect(677,357,91,53,Navy);
+            Text(TEXT("USB ?"),695,373,16,Amber);
+            Rect(716,411,13,6,Muted);Rect(702,417,41,3,Muted);
+            Text(Label(TEXT("검색 · 선택"),TEXT("Find / select")),668,428,16,White);
+            for(float X:{494.f,646.f}){Line(X-3,387,X+2,391,Cyan);Line(X-3,395,X+2,391,Cyan);}
+            Text(Label(TEXT("데이터 전송용 USB 케이블을 연결하세요."),TEXT("Connect a USB cable with DATA transfer.")),348,458,16,White);
+            Text(Label(TEXT("PC 입력 확인: Win+R → joy.cpl"),TEXT("PC input check: Win+R, then joy.cpl")),348,483,16,Muted);
         }
-        for(int32 I=0;I<FMath::Min(3,Devices.Num());++I)
+        if(!bRadioConnectionHelp)for(int32 I=0;I<FMath::Min(3,Devices.Num());++I)
         {
             const auto& Choice=Devices[I];const float Y=317+I*57.f;
             Button(FName(*FString::Printf(TEXT("Radio_Select_%d"),Choice.Id)),TEXT(""),348,Y,445,50);
             Text(Fit(Choice.Name,12,416),360,Y+8,12,White);
             Text(FString::Printf(TEXT("SLOT %d  /  %04X:%04X  /  %d AXES  /  %d BUTTONS"),Choice.Id,Choice.ManufacturerId,Choice.ProductId,Choice.AxisCount,Choice.ButtonCount),360,Y+29,10,Cyan);
         }
-        if(Devices.Num()>3)Text(TEXT("More devices: use NEXT DEVICE above."),348,495,10,Muted);
+        if(!bRadioConnectionHelp&&Devices.Num()>3)Text(TEXT("More devices: use NEXT DEVICE above."),348,495,10,Muted);
     }
     else for(int32 I=0;I<6;++I)
     {
@@ -402,27 +524,27 @@ void AImperialHUD::DrawRadioPanel(AImperialMatchManager& Manager)
         Text(FString::Printf(TEXT("MODE %d  /  %s THROTTLE"),ModeNumber,ThrottleSide),348,531,12,Cyan);
         if(Phase==ImperialRadio::GuidedPhase::Ready)
         {
-            Text(FString::Printf(TEXT("Center roll / pitch / yaw. Hold %s throttle DOWN before starting."),ThrottleSide),348,609,12,Muted);
-            Text(TEXT("Press START THIS STEP or ENTER when ready."),348,631,12,Cyan);
+            Text(FString::Printf(TEXT("Center roll / pitch / yaw. Hold %s throttle DOWN before starting."),ThrottleSide),348,609,16,Muted);
+            Text(TEXT("Press START THIS STEP or ENTER when ready."),348,631,16,Cyan);
             Button(TEXT("Radio_GuidedStart"),TEXT("START THIS STEP"),931,667,285,38);
         }
         else if(Phase==ImperialRadio::GuidedPhase::Capturing)
         {
-            Text(TEXT("Move only this direction through its full travel. Hold EACH end for 1 second."),348,609,12,Muted);
-            Text(FString::Printf(TEXT("Finish by holding the %s stick fully %s."),ActiveSide,Endpoint),348,631,12,Cyan);
+            Text(TEXT("Move only this direction through its full travel. Hold EACH end for 1 second."),348,609,16,Muted);
+            Text(FString::Printf(TEXT("Finish by holding the %s stick fully %s."),ActiveSide,Endpoint),348,631,16,Cyan);
             Button(TEXT("Radio_GuidedStep"),TEXT("CONFIRM HELD END / ENTER"),897,666,319,38);
             Button(TEXT("Radio_GuidedStart"),TEXT("RETRY THIS STEP"),997,715,219,32);
         }
         else if(Phase==ImperialRadio::GuidedPhase::Neutral)
         {
-            Text(FString::Printf(TEXT("Release roll / pitch / yaw to their centers. Hold %s throttle fully DOWN."),ThrottleSide),348,609,12,Muted);
-            Text(TEXT("Keep still for 1 second, then CAPTURE NEUTRAL or ENTER."),348,631,12,Cyan);
+            Text(FString::Printf(TEXT("Release roll / pitch / yaw to their centers. Hold %s throttle fully DOWN."),ThrottleSide),348,609,16,Muted);
+            Text(TEXT("Keep still for 1 second, then CAPTURE NEUTRAL or ENTER."),348,631,16,Cyan);
             Button(TEXT("Radio_GuidedNeutral"),TEXT("CAPTURE NEUTRAL"),931,667,285,38);
         }
         else
         {
-            Text(TEXT("The measured axes and directions appear above. Keep throttle fully down."),348,609,12,Muted);
-            Text(TEXT("CONFIRM & SAVE stores this device profile. ENABLE RADIO follows separately."),348,631,12,Cyan);
+            Text(TEXT("The measured axes and directions appear above. Keep throttle fully down."),348,609,16,Muted);
+            Text(TEXT("CONFIRM & SAVE stores this device profile. ENABLE RADIO follows separately."),348,631,16,Cyan);
             Button(TEXT("Radio_GuidedSave"),TEXT("CONFIRM & SAVE"),931,667,285,38);
         }
         // The accent follows the chosen physical layout, not the driver's axis order.
@@ -440,7 +562,7 @@ void AImperialHUD::DrawRadioPanel(AImperialMatchManager& Manager)
         }
         Text(FString::Printf(TEXT("MODE %d  /  %d CURRENT-STEP SAMPLES"),ModeNumber,Radio->GetCaptureSampleCount()),741,738,9,Muted);
         Rect(348,778,904,49,FLinearColor(.035f,.065f,.09f,1));
-        Text(Fit(Radio->GetStatus(),12,871),364,796,12,Amber);
+        StatusText(Radio->GetStatus(),364,782,871,Amber);
         Text(TEXT("CLOSE cancels unfinished setup. Previous saved calibration is retained until final save."),348,844,11,Muted);
         ButtonPriority=10;return;
     }
@@ -461,8 +583,8 @@ void AImperialHUD::DrawRadioPanel(AImperialMatchManager& Manager)
     if(bRadioAdvanced)
     {
         Text(TEXT("MANUAL AXIS AND RANGE SETUP"),348,580,12,White);
-        Text(TEXT("1  START, then move all four sticks through their full ranges. CAPTURE RANGE when finished."),348,605,12,Muted);
-        Text(TEXT("2  Center roll / pitch / yaw and move throttle fully down. CAPTURE NEUTRAL, then FINISH & SAVE."),348,627,12,Muted);
+        Text(TEXT("1  START, then move all four sticks through their full ranges. CAPTURE RANGE when finished."),348,605,16,Muted);
+        Text(TEXT("2  Center roll / pitch / yaw and move throttle fully down. CAPTURE NEUTRAL, then FINISH & SAVE."),348,627,16,Muted);
         Button(TEXT("Radio_Begin"),TEXT("1  START RANGE"),348,658,180,36,Radio->IsCalibrating());
         Button(TEXT("Radio_Range"),TEXT("2  CAPTURE RANGE"),540,658,180,36);
         Button(TEXT("Radio_Neutral"),TEXT("3  CAPTURE NEUTRAL"),732,658,210,36);
@@ -471,18 +593,18 @@ void AImperialHUD::DrawRadioPanel(AImperialMatchManager& Manager)
     else
     {
         Text(FString::Printf(TEXT("MODE %d: LEFT %s + YAW  /  RIGHT %s + ROLL"),ModeNumber,ThrottleStick==0?TEXT("THROTTLE"):TEXT("PITCH"),ThrottleStick==1?TEXT("THROTTLE"):TEXT("PITCH")),348,580,12,White);
-        Text(Calibrated?TEXT("YOUR CONTROLLER IS CALIBRATED. Lower throttle, then ENABLE RADIO."):TEXT("Choose your transmitter's physical layout, then STICK SETUP > REVIEW / SAVE > ENABLE."),348,605,12,Calibrated?Green:Cyan);
-        Text(TEXT("A layout change needs fresh setup. To reuse saved settings, keep the saved mode."),348,627,12,Muted);
+        Text(Calibrated?TEXT("YOUR CONTROLLER IS CALIBRATED. Lower throttle, then ENABLE RADIO."):TEXT("Choose your transmitter's physical layout, then STICK SETUP > REVIEW / SAVE > ENABLE."),348,605,16,Calibrated?Green:Cyan);
+        Text(TEXT("A layout change needs fresh setup. To reuse saved settings, keep the saved mode."),348,627,16,Muted);
         Button(TEXT("Radio_ConnectSaved"),TEXT("CONNECT SAVED RADIO"),348,658,335,36,Radio->HasSavedProfiles()&&!Enabled);
-        Text(TEXT("Low throttle required. This does not arm the aircraft."),706,669,11,Cyan);
+        Text(TEXT("Low throttle required. This does not arm the aircraft."),706,669,14,Cyan);
     }
     if(!Radio->IsCalibrating())
         Button(TEXT("Radio_PrecisionThrottle"),Radio->IsPrecisionThrottleEnabled()?TEXT("THROTTLE: PRECISION"):TEXT("THROTTLE: DIRECT"),348,704,245,28,Radio->IsPrecisionThrottleEnabled());
     else
         Text(TEXT("THROTTLE: LOCKED DURING SETUP"),348,712,10,Muted);
     if(!Radio->IsCalibrating())Button(TEXT("Radio_Response"),TEXT("RATES / EXPO / ARM BUTTON"),850,704,402,28);
-    Rect(348,740,904,32,FLinearColor(.035f,.065f,.09f,1));Rect(348,740,3,32,Radio->IsCalibrated()?Green:Amber);
-    Text(Fit(Radio->GetStatus(),12,865),364,750,12,Radio->IsCalibrated()?Green:Amber);
+    Rect(348,736,904,44,FLinearColor(.035f,.065f,.09f,1));Rect(348,736,3,44,Radio->IsCalibrated()?Green:Amber);
+    StatusText(Radio->GetStatus(),364,738,865,Radio->IsCalibrated()?Green:Amber);
     Button(TEXT("Radio_Keyboard"),TEXT("USE KEYBOARD"),348,783,164,36,!Radio->IsEnabled());
     Button(TEXT("Radio_Enable"),TEXT("ENABLE RADIO"),524,783,183,36,Radio->IsEnabled());
     if(bRadioAdvanced)
@@ -500,16 +622,40 @@ void AImperialHUD::BeginResponsePanel()
 {
     auto* R=GetRadio();if(!R||R->IsCalibrating())return;
     DraftResponse=R->GetPilotResponse();DraftArmButton=R->GetArmButton();DraftArmDevice=R->GetArmDevice();
-    bDraftArmToggle=R->IsArmToggle();bResponsePanel=true;bLearnArm=false;ResponseMessage=TEXT("Changes are a preview until SAVE. CANCEL keeps your saved settings.");
+    bDraftArmToggle=R->IsArmToggle();bResponsePanel=true;bResponseAdvanced=false;bLearnArm=false;ResponseMessage=TEXT("Changes are a preview until SAVE. CANCEL keeps your saved settings.");
 }
 
 void AImperialHUD::DrawResponsePanel(UImperialRadioSubsystem& R)
 {
     Text(TEXT("CONTROL RESPONSE / ANGLE"),348,198,18,Cyan);
-    Text(TEXT("Roll/Pitch rate limits tilt response; full stick still targets 35 deg. Yaw rate is deg/s."),348,226,12,Muted);
-    Text(TEXT("Expo softens the centre; minimum/maximum stick positions stay unchanged."),348,248,12,Muted);
-    const TCHAR* Names[]={TEXT("ROLL"),TEXT("PITCH"),TEXT("YAW")};
-    for(int I=0;I<3;++I)
+    Button(TEXT("Response_Advanced"),bResponseAdvanced?TEXT("BASIC RESPONSE"):TEXT("ADVANCED RATES / EXPO"),1000,195,252,30,bResponseAdvanced);
+    Text(TEXT("Roll/Pitch rate limits tilt response; full stick still targets 35 deg. Yaw rate is deg/s."),348,226,14,Muted);
+    Text(TEXT("Expo softens the centre; minimum/maximum stick positions stay unchanged."),348,248,14,Muted);
+    const TCHAR* Names[]={TEXT("Roll"),TEXT("Pitch"),TEXT("Yaw")};
+    if(!bResponseAdvanced)
+    {
+        const auto Matches=[&](double Roll,double Pitch,double Yaw,double Expo)
+        {
+            return FMath::IsNearlyEqual(DraftResponse.RateDegrees[0],Roll)&&FMath::IsNearlyEqual(DraftResponse.RateDegrees[1],Pitch)&&
+                FMath::IsNearlyEqual(DraftResponse.RateDegrees[2],Yaw)&&FMath::IsNearlyEqual(DraftResponse.Expo[0],Expo)&&
+                FMath::IsNearlyEqual(DraftResponse.Expo[1],Expo)&&FMath::IsNearlyEqual(DraftResponse.Expo[2],Expo);
+        };
+        Text(TEXT("Choose a response, then SAVE & RETURN. Your saved response stays active until you save."),348,281,16,Cyan);
+        Button(TEXT("Response_Gentle"),TEXT("GENTLE / LEARNING"),348,317,432,42,Matches(120,120,90,.35));
+        Button(TEXT("Response_Defaults"),TEXT("STANDARD RESPONSE"),804,317,448,42,Matches(180,180,180,0));
+        Text(TEXT("Softer near centre, slower turns."),364,379,12,Muted);
+        Text(TEXT("Original response, without Expo."),820,379,12,Muted);
+        Text(TEXT("CURRENT PREVIEW / YOUR CUSTOM VALUES ARE KEPT"),348,425,12,White);
+        for(int I=0;I<3;++I)
+        {
+            const float X=348+I*302.f;
+            Text(Names[I],X,455,12,White);
+            Text(FString::Printf(TEXT("RATE %.0f deg/s"),DraftResponse.RateDegrees[I]),X,481,12,Cyan);
+            Text(FString::Printf(TEXT("EXPO %.0f%%"),DraftResponse.Expo[I]*100),X,507,12,Muted);
+        }
+        Text(TEXT("Throttle and 35-degree ANGLE limit are unchanged. Fine tuning is in ADVANCED RATES / EXPO."),348,540,14,White);
+    }
+    else for(int I=0;I<3;++I)
     {
         const float Y=288+I*92;Text(Names[I],348,Y+15,15,White);
         Text(FString::Printf(TEXT("RATE %.0f deg/s"),DraftResponse.RateDegrees[I]),450,Y,12,White);
@@ -544,9 +690,9 @@ void AImperialHUD::DrawResponsePanel(UImperialRadioSubsystem& R)
     Button(TEXT("Response_Clear"),TEXT("REMOVE BINDING"),605,625,205,34);
     Button(TEXT("Response_ArmMode"),bDraftArmToggle?TEXT("TOGGLE BUTTON"):TEXT("2-POSITION SWITCH"),822,625,260,34);
     Text(bLearnArm?TEXT("Release the ARM button / switch OFF, then press it ON. Keep other switches unchanged."):
-        (bDraftArmToggle?TEXT("Each press toggles ARM/DISARM. ARM needs low throttle and a fresh press."):TEXT("Switch ON arms at low throttle. Switch OFF disarms. OFF required after reconnect.")),348,677,12,Cyan);
-    Text(Fit(ResponseMessage,12,895),348,718,12,Muted);
-    Button(TEXT("Response_Defaults"),TEXT("RESET RATES / EXPO"),348,783,248,36);
+        (bDraftArmToggle?TEXT("Each press toggles ARM/DISARM. ARM needs low throttle and a fresh press."):TEXT("Switch ON arms at low throttle. Switch OFF disarms. OFF required after reconnect.")),348,677,16,Cyan);
+    StatusText(ResponseMessage,348,715,895,White);
+    if(bResponseAdvanced)Button(TEXT("Response_Defaults"),TEXT("RESET RATES / EXPO"),348,783,248,36);
     Button(TEXT("Response_Save"),TEXT("SAVE & RETURN"),730,783,260,36);
     Button(TEXT("Response_Cancel"),TEXT("CANCEL"),1002,783,250,36);
     Text(TEXT("30-360 deg/s / Expo 0-80%. USB is disabled after save; enable again at low throttle."),348,844,11,Muted);
@@ -555,6 +701,19 @@ void AImperialHUD::DrawResponsePanel(UImperialRadioSubsystem& R)
 void AImperialHUD::NotifyHitBoxClick(FName BoxName)
 {
     Super::NotifyHitBoxClick(BoxName);auto* M=FindMatch();if(!M)return;const FString N=BoxName.ToString();
+    if(N.StartsWith(TEXT("FirstFlight_")))
+    {
+        if(IsPilotMenuOpen())return;
+        if(N==TEXT("FirstFlight_Open")){if(!bFirstFlightVisible)ToggleFirstFlightGuide();return;}
+        if(N==TEXT("FirstFlight_Close")){if(bFirstFlightVisible)ToggleFirstFlightGuide();return;}
+        auto* Guide=Cast<AImperialFirstFlightGuide>(UGameplayStatics::GetActorOfClass(GetWorld(),AImperialFirstFlightGuide::StaticClass()));
+        if(!Guide)return;
+        if(N==TEXT("FirstFlight_Start")){if(!Guide->IsActive())Guide->BeginGuide();}
+        else if(N==TEXT("FirstFlight_Next")){if(Guide->IsActive()&&Guide->IsStepComplete())Guide->AdvanceStep();}
+        else if(N==TEXT("FirstFlight_RetryStep")){if(Guide->IsActive())Guide->RetryStep();}
+        else if(N==TEXT("FirstFlight_Reset"))Guide->ResetAircraftAndRestart();
+        return;
+    }
     if(const auto* ReadOnlyController=Cast<AImperialPlayerController>(PlayerOwner);ReadOnlyController&&ReadOnlyController->IsReadOnlyView()&&
        (N==TEXT("Auto")||N==TEXT("Hold")||N==TEXT("Return")||N==TEXT("Manual")||N==TEXT("Reset")||N==TEXT("StartMatch")||N==TEXT("Arm")||N==TEXT("ArmSelected")))return;
     UE_LOG(LogTemp,Display,TEXT("IMPERIAL_UI_CLICK %s"),*N);
@@ -601,6 +760,7 @@ void AImperialHUD::NotifyHitBoxClick(FName BoxName)
         if(N==TEXT("Radio_Response")){BeginResponsePanel();return;}
         if(bResponsePanel)
         {
+            if(N==TEXT("Response_Advanced")){bResponseAdvanced=!bResponseAdvanced;return;}
             if(N==TEXT("Response_Cancel")){bResponsePanel=false;bLearnArm=false;return;}
             if(N==TEXT("Response_Save"))
             {
@@ -609,6 +769,8 @@ void AImperialHUD::NotifyHitBoxClick(FName BoxName)
                 else ResponseMessage=R->GetStatus();return;
             }
             if(N==TEXT("Response_Defaults"))DraftResponse={};
+            else if(N==TEXT("Response_Gentle")&&!bResponseAdvanced)
+            {DraftResponse.RateDegrees={120,120,90};DraftResponse.Expo={.35,.35,.35};}
             else if(N==TEXT("Response_Learn"))
             {
                 if(bLearnArm)bLearnArm=false;
@@ -620,11 +782,17 @@ void AImperialHUD::NotifyHitBoxClick(FName BoxName)
             else if(N==TEXT("Response_ArmMode"))bDraftArmToggle=!bDraftArmToggle;
             else if(N.StartsWith(TEXT("Response_Rate"))||N.StartsWith(TEXT("Response_Expo")))
             {
+                if(!bResponseAdvanced)return;
                 const int32 Axis=FCString::Atoi(*N.Right(1));if(Axis<0||Axis>2)return;
                 const double Direction=N.Contains(TEXT("Up"))?1:-1;
                 if(N.StartsWith(TEXT("Response_Rate")))DraftResponse.RateDegrees[Axis]=FMath::Clamp(DraftResponse.RateDegrees[Axis]+Direction*15,30.,360.);
                 else DraftResponse.Expo[Axis]=FMath::Clamp(DraftResponse.Expo[Axis]+Direction*.05,0.,.8);
             }
+            return;
+        }
+        if(N==TEXT("Radio_ConnectionHelp"))
+        {
+            if(!bResponsePanel&&!R->IsGuidedActive()&&!bRadioAdvanced)bRadioConnectionHelp=!bRadioConnectionHelp;
             return;
         }
         if(N==TEXT("Radio_Refresh"))R->RefreshDevices();

@@ -1,4 +1,4 @@
-﻿param([string]$ProjectRoot=(Split-Path -Parent $PSScriptRoot))
+param([string]$ProjectRoot=(Split-Path -Parent $PSScriptRoot))
 $ErrorActionPreference='Stop'
 $sourceRoot=[IO.Path]::GetFullPath($ProjectRoot)
 if(-not(Test-Path -LiteralPath (Join-Path $sourceRoot 'ImperialWingsSimulator.uproject'))){throw '프로젝트 폴더에서 실행해 주세요.'}
@@ -33,11 +33,16 @@ try{
 }finally{$sha.Dispose()}
 $commit='unknown';$dirty=$false
 if(Get-Command git -ErrorAction SilentlyContinue){
-    $reported=& git -C $sourceRoot rev-parse HEAD 2>$null
+    # Git is optional in a source ZIP. Windows PowerShell can turn native stderr
+    # into a terminating error under Stop even when redirected, so contain it here.
+    $reported=$null
+    try { $reported=& git -C $sourceRoot rev-parse HEAD 2>$null } catch { $reported=$null }
     if($LASTEXITCODE -eq 0 -and $reported -match '^[a-f0-9]{40}$'){
         $commit=$reported
-        $changes=& git -C $sourceRoot status --porcelain -- Source Config Content ArtSource Bridge Scripts ImperialWingsSimulator.uproject ImperialWings.cmd 2>$null
-        $dirty=-not [string]::IsNullOrWhiteSpace(($changes -join "`n"))
+        try {
+            $changes=& git -C $sourceRoot status --porcelain -- Source Config Content ArtSource Bridge Scripts ImperialWingsSimulator.uproject ImperialWings.cmd 2>$null
+            $dirty=($LASTEXITCODE -ne 0) -or -not [string]::IsNullOrWhiteSpace(($changes -join "`n"))
+        } catch { $dirty=$true } # Never report a known repository as clean after a failed status query.
     }
 }
 $settings=[IO.File]::ReadAllText((Join-Path $sourceRoot 'Config\DefaultGame.ini'))

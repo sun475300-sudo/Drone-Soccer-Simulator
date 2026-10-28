@@ -43,7 +43,7 @@ if(-not $SkipPersistenceRelaunch){
     Invoke-UXRun -Name 'persisted' -Extra @('-ImperialRadioUXRestoreOnly','-ImperialRadioUXExpectedLanguage=en')
     Invoke-UXRun -Name 'override' -Extra @('-ImperialRadioUXRestoreOnly','-ImperialRadioUXExpectedLanguage=ko','-ImperialLanguage=ko')
 }
-if($RenderCapture){foreach($name in @('controller-ko.png','controller-en.png')){if(-not(Test-Path -LiteralPath (Join-Path $output $name))){throw ('Missing capture: '+$name)}}}
+if($RenderCapture){foreach($name in @('controller-ko.png','controller-en.png','response-basic-ko.png','response-advanced-ko.png')){if(-not(Test-Path -LiteralPath (Join-Path $output $name))){throw ('Missing capture: '+$name)}}}
 $summary=[pscustomobject]@{ok=$true;build=$identity;runs=$results.ToArray();scope='isolated UI/language persistence and atomic-file failure checks; no physical controller or different physical PC test'}
 [IO.File]::WriteAllText((Join-Path $output 'summary.json'),($summary | ConvertTo-Json -Depth 8),[Text.UTF8Encoding]::new($false))
 Write-Output (Join-Path $output 'summary.json')
