@@ -1,5 +1,9 @@
 # Imperial Wings · 드론축구 시뮬레이터
 
+> **개발·빌드 소스: [v0.7.13-rc1 태그](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.13-rc1) · [고정 커밋 187e300](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/187e3002dbdecd1c429ca652d106fcc21d69b5b4)**
+>
+> 이 README의 다운로드·화면·검증 안내는 v0.7.13-rc1 기준입니다. **현재 main 게임 코드는 기존 v0.7.4 기반이며, 공개 v0.7.13 소스가 main에 통합된 상태가 아닙니다.** 공개 버전을 개발·빌드하려면 위 태그 소스를 사용하세요. 기존 main 이력을 보존하는 소스·히스토리 통합은 후속 작업입니다.
+
 Windows에서 키보드나 USB 조종기로 연습하는 드론축구 시뮬레이터입니다. 기본 시점은 경기장 밖 LOS, 기본 비행은 ANGLE입니다. 모터 힘과 강체 물리로 비행하며, 실제 기체의 실측 특성을 보증하는 모델은 아닙니다.
 
 **[설치 EXE](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.13-rc1/ImperialWings-Setup-v0.7.13-rc1.exe)** · **[Windows v0.7.13-rc1 ZIP](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.13-rc1/ImperialWings-Windows-v0.7.13-rc1.zip)** · [릴리스와 검증 범위](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.13-rc1/docs/releases/v0.7.13-rc1.md) · [검증 기록](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.13-rc1/docs/verification.md#v0713-rc1)

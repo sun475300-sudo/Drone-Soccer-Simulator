@@ -2,7 +2,19 @@
 
 작성일: 2026-10-28. **이 문서는 구현 전 설계·수용 기준이다. AI 연동, 서버 배포, API 키 발급, 유료 모델 호출을 수행하거나 승인하는 문서가 아니다.** 코드·README·공개 실행본을 변경하지 않는다.
 
-## 공개 후보와 코치 범위의 구분 — 2026-10-28 갱신
+## 최신 공개 기준 — v0.7.13-rc1
+
+현재 공개 사전 릴리스는 [v0.7.13-rc1](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.13-rc1)입니다. 개발·빌드 기준은 [해당 태그 소스](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.13-rc1)이며, 검증된 **게임 입력 160개 SHA-256**은 `c7feb1cfce27923bcc993e06bfb1736897ffb775858373dc3a88723636afc4c3`입니다. 구현·검증 상태는 태그에 고정된 [릴리스 노트](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.13-rc1/docs/releases/v0.7.13-rc1.md), [검증 기록](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.13-rc1/docs/verification.md#v0713-rc1), [기계 판독 검증 요약](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.13-rc1/docs/verification/v0.7.13-rc1-summary.json)을 근거로 구분합니다.
+
+**이 상세 기획서는 main 전용 문서이며 v0.7.13-rc1 태그에는 포함되지 않습니다.** main 게임 코드는 기존 v0.7.4 기반을 유지하고 있습니다. 공개 태그 소스와 main의 코드·히스토리 통합은 후속 작업이며, 이 문서 갱신으로 코드가 통합되거나 모든 수용 기준이 완료되는 것은 아닙니다.
+
+**공개된 AI 연습·대전과 이 문서의 사후 설명용 AI 코치는 별개입니다.** 이 문서에서 제안하는 코치 화면·평가 연계·백엔드/API·전송 동의/비식별화 흐름은 미구현 후속 범위입니다. AI 대전이나 일반 결과 저장의 공개를 코치 제품의 완료 근거로 사용하지 않습니다.
+
+**미검증:** 실물 USB 조종·Boxer 아밍/분리·재연결, 다른 물리 PC, 실제 키보드로 첫 비행 6단계를 연속 완주하는 시험과 초보자의 독립 사용성입니다. 새 코치 분석의 입력 계약은 실제 태그·빌드의 기록 필드와 다시 대조해야 합니다. 이번 갱신은 공개 문서 확인이며 코치 구현·API 호출·실행 시험을 수행하지 않았습니다.
+
+## 과거 공개 후보와 코치 범위 기록 — v0.7.12-rc1
+
+> 아래는 v0.7.12-rc1 당시의 정적 조사·범위 구분 기록입니다. 현재 공개 상태는 위 v0.7.13-rc1 안내를 따릅니다.
 
 [공개 사전 릴리스 v0.7.12-rc1](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.12-rc1)에는 조종기 중심 한국어 안내·안전 저장과 기존 AI 연습/대전이 포함된다고 보고돼 있다. **AI 상대와 이 문서의 기록 기반 사후 설명 코치는 서로 다른 기능이다.** 이 릴리스 공개를 코치 백엔드·API·동의/비식별화·평가 엔진의 완료 근거로 사용하지 않는다.
 
@@ -17,9 +29,9 @@
 - AI 코치는 **사후 설명 서비스**다. 기존 SDACS APF 자율 유도, 연습 상대 전술 AI, 공식 심판, 실기체 비행 제어와 별개다. 기본 LOS·ANGLE·수동 경기·명시적 ARM 계약을 변경하지 않는다.
 - 1차 범위: 종료한 단일 훈련의 기초 조종 평가, 근거 구간, 개선 과제 1~3개, 동일 조건의 이전 시도 비교. 실시간 음성·영상 이해·온라인 팀 계정·자동 튜닝·개인 맞춤 모델 학습은 제외한다.
 
-## 2. 확인한 현재 기반과 아직 없는 것
+## 2. 과거 정적 검토 기준의 기반과 미구현 제안
 
-2026-10-28 main 커밋 `9da8be4e54f33002c089460569f130e11b7f8035` 정적 검토 기준. [README 기록 안내](../README.md#flight-recording), [실제 기록 함수](../Source/ImperialWingsSimulator/ImperialMatchManager.cpp), [기존 분석기](../Tests/analyze-flight-session.py), [분석기 시험](../Tests/test-flight-session.py), [검증 기록](verification.md)을 대조했다. 새 실물 조종·Unreal 실행 검사는 하지 않았고 개인 원본 비행 파일은 열람하지 않았다.
+2026-10-28 main 커밋 `9da8be4e54f33002c089460569f130e11b7f8035` 정적 검토 기준. [README 안내](../README.md), [실제 기록 함수](../Source/ImperialWingsSimulator/ImperialMatchManager.cpp), [기존 분석기](../Tests/analyze-flight-session.py), [분석기 시험](../Tests/test-flight-session.py), [검증 기록](verification.md)을 대조했다. 새 실물 조종·Unreal 실행 검사는 하지 않았고 개인 원본 비행 파일은 열람하지 않았다.
 
 | 구분 | 확인한 기반 | 코치가 넘지 말아야 할 한계 |
 |---|---|---|
