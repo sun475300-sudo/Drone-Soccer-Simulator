@@ -17,6 +17,7 @@
 #include "ImperialAIResultsVerifier.h"
 #include "ImperialAIRecoveryVerifier.h"
 #include "ImperialAIDuelVerifier.h"
+#include "ImperialTopgunVerifier.h"
 #include "ImperialSolverBridgeVerifier.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
@@ -37,6 +38,7 @@ void AImperialGameMode::StartPlay()
     }
     else
     {
+    if(FParse::Param(FCommandLine::Get(),TEXT("ImperialTopgunSmoke"))||FParse::Param(FCommandLine::Get(),TEXT("ImperialTopgunControlSmoke")))GetWorld()->SpawnActor<AImperialTopgunVerifier>();
     if(FParse::Param(FCommandLine::Get(),TEXT("ImperialAIDuelSmoke")))GetWorld()->SpawnActor<AImperialAIDuelVerifier>();
     if(FParse::Param(FCommandLine::Get(),TEXT("ImperialAIRecoverySmoke")))GetWorld()->SpawnActor<AImperialAIRecoveryVerifier>();
     if(FParse::Param(FCommandLine::Get(),TEXT("ImperialAIResultsSmoke")))GetWorld()->SpawnActor<AImperialAIResultsVerifier>();

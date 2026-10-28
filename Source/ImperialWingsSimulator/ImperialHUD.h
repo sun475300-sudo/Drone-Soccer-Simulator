@@ -34,6 +34,7 @@ private:
     bool bAIResultPage=false,bAIDraftDuel=false;
     int32 AIDraftCount=3,AIDraftDifficulty=0;
     uint32 AIDraftSeed=1;
+    void DrawTopgun(AImperialMatchManager& Manager,bool Compact=false);
     void DrawAIPracticePanel(AImperialMatchManager& Manager);
     void DrawAIResultPanel(AImperialMatchManager& Manager);
     bool bRadioAdvanced = false;

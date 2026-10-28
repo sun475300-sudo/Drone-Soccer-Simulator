@@ -1,0 +1,2880 @@
+{
+  "version": "0.7.11-dev",
+  "date": "2026-10-28",
+  "branch": "codex/topgun-training",
+  "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+  "input_count": 154,
+  "native_check_count": 416,
+  "unit_checks": 5697,
+  "suites": [
+    {
+      "label": "editor60",
+      "path": "Saved/Verification/topgun-20261028-115309-65add5e2/result.json",
+      "sha256": "ddf93de88ffe9f3b4655474036a62e8e597dc500a3f87b0b3970e5082bf8876c",
+      "check_count": 49,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "all four segment times and final time are ordered",
+            "ok": true,
+            "value": 15.78320592944522
+          },
+          {
+            "case": 0,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 1
+          },
+          {
+            "case": 1,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 2
+          },
+          {
+            "case": 2,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 3
+          },
+          {
+            "case": 3,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 4
+          },
+          {
+            "case": 4,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 6
+          },
+          {
+            "case": 5,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:35Z",
+          "target": "ImperialWingsSimulatorEditor"
+        },
+        "min_game_dt_s": 0.01666666753590107,
+        "max_game_dt_s": 0.01666666753590107
+      }
+    },
+    {
+      "label": "editor60_normal_controls",
+      "path": "Saved/Verification/topgun-20261028-115309-65add5e2/normal-controls/result.json",
+      "sha256": "b67c2b599c62aea0f1b347923ee162f1c5a30c770bfa31267dd572f4a14f2405",
+      "check_count": 8,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "normal course refuses autonomous pilot assistance",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "explicit manual arm is available",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "armed retry and exit are rejected",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "disarmed exit restores soccer practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "RESET removes course and leaves aircraft disarmed",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:35Z",
+          "target": "ImperialWingsSimulatorEditor"
+        },
+        "min_game_dt_s": 0.008333399891853333,
+        "max_game_dt_s": 0.023319602012634277
+      }
+    },
+    {
+      "label": "shipping20",
+      "path": "Saved/Verification/topgun-20261028-115504-77e5cbe4/result.json",
+      "sha256": "42a18349e528c153c7a89cf88bd04cf058c2aab5708faefaef4afaeed650eb07",
+      "check_count": 49,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "all four segment times and final time are ordered",
+            "ok": true,
+            "value": 15.833402543632193
+          },
+          {
+            "case": 0,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 1
+          },
+          {
+            "case": 1,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 2
+          },
+          {
+            "case": 2,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 3
+          },
+          {
+            "case": 3,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 4
+          },
+          {
+            "case": 4,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 6
+          },
+          {
+            "case": 5,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:46Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "min_game_dt_s": 0.05000000074505806,
+        "max_game_dt_s": 0.05000000074505806
+      }
+    },
+    {
+      "label": "shipping20_normal_controls",
+      "path": "Saved/Verification/topgun-20261028-115504-77e5cbe4/normal-controls/result.json",
+      "sha256": "86c8d71b6df369bc3c8c4a8484a23e04ca4948707930770761da6f304683c423",
+      "check_count": 8,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "normal course refuses autonomous pilot assistance",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "explicit manual arm is available",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "armed retry and exit are rejected",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "disarmed exit restores soccer practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "RESET removes course and leaves aircraft disarmed",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:46Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "min_game_dt_s": 0.008333399891853333,
+        "max_game_dt_s": 0.008484497666358948
+      }
+    },
+    {
+      "label": "shipping60",
+      "path": "Saved/Verification/topgun-20261028-115504-525d0dd7/result.json",
+      "sha256": "7fffd19540e3a64381707fd586043b93dc7f081ca4b3db463c8258ddc72cd3b3",
+      "check_count": 49,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "all four segment times and final time are ordered",
+            "ok": true,
+            "value": 15.78320592944522
+          },
+          {
+            "case": 0,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 1
+          },
+          {
+            "case": 1,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 2
+          },
+          {
+            "case": 2,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 3
+          },
+          {
+            "case": 3,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 4
+          },
+          {
+            "case": 4,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 6
+          },
+          {
+            "case": 5,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:46Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "min_game_dt_s": 0.01666666753590107,
+        "max_game_dt_s": 0.01666666753590107
+      }
+    },
+    {
+      "label": "shipping60_normal_controls",
+      "path": "Saved/Verification/topgun-20261028-115504-525d0dd7/normal-controls/result.json",
+      "sha256": "463f4381952c5664693fc2b0bb18884957d3a9d9c8f3c9119cfd2e4b1df107c6",
+      "check_count": 8,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "normal course refuses autonomous pilot assistance",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "explicit manual arm is available",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "armed retry and exit are rejected",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "disarmed exit restores soccer practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "RESET removes course and leaves aircraft disarmed",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:46Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "min_game_dt_s": 0.008333399891853333,
+        "max_game_dt_s": 0.00833360105752945
+      }
+    },
+    {
+      "label": "shipping240",
+      "path": "Saved/Verification/topgun-20261028-115504-2786344e/result.json",
+      "sha256": "7dfcd20dc17f2ee81f488769d4bc16d1dde6c8dd36468ca6ca9217b76e358725",
+      "check_count": 49,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "all four segment times and final time are ordered",
+            "ok": true,
+            "value": 15.746180799575729
+          },
+          {
+            "case": 0,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 1
+          },
+          {
+            "case": 1,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 2
+          },
+          {
+            "case": 2,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 3
+          },
+          {
+            "case": 3,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 4
+          },
+          {
+            "case": 4,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 6
+          },
+          {
+            "case": 5,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:46Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "min_game_dt_s": 0.004166666883975267,
+        "max_game_dt_s": 0.004166666883975267
+      }
+    },
+    {
+      "label": "shipping240_normal_controls",
+      "path": "Saved/Verification/topgun-20261028-115504-2786344e/normal-controls/result.json",
+      "sha256": "c613665a57549dad8ec15d1159b959c0b5f6bfd74fc161d6e511c8ad3cf3bc07",
+      "check_count": 8,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "normal course refuses autonomous pilot assistance",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "explicit manual arm is available",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "armed retry and exit are rejected",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "disarmed exit restores soccer practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "RESET removes course and leaves aircraft disarmed",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:46Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "min_game_dt_s": 0.008333399891853333,
+        "max_game_dt_s": 0.008333597332239151
+      }
+    },
+    {
+      "label": "relocated60",
+      "path": "Saved/Verification/topgun-20261028-115701-448eeaab/result.json",
+      "sha256": "7fffd19540e3a64381707fd586043b93dc7f081ca4b3db463c8258ddc72cd3b3",
+      "check_count": 49,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "all four segment times and final time are ordered",
+            "ok": true,
+            "value": 15.78320592944522
+          },
+          {
+            "case": 0,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 1
+          },
+          {
+            "case": 1,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 2
+          },
+          {
+            "case": 2,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 3
+          },
+          {
+            "case": 3,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 4
+          },
+          {
+            "case": 4,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 6
+          },
+          {
+            "case": 5,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "explicit reset destroys course and restores practice",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:46Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "min_game_dt_s": 0.01666666753590107,
+        "max_game_dt_s": 0.01666666753590107
+      }
+    },
+    {
+      "label": "relocated60_normal_controls",
+      "path": "Saved/Verification/topgun-20261028-115701-448eeaab/normal-controls/result.json",
+      "sha256": "463f4381952c5664693fc2b0bb18884957d3a9d9c8f3c9119cfd2e4b1df107c6",
+      "check_count": 8,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "normal course refuses autonomous pilot assistance",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "explicit manual arm is available",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "armed retry and exit are rejected",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "disarmed exit restores soccer practice",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "RESET removes course and leaves aircraft disarmed",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:46Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "min_game_dt_s": 0.008333399891853333,
+        "max_game_dt_s": 0.00833360105752945
+      }
+    },
+    {
+      "label": "gpu60",
+      "path": "Saved/Verification/topgun-20261028-115550-9d873071/result.json",
+      "sha256": "45c8211db8ef9c4aa1bebce6a92d91e6269a30c7306103b4fae7e7d968a0cd51",
+      "check_count": 8,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "native Topgun button selects manual disarmed blue LOS pilot",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "two physical pylons have 70 cm diameter and 3.6 m height",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "fleet official match AI and aircraft selection cannot replace course",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "inactive roster soccer scores and finite motion preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "real flight produces expected completion or rejection",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "all four segment times and final time are ordered",
+            "ok": true,
+            "value": 15.78320592944522
+          },
+          {
+            "case": 0,
+            "check": "timing remains frozen through landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "pilot physically lands before motors stop",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:46Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "min_game_dt_s": 0.01666666753590107,
+        "max_game_dt_s": 0.01666666753590107
+      }
+    },
+    {
+      "label": "duel_regression",
+      "path": "Saved/Verification/ai-duel-20261028-115550-38ce9372/result.json",
+      "sha256": "75dc5028b5edd8e17db44aad8bf77186f739c6cb6b67cf543fff5fc54b4cebc7",
+      "check_count": 78,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "winner comparison uses both teams",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "equal score is a draw",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "early stop cannot award a win",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "native menu selects duel and launches only AI roster",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "AI striker possession rejected",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "official match cannot replace active AI duel",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "bounded session stop lands all AI",
+            "ok": true,
+            "value": 187.1333430930972
+          },
+          {
+            "case": 0,
+            "check": "AI striker physically scores twice with own-half retreat",
+            "ok": true,
+            "value": 9
+          },
+          {
+            "case": 0,
+            "check": "player ownership and inactive roster preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "all AI physically on floor with motors stopped",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "duel result has real score winner time limit and landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "score remains frozen during a real post-finish crossing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "explicit reset reopens normal training and clears scores",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "winner comparison uses both teams",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "equal score is a draw",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "early stop cannot award a win",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "native menu selects duel and launches only AI roster",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "AI striker possession rejected",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "official match cannot replace active AI duel",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "bounded session stop lands all AI",
+            "ok": true,
+            "value": 187.98334313742816
+          },
+          {
+            "case": 1,
+            "check": "AI striker physically scores twice with own-half retreat",
+            "ok": true,
+            "value": 9
+          },
+          {
+            "case": 1,
+            "check": "player ownership and inactive roster preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "all AI physically on floor with motors stopped",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "duel result has real score winner time limit and landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "score remains frozen during a real post-finish crossing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 1,
+            "check": "explicit reset reopens normal training and clears scores",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "winner comparison uses both teams",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "equal score is a draw",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "early stop cannot award a win",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "native menu selects duel and launches only AI roster",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "AI striker possession rejected",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "official match cannot replace active AI duel",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "bounded session stop lands all AI",
+            "ok": true,
+            "value": 187.86667646467686
+          },
+          {
+            "case": 2,
+            "check": "AI striker physically scores twice with own-half retreat",
+            "ok": true,
+            "value": 10
+          },
+          {
+            "case": 2,
+            "check": "player ownership and inactive roster preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "all AI physically on floor with motors stopped",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "duel result has real score winner time limit and landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "score remains frozen during a real post-finish crossing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 2,
+            "check": "explicit reset reopens normal training and clears scores",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "winner comparison uses both teams",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "equal score is a draw",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "early stop cannot award a win",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "native menu selects duel and launches only AI roster",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "AI striker possession rejected",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "official match cannot replace active AI duel",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "bounded session stop lands all AI",
+            "ok": true,
+            "value": 187.53334311395884
+          },
+          {
+            "case": 3,
+            "check": "AI striker physically scores twice with own-half retreat",
+            "ok": true,
+            "value": 9
+          },
+          {
+            "case": 3,
+            "check": "player ownership and inactive roster preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "all AI physically on floor with motors stopped",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "duel result has real score winner time limit and landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "score remains frozen during a real post-finish crossing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 3,
+            "check": "explicit reset reopens normal training and clears scores",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "winner comparison uses both teams",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "equal score is a draw",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "early stop cannot award a win",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "native menu selects duel and launches only AI roster",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "AI striker possession rejected",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "official match cannot replace active AI duel",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "bounded session stop lands all AI",
+            "ok": true,
+            "value": 187.98334313742816
+          },
+          {
+            "case": 4,
+            "check": "AI striker physically scores twice with own-half retreat",
+            "ok": true,
+            "value": 9
+          },
+          {
+            "case": 4,
+            "check": "player ownership and inactive roster preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "all AI physically on floor with motors stopped",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "duel result has real score winner time limit and landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "score remains frozen during a real post-finish crossing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 4,
+            "check": "explicit reset reopens normal training and clears scores",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "winner comparison uses both teams",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "equal score is a draw",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "early stop cannot award a win",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "native menu selects duel and launches only AI roster",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "AI striker possession rejected",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "official match cannot replace active AI duel",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "bounded session stop lands all AI",
+            "ok": true,
+            "value": 187.86667646467686
+          },
+          {
+            "case": 5,
+            "check": "AI striker physically scores twice with own-half retreat",
+            "ok": true,
+            "value": 10
+          },
+          {
+            "case": 5,
+            "check": "player ownership and inactive roster preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "all AI physically on floor with motors stopped",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "duel result has real score winner time limit and landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "score remains frozen during a real post-finish crossing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 5,
+            "check": "explicit reset reopens normal training and clears scores",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:46Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "min_game_dt_s": 0.01666666753590107,
+        "max_game_dt_s": 0.01666666753590107
+      }
+    },
+    {
+      "label": "duel_early_stop",
+      "path": "Saved/Verification/ai-duel-20261028-115550-38ce9372/early_stop/result.json",
+      "sha256": "b4e416d29708fde92c5582030f2c71ccb0d6b4516872bb37186f6b61a3a1a85e",
+      "check_count": 12,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "winner comparison uses both teams",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "equal score is a draw",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "early stop cannot award a win",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "native menu selects duel and launches only AI roster",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "AI striker possession rejected",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "official match cannot replace active AI duel",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "bounded session stop lands all AI",
+            "ok": true,
+            "value": 16.20000084489584
+          },
+          {
+            "case": 0,
+            "check": "player ownership and inactive roster preserved",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "all AI physically on floor with motors stopped",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "duel result has real score winner time limit and landing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "score remains frozen during a real post-finish crossing",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "explicit reset reopens normal training and clears scores",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:46Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "min_game_dt_s": 0.01666666753590107,
+        "max_game_dt_s": 0.01666666753590107
+      }
+    },
+    {
+      "label": "duel_reload-3",
+      "path": "Saved/Verification/ai-duel-20261028-115550-38ce9372/reload-3/result.json",
+      "sha256": "e828830090245a5ff64a7fbae3abce2bf7abce5e914cf8942ab7d42df622681e",
+      "check_count": 2,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "saved duel restores scores roster and winner",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "loading a duel record never launches aircraft",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:46Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "min_game_dt_s": 0.01666666753590107,
+        "max_game_dt_s": 0.01666666753590107
+      }
+    },
+    {
+      "label": "duel_reload-4",
+      "path": "Saved/Verification/ai-duel-20261028-115550-38ce9372/reload-4/result.json",
+      "sha256": "e828830090245a5ff64a7fbae3abce2bf7abce5e914cf8942ab7d42df622681e",
+      "check_count": 2,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "case": 0,
+            "check": "saved duel restores scores roster and winner",
+            "ok": true,
+            "value": 0
+          },
+          {
+            "case": 0,
+            "check": "loading a duel record never launches aircraft",
+            "ok": true,
+            "value": 0
+          }
+        ],
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:46Z",
+          "target": "ImperialWingsSimulator"
+        },
+        "min_game_dt_s": 0.01666666753590107,
+        "max_game_dt_s": 0.01666666753590107
+      }
+    },
+    {
+      "label": "input_safety",
+      "path": "Saved/Verification/input-safety-20261028-115550-142/result.json",
+      "sha256": "c3bc3fa9c2cc0f85d7f42eed464784c6542fa573b826f8e90da5971154360737",
+      "check_count": 29,
+      "result": {
+        "ok": true,
+        "checks": [
+          {
+            "check": "fixture starts with a manual keyboard aircraft",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "explicit low-throttle ARM accepted",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "real engine bindings accumulated keyboard throttle",
+            "ok": true,
+            "actual": 0.14000220596790314
+          },
+          {
+            "check": "engine saw held roll key",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "viewport focus loss immediately disarms manual aircraft",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "viewport focus loss immediately clears stored throttle",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "viewport focus loss immediately clears motor demand",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "native radio remains disabled",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "old repeated keys cannot restore throttle",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "old repeated roll key stays released in engine",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "queued pre-interruption key press is rejected",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "GameAndUI always requests focus-loss key flushing",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "repeat cannot re-arm after focus loss",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "focus regain does not re-arm",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "fresh Space press re-arms at zero throttle",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "observer view preserves manual ARM",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "overview preserves manual ARM",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "opening radio menu disarms selected aircraft",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "menu typing cannot arm or add throttle",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "closing menu rejects old repeated throttle/ARM",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "focus loss preserves explicit practice autonomy",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "autonomous forces still run after focus loss",
+            "ok": true,
+            "actual": 9.832415580749512
+          },
+          {
+            "check": "second throttle setup reached engine bindings",
+            "ok": true,
+            "actual": 0.10500264167785645
+          },
+          {
+            "check": "aircraft selection clears held-input throttle on new aircraft",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "equipment inspection opened disarmed",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "equipment view blocks held flight keys",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "equipment exit rejects stale throttle/ARM repeats",
+            "ok": true,
+            "actual": 0
+          },
+          {
+            "check": "reset setup accumulated keyboard throttle",
+            "ok": true,
+            "actual": 0.1050788164138794
+          },
+          {
+            "check": "Backspace reset clears pending throttle repeats",
+            "ok": true,
+            "actual": 0
+          }
+        ],
+        "scope": "explicit Unreal simulated keyboard events and real viewport/controller APIs; not physical keyboard, OS Alt-Tab or USB/HID input",
+        "build": {
+          "version": "0.7.11-dev",
+          "source_commit": "12150cef7d31c8bf42367db20866d35406993675",
+          "source_dirty": true,
+          "source_sha256": "104c7d136a45a3f2deca8d41d4d8761adf3f0126b7e9e4b45b6eb860c3a14337",
+          "build_utc": "2026-10-28T11:52:46Z",
+          "target": "ImperialWingsSimulator"
+        }
+      }
+    }
+  ],
+  "portable": {
+    "ok": true,
+    "checks": [
+      {
+        "name": "all released file hashes match",
+        "passed": true
+      },
+      {
+        "name": "standalone feedback form exists, is checksummed and matches reviewed source",
+        "passed": true
+      },
+      {
+        "name": "no pilot settings or generated Saved directory",
+        "passed": true
+      },
+      {
+        "name": "native launcher resolves relocated files without developer tools",
+        "passed": true
+      },
+      {
+        "name": "frozen APF starts with no installed Python or Git on PATH",
+        "passed": true
+      },
+      {
+        "name": "frozen APF provenance matches released upstream",
+        "passed": true
+      },
+      {
+        "name": "actual bundled APF responds to ten-aircraft protocol 2",
+        "passed": true
+      },
+      {
+        "name": "bounded APF test exits cleanly",
+        "passed": true
+      },
+      {
+        "name": "fresh standalone Unreal storage result",
+        "passed": true
+      },
+      {
+        "name": "fresh keyboard startup and profile safety",
+        "passed": true
+      },
+      {
+        "name": "fresh writes only to explicit per-user data path",
+        "passed": true
+      },
+      {
+        "name": "first use never invents a controller profile",
+        "passed": true
+      },
+      {
+        "name": "package remains free of generated pilot data after execution",
+        "passed": true
+      }
+    ]
+  },
+  "archive": {
+    "path": "E:\\Builds\\ImperialWings-Windows-v0.7.11-dev-topgun-r1.zip",
+    "size": 374884454,
+    "sha256": "c6d7b082c6a5f5e79523f397c82e8ab3b72860b752df20e5ee6a117d72bd7ef5",
+    "crc_valid": true
+  },
+  "real_controller_profile_preserved": true,
+  "physical_controller_test": false,
+  "other_pc_test": false,
+  "public_release_unchanged": "v0.7.4/ImperialWings-Windows-v0.7.4-r2.zip"
+}

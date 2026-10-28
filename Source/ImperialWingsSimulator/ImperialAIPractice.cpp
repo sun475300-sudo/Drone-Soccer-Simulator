@@ -11,6 +11,7 @@
 
 bool AImperialMatchManager::StartAIPractice(ImperialAI::Settings Settings)
 {
+    if(IsTopgunActive()){Log(TEXT("Exit Topgun or RESET before starting AI practice."));return false;}
     if(!Settings.Valid()||!IsAutonomyAllowed()||IsAIPracticeActive())return false;
     if(LastAIResult.Exists()&&!LastAIResult.bSaved){Log(TEXT("Unsaved AI result: retry saving or explicitly discard it in LAST RESULT before starting again."));return false;}
     const auto* Pilot=Cast<AImperialPlayerController>(UGameplayStatics::GetPlayerController(this,0));

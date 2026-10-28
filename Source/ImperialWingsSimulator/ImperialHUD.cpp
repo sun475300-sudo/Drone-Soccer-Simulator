@@ -142,6 +142,7 @@ void AImperialHUD::DrawHUD()
         Panel(24,934,1552,42);
         if(Selected)Text(FString::Printf(TEXT("%s   %s   ALT %.2f m   THR %.0f%%   BAT %.0f%% / %.1f V"),*UnitName(M->GetSelected()),*Selected->GetPilotStatus(),Selected->GetAltitudeMeters(),Selected->GetThrottle()*100,Selected->GetBatteryPercent(),Selected->GetBatteryVoltage()),40,947,13,White);
         Text(TEXT("F10 PANELS  |  C USB"),1548,950,11,Cyan,true);
+        if(M->IsTopgunActive())DrawTopgun(*M,true);
         return;
     }
     Panel(24,24,1552,102);Panel(24,142,1172,58);Panel(1220,142,356,452);
@@ -263,6 +264,7 @@ void AImperialHUD::DrawHUD()
             const auto U=(P-Origin)/Scale;Text(UnitName(M->GetSelected()),U.X+22,U.Y-8,12,C);
         }
     }
+    DrawTopgun(*M);
     if(bRadioPanelOpen)DrawRadioPanel(*M);
     if(bAIPracticePanel)DrawAIPracticePanel(*M);
 }
@@ -571,6 +573,8 @@ void AImperialHUD::NotifyHitBoxClick(FName BoxName)
         }
         return;
     }
+    if(N==TEXT("TopgunStart")&&!IsPilotMenuOpen()){M->StartTopgun();return;}
+    if(N==TEXT("TopgunExit")&&!IsPilotMenuOpen()){M->ExitTopgun();return;}
     if(N==TEXT("AI_Open")&&!bRadioPanelOpen){ToggleAIPracticePanel();return;}
     if(N==TEXT("Equipment")){if(auto* PC=Cast<AImperialPlayerController>(PlayerOwner))PC->ToggleEquipmentInspection();return;}
     if(N==TEXT("RadioOpen")){ToggleRadioPanel();return;}

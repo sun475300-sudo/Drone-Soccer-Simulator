@@ -12,6 +12,7 @@
 #include "AIAttacker.h"
 #include "ImperialMatchManager.generated.h"
 class ASoccerDronePawn;
+class AImperialTopgunCourse;
 class FJsonValue;
 class FJsonObject;
 class FPhysScene_Chaos;
@@ -39,6 +40,12 @@ public:
     void PrepareToExit();
     void StartMatch();
     bool StartAIPractice(ImperialAI::Settings Settings);
+    bool StartTopgun();
+    bool ExitTopgun();
+    bool IsTopgunActive() const { return TopgunCourse!=nullptr; }
+    bool IsTopgunDiagnostic() const { return bTopgunDiagnostic; }
+    AImperialTopgunCourse* GetTopgun() const { return TopgunCourse; }
+    double GetTopgunElapsed() const;
     void StopAIPractice();
     bool IsAIPracticeActive() const { return Mode==EImperialMode::AIPractice||Mode==EImperialMode::AILanding; }
     bool IsAILanding() const { return Mode==EImperialMode::AILanding; }
@@ -54,7 +61,7 @@ public:
     bool SaveAIResult();
     void DiscardUnsavedAIResult();
     bool IsArmingAllowed() const { return Rules.IsArmingAllowed(); }
-    bool IsAutonomyAllowed() const { return Rules.GetPhase()==drone_soccer::Phase::Practice; }
+    bool IsAutonomyAllowed() const { return Rules.GetPhase()==drone_soccer::Phase::Practice&&(!IsTopgunActive()||bTopgunDiagnostic); }
     FString GetMatchStatus() const;
     int32 GetSetWins(int32 Team) const { return Rules.SetWins(Team); }
     bool IsOffside(int32 Team) const { return Rules.IsOffside(Team); }
@@ -70,7 +77,7 @@ public:
     FString GetModeName() const;
     FString GetNotice() const { return Notice; }
     int32 GetScore(int32 Team) const { return Rules.Score(Team); }
-    double GetElapsed() const { return AISettings.Duel&&(IsAIPracticeActive()||bAIScoringClosed)?FMath::Max(0.,180.-AIAge):(Rules.GetPhase()==drone_soccer::Phase::Practice?Elapsed:Rules.Remaining()); }
+    double GetElapsed() const { if(IsTopgunActive())return GetTopgunElapsed();return AISettings.Duel&&(IsAIPracticeActive()||bAIScoringClosed)?FMath::Max(0.,180.-AIAge):(Rules.GetPhase()==drone_soccer::Phase::Practice?Elapsed:Rules.Remaining()); }
     float GetFPS() const { return SmoothFPS; }
     const FImperialSimulationTime& GetSimulationTime() const { return SimulationTime; }
     float GetClosestSeparation() const { return ClosestSeparation; }
@@ -79,6 +86,8 @@ public:
     FLinearColor GetTeamColor(int32 Id) const;
     const TArray<FString>& GetEvents() const { return Events; }
 private:
+    UPROPERTY() TObjectPtr<AImperialTopgunCourse> TopgunCourse;
+    bool bTopgunDiagnostic=false;
     ImperialAI::Settings AISettings;
     ImperialAI::Planner AIPlanner;
     ImperialAI::Attacker AIAttacker;
