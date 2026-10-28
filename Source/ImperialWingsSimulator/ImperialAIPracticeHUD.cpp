@@ -4,12 +4,14 @@
 #include "ImperialRadioSubsystem.h"
 #include "ImperialLocalization.h"
 #include "Engine/Canvas.h"
+#include "AIResultComparison.h"
 
 void AImperialHUD::ToggleAIPracticePanel()
 {
     if(bRadioPanelOpen)ToggleRadioPanel();
     bAIPracticePanel=!bAIPracticePanel;
     bAIResultPage=false;
+    if(auto* M=FindMatch())M->CloseAIComparison();
     if(auto* M=FindMatch();M&&bAIPracticePanel)
     {
         M->ManualSelected();
@@ -26,11 +28,13 @@ void AImperialHUD::DrawAIPracticePanel(AImperialMatchManager& M)
     const FLinearColor White(.89f,.96f,1),Muted(.55f,.69f,.76f),Cyan(.1f,.75f,.96f),Amber(1,.71f,.24f);
     DrawRect(FLinearColor(0,0,0,.82f),0,0,Canvas->SizeX,Canvas->SizeY);Panel(320,126,960,748);Rect(320,126,4,748,Cyan);ButtonPriority=110;
     Button(TEXT("Radio_Language"),ImperialLocalization::IsKorean()?TEXT("English"):TEXT("한국어"),1084,148,168,32);
+    if(M.GetAIComparisonView().bOpen){DrawAIComparisonPanel(M);ButtonPriority=10;return;}
     if(bAIResultPage&&M.GetAIResult().Exists()){DrawAIResultPanel(M);ButtonPriority=10;return;}
     Text(bAIDraftDuel?TEXT("AI DUEL / TRAINING VARIANT"):TEXT("AI DEFENCE PRACTICE"),348,155,28,White);
     Text(TEXT("Solo goal training  /  Blue striker  /  LOS + ANGLE"),348,197,15,Cyan);
     Button(TEXT("AI_Defence"),TEXT("DEFENCE PRACTICE"),348,228,280,32,!bAIDraftDuel);
     Button(TEXT("AI_Duel"),TEXT("DUEL / 3 MINUTES"),640,228,280,32,bAIDraftDuel);
+    Button(TEXT("AI_CompareOpen"),TEXT("COMPARE SAVED RESULTS"),932,228,320,32);
     Button(TEXT("AI_Count3"),bAIDraftDuel?TEXT("3 AI: STRIKER + 2 DEFENDERS"):TEXT("3 DEFENDERS"),348,277,280,42,AIDraftCount==3);
     Button(TEXT("AI_Count4"),bAIDraftDuel?TEXT("4 AI: STRIKER + 3 DEFENDERS"):TEXT("4 DEFENDERS"),640,277,280,42,AIDraftCount==4);
     if(M.GetAIResult().Exists())Button(TEXT("AI_Last"),TEXT("LAST RESULT"),932,277,320,42);
@@ -88,6 +92,145 @@ void AImperialHUD::DrawAIResultPanel(AImperialMatchManager& M)
     Text(FString::Printf(TEXT("%s   /   %s"),*R.BuildVersion,*R.EndedUtc),348,728,11,Muted);
     Text(R.bSaved?TEXT("SAVED: user data / TrainingResults / AI"):TEXT("NOT SAVED: retry, or discard this unsaved result before starting again."),348,752,16,R.bSaved?Cyan:Amber);
     if(!R.bSaved){Button(TEXT("AI_ResultSave"),TEXT("RETRY SAVE"),348,790,205,38);Button(TEXT("AI_ResultDiscard"),TEXT("DISCARD UNSAVED"),565,790,230,38,false,true);}
+    else Button(TEXT("AI_CompareOpen"),TEXT("COMPARE SAVED RESULTS"),348,790,447,38);
     Button(TEXT("AI_ResultBack"),TEXT("SETUP"),807,790,205,38);Button(TEXT("AI_Close"),TEXT("CLOSE"),1024,790,228,38);
     Text(Fit(LanguageMessage.IsEmpty()?M.GetNotice():LanguageMessage,13,900),348,845,13,LanguageMessage.IsEmpty()?Muted:Amber);
+}
+
+
+namespace
+{
+// Saved metadata is never a translation key, markup, or a multi-line instruction.
+// This is display-only: original report bytes are not edited.
+FString AIComparisonSingleLine(const FString& Value)
+{
+    FString Out;
+    Out.Reserve(Value.Len());
+    for(const TCHAR C:Value)
+    {
+        const uint32 Code=static_cast<uint32>(C);
+        const bool Control=Code<32||Code==127||Code==0x2028||Code==0x2029||
+            Code==0x200e||Code==0x200f||(Code>=0x202a&&Code<=0x202e)||(Code>=0x2066&&Code<=0x2069);
+        Out.AppendChar(Control?TEXT(' '):C);
+    }
+    return Out;
+}
+FString AIComparisonRecordLabel(const FImperialAIComparisonRecord& Record)
+{
+    const auto& R=Record.Result;
+    const FString Difficulty=ImperialLocalization::Translate(R.Settings.Difficulty==0?TEXT("BEGINNER"):
+        (R.Settings.Difficulty==1?TEXT("INTERMEDIATE"):TEXT("ADVANCED")));
+    const FString Mode=ImperialLocalization::Translate(R.Settings.Duel?TEXT("DUEL"):TEXT("DEFENCE"));
+    return FString::Printf(TEXT("%s | %s | %d AI | %s | %s %u"),
+        *AIComparisonSingleLine(R.EndedUtc),*Mode,R.Settings.Count,*Difficulty,
+        *ImperialLocalization::Translate(TEXT("SEED")),R.Settings.Seed);
+}
+const TCHAR* AIComparisonDeltaLabel(const FString& Key)
+{
+    if(Key==TEXT("goals"))return TEXT("BLUE VALID GOALS");
+    if(Key==TEXT("opponent_goals"))return TEXT("RED VALID GOALS");
+    if(Key==TEXT("practice_seconds"))return TEXT("PRACTICE TIME (s)");
+    if(Key==TEXT("landing_seconds"))return TEXT("AI LANDING TIME (s)");
+    if(Key==TEXT("recovery_attempts"))return TEXT("RECOVERY ATTEMPTS");
+    if(Key==TEXT("player_guard_impacts"))return TEXT("BLUE STRIKER GUARD CONTACTS");
+    if(Key==TEXT("player_guard_remaining_percent"))return TEXT("BLUE STRIKER GUARD REMAINING (percentage points)");
+    return TEXT("RECORDED VALUE");
+}
+}
+
+void AImperialHUD::DrawAIComparisonPanel(AImperialMatchManager& M)
+{
+    const auto& V=M.GetAIComparisonView();
+    const FLinearColor White(.89f,.96f,1),Muted(.55f,.69f,.76f),Cyan(.1f,.75f,.96f),Amber(1,.71f,.24f);
+    Text(TEXT("SAVED AI RESULT COMPARISON"),348,155,27,White);
+
+    // A/B refer to the selected records, not chronological order or pilot skill.
+    auto Selection=[this,&V,White,Muted](int32 Index,const TCHAR* Heading,float X,float Y,float Width)
+    {
+        Text(Heading,X,Y,16,Muted);
+        if(!V.Records.IsValidIndex(Index)||!V.Records[Index].bValid)
+        {
+            Text(TEXT("NOT SELECTED"),X,Y+26,16,Muted);
+            return;
+        }
+        const auto& Record=V.Records[Index];const auto& R=Record.Result;
+        TextRaw(FitRaw(AIComparisonRecordLabel(Record),14,Width),X,Y+26,14,White);
+        TextRaw(FitRaw(AIComparisonSingleLine(R.BuildVersion)+TEXT(" | ")+R.SourceHash.Left(12)+
+            TEXT(" | ")+R.SessionId.Left(8),13,Width),X,Y+49,13,Muted);
+    };
+
+    if(!V.bShowOutcome)
+    {
+        Text(TEXT("Choose reference A and candidate B. Saved files stay unchanged."),348,198,16,Muted);
+        Text(TEXT("SAVED RECORDS / READ ONLY"),348,232,15,Cyan);
+        TextRaw(FString::Printf(TEXT("%d"),V.Records.Num()),842,232,15,Muted);
+        Button(TEXT("AI_CompareRefresh"),TEXT("REFRESH LIST"),1020,225,232,32);
+
+        const int32 Start=V.Page*FImperialAIComparisonView::PageSize;
+        for(int32 Row=0;Row<FImperialAIComparisonView::PageSize;++Row)
+        {
+            const int32 Index=Start+Row;if(!V.Records.IsValidIndex(Index))break;
+            const auto& Record=V.Records[Index];const float Y=270+Row*42;
+            Rect(348,Y,904,39,FLinearColor(.035f,.075f,.11f,.98f));
+            if(Record.bValid)
+            {
+                TextRaw(FitRaw(AIComparisonRecordLabel(Record),14,688),360,Y+5,14,White);
+                TextRaw(FitRaw(AIComparisonSingleLine(Record.Result.BuildVersion)+TEXT(" | ")+Record.Result.SourceHash.Left(12)+
+                    TEXT(" | ")+Record.Result.SessionId.Left(8),11,688),360,Y+23,11,Muted);
+                Button(*FString::Printf(TEXT("AI_CompareA_%d"),Index),TEXT("SET A"),1060,Y+3,86,32,V.ReferenceIndex==Index);
+                Button(*FString::Printf(TEXT("AI_CompareB_%d"),Index),TEXT("SET B"),1156,Y+3,86,32,V.CandidateIndex==Index);
+            }
+            else
+            {
+                Text(TEXT("UNREADABLE RECORD / NOT SELECTABLE"),360,Y+5,14,Amber);
+                TextRaw(FitRaw(AIComparisonSingleLine(Record.FileName)+TEXT(" | ")+
+                    ImperialLocalization::Translate(Record.Error),11,872),360,Y+23,11,Muted);
+            }
+        }
+        if(V.Records.IsEmpty())Text(TEXT("No saved AI result JSON files are available."),360,292,17,Muted);
+        Button(TEXT("AI_ComparePrev"),TEXT("PREVIOUS"),348,491,180,32);
+        Button(TEXT("AI_CompareNext"),TEXT("NEXT"),540,491,180,32);
+        const int32 Pages=FMath::Max(1,FMath::DivideAndRoundUp(V.Records.Num(),FImperialAIComparisonView::PageSize));
+        TextRaw(FString::Printf(TEXT("%d / %d"),V.Page+1,Pages),740,500,15,Muted);
+        Selection(V.ReferenceIndex,TEXT("REFERENCE A"),348,551,904);
+        Selection(V.CandidateIndex,TEXT("CANDIDATE B"),348,634,904);
+        StatusText(V.LoadNotice,348,720,904,Amber);
+        Button(TEXT("AI_CompareShow"),TEXT("COMPARE A AND B"),348,790,550,38);
+        Button(TEXT("AI_CompareClose"),TEXT("BACK TO AI"),922,790,330,38);
+        Text(TEXT("AI result JSON only. F6 flight logs are not supported."),348,846,14,Muted);
+        return;
+    }
+
+    Panel(348,225,440,102);Panel(812,225,440,102);
+    Selection(V.ReferenceIndex,TEXT("REFERENCE A"),364,238,408);
+    Selection(V.CandidateIndex,TEXT("CANDIDATE B"),828,238,408);
+    const auto& O=V.Outcome;
+    Text(!O.bHasPair?TEXT("SELECT TWO RECORDS"):
+        (O.bRecordedConditionsMatch?TEXT("RECORDED SETTINGS MATCH"):TEXT("RECORDED SETTINGS DIFFER")),
+        348,349,17,O.bRecordedConditionsMatch?Cyan:Amber);
+    Text(TEXT("Frame rate, controls, battery and starting motion were not recorded."),348,380,14,Muted);
+    Text(O.bEligible?TEXT("CANDIDATE B MINUS REFERENCE A"):TEXT("COMPARISON BLOCKED"),348,412,17,O.bEligible?Cyan:Amber);
+
+    const int32 Count=O.bEligible?O.Deltas.Num():O.Reasons.Num();
+    const int32 Start=V.DetailsPage*FImperialAIComparisonView::DetailsPageSize;
+    for(int32 Row=0;Row<FImperialAIComparisonView::DetailsPageSize;++Row)
+    {
+        const int32 Index=Start+Row;if(Index>=Count)break;
+        const float Y=448+Row*32;
+        if(O.bEligible)
+        {
+            const auto& D=O.Deltas[Index];
+            Text(Fit(AIComparisonDeltaLabel(D.Key),15,704),348,Y,15,White);
+            // A positive or negative delta has no automatic good/bad color.
+            TextRaw(FString::Printf(TEXT("%+.3f"),D.Value),1238,Y,17,Cyan,true);
+        }
+        else Text(Fit(O.Reasons[Index],15,904),348,Y,15,Amber);
+    }
+    Button(TEXT("AI_CompareDetailsPrev"),TEXT("PREVIOUS"),348,719,180,30);
+    Button(TEXT("AI_CompareDetailsNext"),TEXT("NEXT"),540,719,180,30);
+    const int32 Pages=FMath::Max(1,FMath::DivideAndRoundUp(Count,FImperialAIComparisonView::DetailsPageSize));
+    TextRaw(FString::Printf(TEXT("%d / %d"),V.DetailsPage+1,Pages),740,727,15,Muted);
+    Text(TEXT("Local descriptive statistics do not verify pilot improvement or online records."),348,762,14,Muted);
+    Button(TEXT("AI_CompareList"),TEXT("BACK TO RECORDS"),348,800,550,38);
+    Button(TEXT("AI_CompareClose"),TEXT("BACK TO AI"),922,800,330,38);
 }

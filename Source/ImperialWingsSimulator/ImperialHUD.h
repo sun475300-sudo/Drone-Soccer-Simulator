@@ -41,6 +41,7 @@ private:
     uint32 AIDraftSeed=1;
     void DrawAIPracticePanel(AImperialMatchManager& Manager);
     void DrawAIResultPanel(AImperialMatchManager& Manager);
+    void DrawAIComparisonPanel(AImperialMatchManager& Manager);
     bool bRadioAdvanced = false;
     bool bRadioConnectionHelp = false;
     FString LanguageMessage;
@@ -54,6 +55,10 @@ private:
     bool bCheckedFirstRun = false;
     struct FButtonTarget { FName Name; FBox2D Bounds; int32 Priority; };
     TArray<FButtonTarget> ButtonTargets;
+    struct FTextDetail { FBox2D Bounds; FString Display; };
+    TArray<FTextDetail> TextDetails;
+    void DrawTextDetail();
+    TArray<FString> WrapRaw(const FString& Value, float Size, float Width) const;
     int32 ButtonPriority = 10;
     AImperialMatchManager* FindMatch();
     UImperialRadioSubsystem* GetRadio() const;
@@ -67,6 +72,9 @@ private:
     void Rect(float X, float Y, float W, float H, FLinearColor Color);
     void Text(const FString& Value, float X, float Y, float Size, FLinearColor Color, bool Right = false);
     FString Fit(const FString& Value, float Size, float Width) const;
+    // Raw user/device strings must bypass the translation dictionary.
+    void TextRaw(const FString& Value, float X, float Y, float Size, FLinearColor Color, bool Right = false);
+    FString FitRaw(const FString& Value, float Size, float Width) const;
     void StatusText(const FString& Value, float X, float Y, float Width, FLinearColor Color);
     void Panel(float X, float Y, float W, float H);
     void Button(FName Name, const FString& Label, float X, float Y, float W, float H = 36, bool Active = false, bool Warning = false);

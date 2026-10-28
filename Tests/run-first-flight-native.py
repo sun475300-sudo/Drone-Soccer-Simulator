@@ -129,7 +129,7 @@ def main():
         require(executable.is_file(), "Runtime executable not found: " + str(executable))
         command = prefix + ["-game", "-unattended", "-nosplash", "-nosound", "-ImperialNoWelcome",
                             "-ImperialFirstFlightSmoke", "-ImperialFirstFlightResult=" + str(result_file),
-                            "-ImperialDataDir=" + str(userdata), "-ImperialBridgeUrl=http://127.0.0.1:1",
+                            "-ImperialDataDir=" + str(userdata), "-UserDir=" + str(output / "engine-user"), "-ImperialBridgeUrl=http://127.0.0.1:1",
                             "-abslog=" + str(output / "runtime.log"), "-UseFixedTimeStep", "-FPS=" + str(args.fps)]
         if args.render_capture:
             command += ["-RenderOffscreen", "-ForceRes", "-ResX=" + str(args.width), "-ResY=" + str(args.height),

@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [string]$EngineRoot='E:\Program Files\UE_5.8',
     [switch]$Packaged,
@@ -20,7 +20,7 @@ $identity=& (Join-Path $root 'Scripts\Get-SourceIdentity.ps1') -ProjectRoot $roo
 $arguments=@('-game','-RenderOffscreen','-ForceRes',('-ResX='+$Width),('-ResY='+$Height),'-nosound','-unattended','-nosplash','-ImperialNoWelcome',
     '-ImperialAIResultsSmoke','-ImperialAIResultsUIFlow','-ImperialAIResultsCase=fresh','-ImperialBridgeUrl=http://127.0.0.1:1',
     ('-ImperialAIResultsResult='+$resultFile),('-ImperialAIResultsCapture='+(Join-Path $output 'results-ko.png')),
-    ('-ImperialDataDir='+$userdata),('-abslog='+(Join-Path $output 'runtime.log')))
+    ('-ImperialDataDir='+$userdata),('-UserDir='+(Join-Path $output 'engine-user')),('-abslog='+(Join-Path $output 'runtime.log')))
 if($Packaged){$exe=Join-Path $environment.PackageRoot 'ImperialWingsSimulator\Binaries\Win64\ImperialWingsSimulator-Win64-Shipping.exe'}
 else{$exe=Join-Path $environment.EngineRoot 'Engine\Binaries\Win64\UnrealEditor-Cmd.exe';$arguments=@((Join-Path $root 'ImperialWingsSimulator.uproject'))+$arguments}
 if(-not(Test-Path -LiteralPath $exe)){throw ('AI UI runtime missing: '+$exe)}

@@ -1,4 +1,5 @@
 #include "ImperialGameMode.h"
+#include "ImperialAIComparisonVerifier.h"
 #include "ImperialPlayerController.h"
 #include "ImperialMatchManager.h"
 #include "ImperialHUD.h"
@@ -37,7 +38,11 @@ void AImperialGameMode::StartPlay()
     GetWorld()->SpawnActor<AImperialPresentationEffects>();
     GetWorld()->SpawnActor<AImperialRoleRibbons>();
     // The bridge validates conflicting diagnostic flags itself, before another verifier can start.
-    if(FParse::Param(FCommandLine::Get(),TEXT("ImperialFlightRecordingSmoke")))
+    if(FParse::Param(FCommandLine::Get(),TEXT("ImperialAIComparisonSmoke")))
+    {
+        GetWorld()->SpawnActor<AImperialAIComparisonVerifier>();
+    }
+    else if(FParse::Param(FCommandLine::Get(),TEXT("ImperialFlightRecordingSmoke")))
     {
         GetWorld()->SpawnActor<AImperialFlightRecordingVerifier>();
     }

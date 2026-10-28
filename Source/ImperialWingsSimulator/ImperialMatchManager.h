@@ -8,6 +8,7 @@
 #include "SimulationTime.h"
 #include "AITraining.h"
 #include "AIPracticeResult.h"
+#include "AIResultComparison.h"
 #include "AIRecovery.h"
 #include "AIAttacker.h"
 #include "ImperialMatchManager.generated.h"
@@ -53,6 +54,14 @@ public:
     const FImperialAIResult& GetAIResult() const { return LastAIResult; }
     bool SaveAIResult();
     void DiscardUnsavedAIResult();
+    void OpenAIComparison();
+    void CloseAIComparison();
+    bool RefreshAIComparison();
+    void MoveAIComparisonPage(int32 Delta);
+    void SelectAIComparisonRecord(int32 Slot,int32 Index);
+    void ShowAIComparisonOutcome(bool bShow);
+    void MoveAIComparisonDetailsPage(int32 Delta);
+    const FImperialAIComparisonView& GetAIComparisonView() const { return AIComparison; }
     bool IsArmingAllowed() const { return Rules.IsArmingAllowed(); }
     bool IsAutonomyAllowed() const { return Rules.GetPhase()==drone_soccer::Phase::Practice; }
     FString GetMatchStatus() const;
@@ -89,6 +98,8 @@ private:
     bool bAILandingFault=false;
     void TickAIPractice(float Dt);
     FImperialAIResult CurrentAIResult,LastAIResult;
+    FImperialAIComparisonView AIComparison;
+    void UpdateAIComparisonOutcome();
     void SnapshotAIResult(const FString& Reason);
     void FinishAIResult(const FString& Reason);
     void LoadAIResult();

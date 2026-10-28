@@ -55,6 +55,28 @@
       "new": 220,
       "total": 410,
       "scope": "Unchanged observation header unit tests, not a full game flight"
+    },
+    "first_flight_actual_OS_automated": {
+      "state": "one_complete_real_os_input_automated_flight_passed",
+      "evidence": "firstflight-f5-os-20261028-195439-82fa6a/summary-utf8.json",
+      "raw_evidence": "firstflight-f5-os-20261028-195439-82fa6a/summary.json",
+      "raw_encoding": "cp949",
+      "raw_sha256": "008515b64d67602706ca783527cb8229713fd064f0cf5749fff17360ea957d48",
+      "source_sha256": "0ea9a3fddb95c8c14da5013f4439a2bd436a14add058025c8ddf7f50179b198c",
+      "shipping_sha256": "35434fa2a3dcf4c1f58882c7baaa21015c586ca07f2bb418e86a27581f6fdf48",
+      "steps_complete": 6,
+      "blue_score": 1,
+      "red_score": 0,
+      "explicit_arm_disarm_space_actions": 4,
+      "final_ground_disarmed_low_throttle": true,
+      "F5_snapshots": 686,
+      "F6_recording_enabled": false,
+      "actual_process_exit_code": 0,
+      "native_pose_score_time_autonomy_injection": false,
+      "human_manual_pilot_or_novice_usability_verified": false,
+      "physical_controller_or_other_PC_verified": false,
+      "published_C7_full_flight_verified_by_this_test": false,
+      "screenshots_internal_only": true
     }
   },
   "installer_gui": {
@@ -265,7 +287,8 @@
     "recording_window": "recording-gpu-window-20261028-184858-c9368f90/review.json",
     "installer_gui": "InstallerGui-20261028-183132/final-audit.json",
     "performance": "perf-guardchips/runs-20261028-185131-93a0d881/summary.json",
-    "capture_pixel_audit": "ui-capture-pixel-audit.json"
+    "capture_pixel_audit": "ui-capture-pixel-audit.json",
+    "first_flight_actual_OS_automated": "firstflight-f5-os-20261028-195439-82fa6a/summary-utf8.json"
   },
   "historical_failures_preserved": [
     "57e529 recorder fixture parsed trailing empty JSONL line as an error; corrected only terminal empty line, not interior invalid records",
@@ -274,32 +297,46 @@
     "Initial window capture helper lacked PIL; used existing Windows GDI APIs without installing packages"
   ],
   "pending": [
-    "Whole six-step actual pilot flight",
-    "Physical Boxer sticks/buttons/USB loss-reconnect; another PC/GPU/user",
-    "Independent uninstaller full GUI, cross-version GUI update and power-loss/partial-write/disk-full tests",
-    "Actual device name translation and small HUD text/DPI/readability remain",
-    "F7 feedback, Topgun integration, leaderboards, added languages and other unimplemented plan areas",
-    "Default main code/history integration with release tag"
+    "Human manual six-step flight and independent novice usability; actual HUD/DPI/long-warning readability",
+    "Physical Boxer sticks/buttons/USB loss-reconnect; another PC/GPU/Windows user",
+    "Cross-version GUI update, independent uninstaller GUI and power-loss/partial-write/disk-full tests",
+    "Actual device name equal to a translation key can be translated; not yet corrected",
+    "CLI comparison game UI, real human-record comparison and Unreal/package validation for source699/163",
+    "Default remote main code/history integration; local merge1349351 is a review candidate only",
+    "F7 feedback, Topgun integration, leaderboards, added languages and other unimplemented plan areas"
   ],
   "library_comparison_tool": {
-    "state": "officially_materialized_pending_schema_review",
+    "state": "local_cli_verified_committed_not_published",
     "filename": "drone-soccer-ai-result-comparison-cf3430a.zip",
     "prepare_materialize_succeeded": true,
     "final_zip_created": true,
-    "patch_read_or_applied": false,
+    "patch_read_or_applied": true,
     "approval_denied": false,
     "windows_error_preserved": "Official helper failed on Windows: AttributeError module os has no attribute setxattr",
     "official_resolution": "Existing WSL Ubuntu Python and persistent /var/tmp, Windows workspace destination explicit prepare_materialize then unchanged official helper materialize with complete transfer on stdin",
     "sha256": "860e473c0d563914afef936d4dee2f7ec1deb12413a4d7bd36a516b09dbbce8a",
     "bytes": 66432,
     "library_metadata_verified": true,
-    "new_tools_installed_or_settings_changed": false
+    "new_tools_installed_or_settings_changed": false,
+    "integration": "Only three additions manually integrated; old-main full patch not blindly applied",
+    "commit": "5455423e707217e4cf9f5f196faded8f95ac6c8d",
+    "source_sha256": "699cb918d030304e8a08914a3ba0f932aaa25e48718c31cacf7241b3a198ceec",
+    "input_count": 163,
+    "comparison_unit_tests": 37,
+    "existing_analysis_tests": 5,
+    "supported_input": "AITrainingResults schema1/2 defence/duel; not F6 JSONL/CSV",
+    "game_UI_integrated": false,
+    "actual_human_record_comparison_verified": false,
+    "Unreal_rebuilt_for_163_inputs": false,
+    "evidence": "E:\\Builds\\ImperialWings-ResultCompare-20261028\\Saved\\Verification\\COMPARISON_DELIVERY_STATE.json"
   },
   "preservation": {
     "original_personal_radio_profile_unchanged": true,
     "original_project_radio_profile_remains_absent": true,
     "installer_pointer_restored_absent": true,
-    "public_artifacts_unchanged": true
+    "public_artifacts_unchanged": true,
+    "final_no_game_or_Unreal_build_processes": true,
+    "final_personal_profile_hash_unchanged": true
   },
   "completed_utc": "2026-10-28T19:02:48.279689+00:00",
   "capture_glyph_observation": {
@@ -319,5 +356,28 @@
     "scenario": "idle",
     "capture": "offscreen engine screenshot",
     "selected_gpu_independently_identified": false
-  }
+  },
+  "main_source_merge_candidate": {
+    "state": "local_merge_commit_review_candidate_not_pushed",
+    "commit": "1349351a2e635fc7938eced4f7bc827ea9ccd001",
+    "parents": [
+      "ac3d470774ff88fd02eb4492d81702efdd6e2741",
+      "abc7240da51640d67fb75a4ec08849e1bebb6e11"
+    ],
+    "path": "E:\\Builds\\ImperialWings-MainMergeCandidate-20261028-cb34670a",
+    "source_sha256": "0ea9a3fddb95c8c14da5013f4439a2bd436a14add058025c8ddf7f50179b198c",
+    "input_count": 162,
+    "source_input_equality_to_tested_post_build": true,
+    "built_from_merge_commit": false,
+    "new_merged_candidate_runtime_run": false,
+    "comparison_CLI_5455423_included": false,
+    "remote_main_changed": false,
+    "remote_tag_changed": false,
+    "evidence": "E:\\Builds\\ImperialWings-MainMergeAudit-20261028-192254-d521a566\\Saved\\Verification\\candidate-validation.json",
+    "historical_precommit_validation_preserved": true,
+    "created_utc": "2026-10-28T20:13:03.128433+00:00"
+  },
+  "updated_utc": "2026-10-28T20:13:03.128433+00:00",
+  "later_local_product_milestone": "product-ui-2026-10-28.json",
+  "historical_source_scope_preserved": true
 }

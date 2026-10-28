@@ -13,12 +13,31 @@
     }
   ],
   "Plugins": [
-    {"Name": "PythonScriptPlugin", "Enabled": true, "TargetAllowList": ["Editor"]},
-    {"Name": "EditorScriptingUtilities", "Enabled": true, "TargetAllowList": ["Editor"]},
-    {"Name": "AndroidFileServer", "Enabled": false},
+    {
+      "Name": "PythonScriptPlugin",
+      "Enabled": true,
+      "TargetAllowList": [
+        "Editor"
+      ]
+    },
+    {
+      "Name": "EditorScriptingUtilities",
+      "Enabled": true,
+      "TargetAllowList": [
+        "Editor"
+      ]
+    },
+    {
+      "Name": "AndroidFileServer",
+      "Enabled": false
+    },
     {
       "Name": "EnhancedInput",
       "Enabled": true
+    },
+    {
+      "Name": "Fab",
+      "Enabled": false
     }
   ]
 }

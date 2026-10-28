@@ -1,0 +1,262 @@
+{
+  "state": "local_product_UI_implemented_and_verified_not_published",
+  "version": "0.7.14-dev-ui1",
+  "source_sha256": "0350e848ef1b1a2e315eabad25ff8d36d680ba45a42f70069c83cff6b5c1c452",
+  "source_inputs": 169,
+  "shipping_sha256": "262862801052ea0d97d887b7b8e82d1bb5f6729e965eec1d1d5e2f724bd0b471",
+  "build_parent_commit": "5455423e707217e4cf9f5f196faded8f95ac6c8d",
+  "built_dirty": true,
+  "build_utc": "2026-10-28T20:51:47Z",
+  "build_result": "product-ui-build-20261028-205138-2e176ed0/result.json",
+  "public_release_unchanged": "v0.7.13-rc1",
+  "remote_main_unchanged": "ac3d470774ff88fd02eb4492d81702efdd6e2741",
+  "public_tag_unchanged": "187e3002dbdecd1c429ca652d106fcc21d69b5b4",
+  "five_public_asset_digests_reconfirmed": true,
+  "features": {
+    "comparison_UI": "AI settings/saved result -> five-record list -> explicit A/B -> eight reasons/metrics per detail page",
+    "read_only": true,
+    "original_record_delete_edit_send": false,
+    "max_listed_candidates": 100,
+    "max_file_bytes": 65536,
+    "refresh_I_O": "Explicit open/refresh only; filename order, not guaranteed chronological",
+    "supported": "AITrainingResults schema1/2 only; F6 JSONL/F5 CSV unsupported",
+    "recorded_conditions_only": true,
+    "authenticated_skill_or_identical_training_conditions": false,
+    "minimum_requested_canvas_text_height_px": 10,
+    "Windows_device_names_translated": false
+  },
+  "tests": {
+    "comparison_native": [
+      {
+        "summary": "ProductUI-QA/comparison-20261028-205400-714f6250/summary.json",
+        "cases": 71,
+        "checks": 77,
+        "actual_exit_code": 0,
+        "fps": "-FPS=60",
+        "editor": true
+      },
+      {
+        "summary": "ProductUI-QA/comparison-20261028-205413-7c92418b/summary.json",
+        "cases": 71,
+        "checks": 77,
+        "actual_exit_code": 0,
+        "fps": "-FPS=20",
+        "editor": false
+      },
+      {
+        "summary": "ProductUI-QA/comparison-20261028-205418-8d8a1dfc/summary.json",
+        "cases": 71,
+        "checks": 77,
+        "actual_exit_code": 0,
+        "fps": "-FPS=60",
+        "editor": false
+      },
+      {
+        "summary": "ProductUI-QA/comparison-20261028-205422-9b48cbfd/summary.json",
+        "cases": 71,
+        "checks": 77,
+        "actual_exit_code": 0,
+        "fps": "-FPS=240",
+        "editor": false
+      }
+    ],
+    "AI_GPU_UI": [
+      {
+        "summary": "ai-ui-flow-20261028-205401-157-916830a4/summary.json",
+        "width": 1280,
+        "height": 720,
+        "checks": 55
+      },
+      {
+        "summary": "ai-ui-flow-20261028-205429-894-526e0760/summary.json",
+        "width": 960,
+        "height": 640,
+        "checks": 55
+      }
+    ],
+    "firstflight_native": [
+      {
+        "summary": "first-flight-native-20261028-205410-9b800da4/summary.json",
+        "checks": 43,
+        "requested_fps": 20,
+        "full_six_step_flight_verified": false
+      },
+      {
+        "summary": "first-flight-native-20261028-205413-633c1a2c/summary.json",
+        "checks": 43,
+        "requested_fps": 240,
+        "full_six_step_flight_verified": false
+      }
+    ],
+    "F6_native": {
+      "checks": 35,
+      "summary": "flight-recording-native-20261028-205417-697329a2/summary.json"
+    },
+    "input_physics": {
+      "ok": true,
+      "source": {
+        "version": "0.7.14-dev-ui1",
+        "source_commit": "5455423e707217e4cf9f5f196faded8f95ac6c8d",
+        "source_dirty": true,
+        "source_sha256": "0350e848ef1b1a2e315eabad25ff8d36d680ba45a42f70069c83cff6b5c1c452",
+        "input_count": 169
+      },
+      "runs": [
+        {
+          "name": "input",
+          "ok": true,
+          "exit_code": 0,
+          "result": "E:\\Builds\\ImperialWings-ProductUI-20261028\\Saved\\Verification\\product-regression-final-20261028-205449-d7e2cca9\\input\\result.json",
+          "checks": 29
+        },
+        {
+          "name": "physics60",
+          "ok": true,
+          "exit_code": 0,
+          "result": "E:\\Builds\\ImperialWings-ProductUI-20261028\\Saved\\Verification\\product-regression-final-20261028-205449-d7e2cca9\\physics60\\result.json",
+          "checks": 0
+        }
+      ],
+      "scope": "Isolated native input and fixed60 physics; no physical pilot/USB/other-PC evidence."
+    },
+    "HUD_pure": {
+      "checks": 177,
+      "evidence": "hud-readability-unit-20261028-203548-614-f7188988/result.json",
+      "scope": "Pixel floor and UTF16 math, unchanged inputs; no Unreal glyph/DPI proof"
+    },
+    "CLI_unit": 37,
+    "existing_analysis_unit": 5,
+    "CLI_unit_scope": "Run in this new worktree before C++ build; CLI/test inputs unchanged since5455423",
+    "localization_static": {
+      "ok": true,
+      "translation_pairs": 569,
+      "new_comparison_pairs": 73,
+      "duplicate_keys": [],
+      "English_printf_format_mismatches": [],
+      "format_rule": "Same no-space printf flags as FDisplayFormat::Parse; literal percent prose is not printf",
+      "scope": "Static keys/types only; no linguistic review, glyph or Windows-DPI validation."
+    },
+    "real_OS_UI": [
+      {
+        "folder": "product-os-final-720-20261028-2056-a184",
+        "resolution": [
+          1280,
+          720
+        ],
+        "window_dpi": 96,
+        "actual_exit_code": 0,
+        "immutable_input_files": 8,
+        "originals_preserved": true,
+        "screenshots": 20,
+        "F5_snapshots": 6,
+        "final_all_disarmed_manual": true,
+        "new_game_generated_files": [
+          "0639288179674670000-445916F04804A3E05741E9958C72DCD3.json"
+        ],
+        "scope": "Automated real OS menu clicks with synthetic records; no human manual flight/controller/other-PC evidence."
+      },
+      {
+        "folder": "product-os-final-960-relocated-20261028-2100-b46e",
+        "resolution": [
+          960,
+          640
+        ],
+        "window_dpi": 96,
+        "actual_exit_code": 0,
+        "immutable_input_files": 111,
+        "originals_preserved": true,
+        "screenshots": 8,
+        "F5_snapshots": 2,
+        "final_all_disarmed_manual": true,
+        "new_game_generated_files": [],
+        "scope": "Automated real OS menu clicks with synthetic records; no human manual flight/controller/other-PC evidence."
+      }
+    ],
+    "relocation": {
+      "file_count": 33,
+      "all_hashes_equal": true,
+      "evidence": "relocated-final-build.json",
+      "scope": "Same PC full Unreal folder; no installer/new-PC/portable launcher proof"
+    }
+  },
+  "resolved_failures": [
+    {
+      "kind": "local_engine_rules",
+      "action": "First Editor build",
+      "error": "Expecting to find a type to be declared in a module rules named FabToolset in UE5Rules",
+      "resolution": "Unused Fab editor plugin disabled in isolated project descriptor only; no engine/global settings changed"
+    },
+    {
+      "kind": "fixture",
+      "action": "20Hz comparison safety precondition",
+      "result": "Zero comparison cases; first Tick speed0.489440m/s at altitude0.236012m, all ten disarmed/manual; startup gravity fall",
+      "resolution": "Verifier waits >=0.5 simulation seconds for two consecutive original-safe ticks, capped2 simulation/10 wall seconds; hard safety everyTick. No physics/pose/velocity/arming changes",
+      "first_failure": "ProductUI-QA/comparison-20261028-203301-461e7023/result.json",
+      "diagnostic": "ProductUI-QA/comparison-20261028-203847-6d5d44c1/result.json"
+    },
+    {
+      "kind": "product_UI",
+      "action": "No A/B selected -> Compare",
+      "result": "Two prompts drawn at same448 logical Y",
+      "resolution": "Removed duplicate fallback; actual720p/960p verified",
+      "before": "product-os-720-20261028-2048-63f2/03-no-selection.png",
+      "after": "product-os-final-720-20261028-2056-a184/03-no-selection.png"
+    },
+    {
+      "kind": "fixture",
+      "action": "Initial UTC test file names",
+      "result": "Two pairs had duplicate generated names",
+      "resolution": "Unique name andcase assertions; old fixtures preserved"
+    },
+    {
+      "kind": "OS_test_sequence",
+      "action": "First active/stop attempt",
+      "result": "AI START intentionally closes setup; old planned clicks13/14 hit main view and did not verify comparison lock or STOP",
+      "resolution": "Reopened actual active setup; screenshots18/19 and final F5 verify lock/STOP/all disarmed. Original mislabeled captures preserved, not counted as passed assertions"
+    },
+    {
+      "kind": "static_audit",
+      "action": "Initial loose printf regex",
+      "result": "Literal percent prose misread asprintf",
+      "resolution": "Matched actual no-space format parser;569pairs/no duplicates/type mismatches. Old diagnostic retained"
+    }
+  ],
+  "preservation": {
+    "original_personal_profile_matches_task_start": true,
+    "personal_Config_and_TrainingResults_file_count": 829,
+    "all_personal_Config_and_TrainingResults_hashes_and_inventory_unchanged_since_before_OS": true,
+    "installer_pointer_absent": true,
+    "original_project_profile_absent": true,
+    "original_project_eight_user_document_changes_preserved": true,
+    "test_windows_and_builds_closed": true,
+    "held_used_keys_or_mouse_buttons": {
+      "1": false,
+      "32": false,
+      "38": false,
+      "40": false,
+      "65": false,
+      "67": false,
+      "68": false,
+      "69": false,
+      "81": false,
+      "83": false,
+      "87": false,
+      "112": false,
+      "116": false,
+      "117": false
+    }
+  },
+  "pending": [
+    "Human manual/novice usability and complete six-step flight on0350 source; earlier0ea OS flight remains a different milestone",
+    "Physical Boxer sticks/arming/USB loss-reconnect and another physical PC/GPU/Windows user",
+    "Windows125/150/200%DPI, full-font/glyph/long-warning tooltip/accessibility coverage; small auxiliary HUD text remains dense",
+    "Real human AI result comparisons; all unrecorded controls/battery/initial-motion conditions remain unverified",
+    "Records beyond100 in UI, live external edits/read failures during browse, slow disks/huge folders, broader CLI/native edge-date parity",
+    "Training objectives/segment records/sound; Topgun/F7 integration, main merge, leaderboards/additional languages/online/precision physics",
+    "New installer/portable launcher/ZIP, pristineVC environment and publication not performed; subsequent release requires explicit authorization",
+    "No measured performance gain claimed for new HUD/compare UI"
+  ],
+  "new_remote_mutations": false,
+  "completed_utc": "2026-10-28T21:12:58.044907+00:00",
+  "build_scope": "Editor compile; Shipping compile/cook/stage/archive. No Editor distribution package."
+}

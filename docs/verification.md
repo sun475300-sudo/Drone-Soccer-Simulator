@@ -1,5 +1,11 @@
 # 검증 기록
 
+<a id="product-ui-local-20261028"></a>
+## 0.7.14-dev-ui1 로컬 HUD·AI 기록 비교 — 미배포
+
+최종0350e848·169입력의 Editor/Shipping 빌드·native/실제 OS 창·데이터 보존을 [제품 UI 검증](product-ui-2026-10-28.md)과 [기계 판독 요약](verification/product-ui-2026-10-28.json)에 별도 기록했다. 공개 v0.7.13을 변경하지 않았다. 초기20Hz 검증기 상태와 실제 미선택 안내 겹침을 수정해 재검증했고, 사람/실물/다른PC·Windows125/150%DPI는 완료 처리하지 않는다. 아래는 각 당시 지문/빌드의 이력이다.
+
+
 <a id="ai-result-comparison-local"></a>
 ## AI 결과 비교 CLI · 699cb918/163입력 · Unreal미빌드
 

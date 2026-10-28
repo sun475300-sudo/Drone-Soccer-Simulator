@@ -1,4 +1,5 @@
 #include "ImperialHUD.h"
+#include "HUDReadability.h"
 #include "ImperialLocalization.h"
 #include "ImperialFirstFlightGuide.h"
 #include "ImperialMatchManager.h"
@@ -39,22 +40,90 @@ void AImperialHUD::Rect(float X,float Y,float W,float H,FLinearColor C)
 }
 void AImperialHUD::Text(const FString& V,float X,float Y,float Size,FLinearColor C,bool Right)
 {
+    TextRaw(ImperialLocalization::Translate(V),X,Y,Size,C,Right);
+}
+void AImperialHUD::TextRaw(const FString& Display,float X,float Y,float Size,FLinearColor C,bool Right)
+{
     // Engine's runtime composite font supplies DroidSansFallback for Hangul.
-    // Measure and draw exactly the same localized string with the same font.
-    const FString Display=ImperialLocalization::Translate(V);
+    // The same pixel floor and font scale are used by FitRaw and DrawText.
     UFont* F=GEngine?GEngine->GetMediumFont():nullptr;if(!F||!Canvas)return;
+    Size=ImperialHUDReadability::LogicalTextSize(Size,Scale);
     float W=0,H=0;Canvas->StrLen(F,TEXT("Ag"),W,H);const float S=Size/FMath::Max(1.f,H);
     W=0;if(Right)Canvas->TextSize(F,Display,W,H,S,S);
     const auto P=Screen(X-W,Y);DrawText(Display,C,P.X,P.Y,F,S*Scale);
 }
 FString AImperialHUD::Fit(const FString& V,float Size,float Width)const
 {
-    const FString Display=ImperialLocalization::Translate(V);
+    return FitRaw(ImperialLocalization::Translate(V),Size,Width);
+}
+FString AImperialHUD::FitRaw(const FString& Display,float Size,float Width)const
+{
+    if(!FMath::IsFinite(Width)||Width<=0)return FString();
     UFont* F=GEngine?GEngine->GetMediumFont():nullptr;if(!F||!Canvas)return Display;
+    Size=ImperialHUDReadability::LogicalTextSize(Size,Scale);
     float W=0,H=0;Canvas->StrLen(F,TEXT("Ag"),W,H);const float S=Size/FMath::Max(1.f,H);
-    Canvas->TextSize(F,Display,W,H,S,S);if(W<=Width)return Display;FString R=Display;
-    do{R.LeftChopInline(1);Canvas->TextSize(F,R+TEXT("..."),W,H,S,S);}while(W>Width&&R.Len()>0);
-    return R+TEXT("...");
+    Canvas->TextSize(F,Display,W,H,S,S);if(W<=Width)return Display;
+    const FString Ellipsis(TEXT("..."));Canvas->TextSize(F,Ellipsis,W,H,S,S);
+    if(W>Width)return FString();
+    FString R=Display;
+    do
+    {
+        const int32 Length=static_cast<int32>(ImperialHUDReadability::PreviousCodePointLength(*R,static_cast<size_t>(R.Len())));
+        R.LeftInline(Length);
+        Canvas->TextSize(F,R+Ellipsis,W,H,S,S);
+    }while(W>Width&&!R.IsEmpty());
+    return R+Ellipsis;
+}
+TArray<FString> AImperialHUD::WrapRaw(const FString& Value,float Size,float Width)const
+{
+    TArray<FString> Lines;FString Remaining=Value;
+    // Status strings are bounded internal messages; preserve all words for the
+    // detail tooltip rather than repeatedly translating fragments.
+    while(!Remaining.IsEmpty())
+    {
+        int32 Count=Remaining.Len();
+        const int32 Newline=Remaining.Find(TEXT("\n"));
+        if(Newline!=INDEX_NONE)Count=Newline;
+        while(Count>0&&FitRaw(Remaining.Left(Count),Size,Width)!=Remaining.Left(Count))
+            Count=static_cast<int32>(ImperialHUDReadability::PreviousCodePointLength(*Remaining,static_cast<size_t>(Count)));
+        if(Count==0)
+        {
+            if(Newline==0){Lines.Add(FString());Remaining=Remaining.Mid(1);continue;}
+            break; // No glyph fits; do not draw outside the viewport.
+        }
+        if(Count<Remaining.Len()&&Count!=Newline)
+        {
+            const int32 Space=Remaining.Left(Count).Find(TEXT(" "),ESearchCase::CaseSensitive,ESearchDir::FromEnd);
+            if(Space>Count/2)Count=Space;
+        }
+        Lines.Add(Remaining.Left(Count));
+        Remaining=Remaining.Mid(Count);
+        if(Remaining.StartsWith(TEXT("\n")))Remaining.RightChopInline(1);
+        Remaining=Remaining.TrimStart();
+    }
+    return Lines;
+}
+void AImperialHUD::DrawTextDetail()
+{
+    const FTextDetail* Detail=nullptr;
+    for(int32 I=TextDetails.Num()-1;I>=0;--I)
+        if(TextDetails[I].Bounds.IsInside(Pointer)){Detail=&TextDetails[I];break;}
+    if(!Detail||!Canvas)return;
+    const FString Display=Detail->Display; // References remain valid through rendering.
+    const TGuardValue<float> ScaleGuard(Scale,1.f);
+    const TGuardValue<FVector2D> OriginGuard(Origin,FVector2D::ZeroVector);
+    const float Width=FMath::Min(660.f,FMath::Max(0.f,Canvas->SizeX-32.f));
+    if(Width<40)return;
+    const auto Lines=WrapRaw(Display,15,Width-24);
+    const int32 MaxLines=FMath::Max(1,FMath::FloorToInt((Canvas->SizeY-48.f)/20.f));
+    const int32 Count=FMath::Min(Lines.Num(),MaxLines);if(Count==0)return;
+    const float Height=Count*20.f+20.f;
+    const float X=FMath::Clamp(static_cast<float>(Pointer.X)+12.f,16.f,FMath::Max(16.f,Canvas->SizeX-Width-16.f));
+    const float Y=FMath::Clamp(static_cast<float>(Pointer.Y)-Height-12.f,16.f,FMath::Max(16.f,Canvas->SizeY-Height-16.f));
+    Rect(X,Y,Width,Height,FLinearColor(.008f,.020f,.033f,1));
+    Rect(X,Y,3,Height,Cyan);
+    for(int32 I=0;I<Count;++I)
+        TextRaw(I==Count-1&&Lines.Num()>Count?FitRaw(Lines[I]+TEXT(" ..."),15,Width-24):Lines[I],X+12,Y+10+I*20,15,White);
 }
 void AImperialHUD::Panel(float X,float Y,float W,float H)
 {
@@ -63,20 +132,12 @@ void AImperialHUD::Panel(float X,float Y,float W,float H)
 }
 void AImperialHUD::StatusText(const FString& Value,float X,float Y,float Width,FLinearColor Color)
 {
-    // Reserve two readable lines instead of removing the end of a safety instruction.
-    FString Remaining=ImperialLocalization::Translate(Value);
-    for(int32 Line=0;Line<2&&!Remaining.IsEmpty();++Line)
-    {
-        int32 Count=Remaining.Len();
-        while(Count>1&&Fit(Remaining.Left(Count),16,Width)!=Remaining.Left(Count))--Count;
-        if(Count<Remaining.Len())
-        {
-            const int32 Space=Remaining.Left(Count).Find(TEXT(" "),ESearchCase::CaseSensitive,ESearchDir::FromEnd);
-            if(Space>Count/2)Count=Space;
-        }
-        Text(Line==1?Fit(Remaining,16,Width):Remaining.Left(Count),X,Y+Line*20,16,Color);
-        Remaining=Remaining.Mid(Count).TrimStart();
-    }
+    const FString Display=ImperialLocalization::Translate(Value);
+    const auto Lines=WrapRaw(Display,16,Width);
+    for(int32 I=0;I<FMath::Min(2,Lines.Num());++I)
+        TextRaw(I==1&&Lines.Num()>2?FitRaw(Lines[I]+TEXT(" ..."),16,Width):Lines[I],X,Y+I*20,16,Color);
+    // Hover is presentation only: it never changes focus, input, ARM or settings.
+    if(Lines.Num()>2)TextDetails.Add({FBox2D(Screen(X,Y),Screen(X+Width,Y+40)),Display});
 }
 void AImperialHUD::Button(FName Name,const FString& Label,float X,float Y,float W,float H,bool Active,bool Warning)
 {
@@ -89,7 +150,8 @@ void AImperialHUD::Button(FName Name,const FString& Label,float X,float Y,float 
         Cast<AImperialFirstFlightGuide>(UGameplayStatics::GetActorOfClass(GetWorld(),AImperialFirstFlightGuide::StaticClass())):nullptr;
     const bool Disabled=(ReadOnly&&(AutonomousAction||Name==TEXT("Manual")||Name==TEXT("Reset")||Name==TEXT("StartMatch")||Name==TEXT("Arm")||Name==TEXT("ArmSelected")))||
         (Match.IsValid()&&((!Match->IsAutonomyAllowed()&&AutonomousAction)||(Match->IsAIPracticeActive()&&AIDraftAction)))||
-        (Name==TEXT("FirstFlight_Next")&&(!GuideNext||!GuideNext->IsActive()||!GuideNext->IsStepComplete()));
+        (Name==TEXT("FirstFlight_Next")&&(!GuideNext||!GuideNext->IsActive()||!GuideNext->IsStepComplete()))||
+        (Name==TEXT("AI_CompareOpen")&&Match.IsValid()&&Match->IsAIPracticeActive());
     const bool Hover=!Disabled&&FBox2D(Screen(X,Y),Screen(X+W,Y+H)).IsInside(Pointer);
     const auto Accent=Warning?Orange:Cyan;
     Rect(X,Y,W,H,Active||Hover?FLinearColor(.045f,.23f,.28f,.97f):FLinearColor(.055f,.10f,.15f,.97f));
@@ -97,7 +159,8 @@ void AImperialHUD::Button(FName Name,const FString& Label,float X,float Y,float 
     const FString Display=ImperialLocalization::Translate(Label);
     float LabelSize=ButtonTextSize;
     while(LabelSize>ButtonTextSize-3&&Fit(Display,LabelSize,W-22)!=Display)LabelSize-=.5f;
-    Text(Fit(Display,LabelSize,W-22),X+11,Y+(H-LabelSize)*.5f,LabelSize,Disabled?Muted:(Active||Hover||Warning?Accent:White));
+    const float DrawSize=ImperialHUDReadability::LogicalTextSize(LabelSize,Scale);
+    TextRaw(FitRaw(Display,LabelSize,W-22),X+11,Y+(H-DrawSize)*.5f,LabelSize,Disabled?Muted:(Active||Hover||Warning?Accent:White));
     if(!Disabled)ButtonTargets.Add({Name,FBox2D(Screen(X,Y),Screen(X+W,Y+H)),ButtonPriority});
 }
 void AImperialHUD::ClickPointer()
@@ -148,7 +211,7 @@ void AImperialHUD::AdvanceRadioSetup()
 
 void AImperialHUD::DrawHUD()
 {
-    Super::DrawHUD();if(!Canvas)return;Bounds.Reset();ButtonTargets.Reset();ButtonPriority=10;
+    Super::DrawHUD();if(!Canvas)return;Bounds.Reset();ButtonTargets.Reset();TextDetails.Reset();ButtonPriority=10;
     if(!bCheckedFirstRun)
     {
         bCheckedFirstRun=true;
@@ -175,6 +238,7 @@ void AImperialHUD::DrawHUD()
         if(Selected)Text(FString::Printf(TEXT("%s   %s   ALT %.2f m   THR %.0f%%   BAT %.0f%% / %.1f V"),*UnitName(M->GetSelected()),*Selected->GetPilotStatus(),Selected->GetAltitudeMeters(),Selected->GetThrottle()*100,Selected->GetBatteryPercent(),Selected->GetBatteryVoltage()),40,947,13,White);
         Text(TEXT("F10 PANELS  |  C USB"),1548,950,11,Cyan,true);
         DrawFirstFlightGuide();
+        DrawTextDetail();
         return;
     }
     Panel(24,24,1552,102);Panel(24,142,1172,58);Panel(1220,142,356,452);
@@ -279,14 +343,16 @@ void AImperialHUD::DrawHUD()
     }
 
     Rect(24,736,3,44,Cyan);Text(Fit(M->GetNotice(),12,636),42,752,12,White);
+    if(Fit(M->GetNotice(),12,636)!=ImperialLocalization::Translate(M->GetNotice()))
+        TextDetails.Add({FBox2D(Screen(42,744),Screen(678,775)),ImperialLocalization::Translate(M->GetNotice())});
     Text(TEXT("SESSION EVENTS"),42,814,12,White);Rect(42,839,644,1,Edge);
     const auto& Events=M->GetEvents();int32 Row=0;
     for(int32 I=Events.Num()-1;!FirstFlightVisible&&I>=0&&Row<3;--I,++Row)Text(Fit(Events[I],12,640),43,851+Row*23,12,Row==0?White:Muted);
-    Text(TEXT("SPACE ARM   ARROWS THROTTLE   WASD PITCH / ROLL   QE YAW"),42,956,10,Cyan);
+    Text(Fit(TEXT("SPACE ARM   ARROWS THROTTLE   WASD PITCH / ROLL   QE YAW"),10,520),42,956,10,Cyan);
     const auto& Timing=M->GetSimulationTime();
     if(Timing.LimitedFrames>0)Text(FString::Printf(TEXT("PHYSICS LIMITED: %llu frames | %.3f s omitted | match clock continues"),Timing.LimitedFrames,Timing.DroppedSeconds),42,928,11,Cyan);
-    Text(TEXT("TAB SELECT   1 LOS / 2 OBSERVER / 3 ARENA"),583,956,10,Muted);
-    Text(TEXT("ENTER AUTO   H HOLD   R RETURN   C RADIO"),1109,956,10,Muted);
+    Text(Fit(TEXT("TAB SELECT   1 LOS / 2 OBSERVER / 3 ARENA"),10,505),583,956,10,Muted);
+    Text(Fit(TEXT("ENTER AUTO   H HOLD   R RETURN   C RADIO"),10,365),1109,956,10,Muted);
     Text(FString::Printf(TEXT("%.0f FPS"),M->GetFPS()),1557,956,10,Muted,true);
 
     // A simple selected-aircraft reticle uses the actual Chaos body location.
@@ -302,8 +368,9 @@ void AImperialHUD::DrawHUD()
         }
     }
     DrawFirstFlightGuide();
-    if(bRadioPanelOpen)DrawRadioPanel(*M);
-    if(bAIPracticePanel)DrawAIPracticePanel(*M);
+    if(bRadioPanelOpen){TextDetails.Reset();DrawRadioPanel(*M);}
+    if(bAIPracticePanel){TextDetails.Reset();DrawAIPracticePanel(*M);}
+    DrawTextDetail();
 }
 
 void AImperialHUD::ToggleFirstFlightGuide()
@@ -318,6 +385,7 @@ void AImperialHUD::ToggleFirstFlightGuide()
 void AImperialHUD::DrawFirstFlightGuide()
 {
     if(!bFirstFlightVisible||IsPilotMenuOpen())return;
+    TextDetails.Reset();
     auto* Guide=Cast<AImperialFirstFlightGuide>(UGameplayStatics::GetActorOfClass(GetWorld(),AImperialFirstFlightGuide::StaticClass()));
     // At 720p, keep the guide at native scale when its 902px width fits.
     // Restore the fleet HUD transform after rendering this non-modal bottom strip.
@@ -396,7 +464,12 @@ void AImperialHUD::DrawRadioPanel(AImperialMatchManager& Manager)
     Text(Connected?TEXT("CONNECTED"):TEXT("DISCONNECTED"),369,199,13,Connected?Green:Amber);
     const FString DevicePrompt=Radio->GetDevices().IsEmpty()?TEXT("No joystick: connect USB DATA and select USB Joystick on the radio.")
         :FString::Printf(TEXT("%d device(s) found. Choose your radio below, or use NEXT DEVICE."),Radio->GetDevices().Num());
-    Text(Fit(Device?Device->Name:DevicePrompt,16,650),348,224,16,White);
+    if(Device)
+    {
+        TextRaw(FitRaw(Device->Name,16,650),348,224,16,White);
+        if(FitRaw(Device->Name,16,650)!=Device->Name)TextDetails.Add({FBox2D(Screen(348,224),Screen(998,244)),Device->Name});
+    }
+    else Text(Fit(DevicePrompt,16,650),348,224,16,White);
     Text(Device?FString::Printf(TEXT("%d AXES  /  %d BUTTONS  /  DRIVER ID %04X:%04X"),Device->AxisCount,Device->ButtonCount,Device->ManufacturerId,Device->ProductId):TEXT("The device name shown here comes directly from Windows."),348,249,10,Muted);
     Button(TEXT("Radio_Refresh"),TEXT("REFRESH"),1032,205,106,34);
     Button(TEXT("Radio_Device"),TEXT("NEXT DEVICE"),1148,205,104,34);
@@ -457,7 +530,8 @@ void AImperialHUD::DrawRadioPanel(AImperialMatchManager& Manager)
         {
             const auto& Choice=Devices[I];const float Y=317+I*57.f;
             Button(FName(*FString::Printf(TEXT("Radio_Select_%d"),Choice.Id)),TEXT(""),348,Y,445,50);
-            Text(Fit(Choice.Name,12,416),360,Y+8,12,White);
+            TextRaw(FitRaw(Choice.Name,12,416),360,Y+8,12,White);
+            if(FitRaw(Choice.Name,12,416)!=Choice.Name)TextDetails.Add({FBox2D(Screen(360,Y+8),Screen(776,Y+27)),Choice.Name});
             Text(FString::Printf(TEXT("SLOT %d  /  %04X:%04X  /  %d AXES  /  %d BUTTONS"),Choice.Id,Choice.ManufacturerId,Choice.ProductId,Choice.AxisCount,Choice.ButtonCount),360,Y+29,10,Cyan);
         }
         if(!bRadioConnectionHelp&&Devices.Num()>3)Text(TEXT("More devices: use NEXT DEVICE above."),348,495,10,Muted);
@@ -724,9 +798,25 @@ void AImperialHUD::NotifyHitBoxClick(FName BoxName)
         return;
     }
     if(N==TEXT("Exit")){M->PrepareToExit();UKismetSystemLibrary::QuitGame(this,PlayerOwner,EQuitPreference::Quit,false);return;}
+    if(bAIPracticePanel&&N.StartsWith(TEXT("AI_Compare")))
+    {
+        if(N==TEXT("AI_CompareOpen"))M->OpenAIComparison();
+        else if(N==TEXT("AI_CompareClose"))M->CloseAIComparison();
+        else if(N==TEXT("AI_CompareRefresh"))M->RefreshAIComparison();
+        else if(N==TEXT("AI_ComparePrev"))M->MoveAIComparisonPage(-1);
+        else if(N==TEXT("AI_CompareNext"))M->MoveAIComparisonPage(1);
+        else if(N.StartsWith(TEXT("AI_CompareA_")))M->SelectAIComparisonRecord(0,FCString::Atoi(*N.RightChop(12)));
+        else if(N.StartsWith(TEXT("AI_CompareB_")))M->SelectAIComparisonRecord(1,FCString::Atoi(*N.RightChop(12)));
+        else if(N==TEXT("AI_CompareShow"))M->ShowAIComparisonOutcome(true);
+        else if(N==TEXT("AI_CompareList"))M->ShowAIComparisonOutcome(false);
+        else if(N==TEXT("AI_CompareDetailsPrev"))M->MoveAIComparisonDetailsPage(-1);
+        else if(N==TEXT("AI_CompareDetailsNext"))M->MoveAIComparisonDetailsPage(1);
+        return;
+    }
     if(bAIPracticePanel)
     {
-        if(N==TEXT("AI_Close")){ToggleAIPracticePanel();return;}
+        if(N==TEXT("AI_Close")){M->CloseAIComparison();ToggleAIPracticePanel();return;}
+        if(M->GetAIComparisonView().bOpen)return; // Comparison owns this modal until explicitly closed.
         if(N==TEXT("AI_Last")){bAIResultPage=M->GetAIResult().Exists();return;}
         if(bAIResultPage)
         {
