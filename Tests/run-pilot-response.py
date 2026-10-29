@@ -28,7 +28,7 @@ def main():
     def run(name,case,data):
         data.mkdir(parents=True,exist_ok=True);directory=out/name;directory.mkdir()
         args=['-game','-nosound','-nosplash','-unattended','-ImperialNoWelcome','-ImperialBridgeUrl=http://127.0.0.1:1',
-              '-ImperialDataDir='+str(data),'-ImperialResponseSmoke','-ImperialResponseCase='+case,
+              '-ImperialDataDir='+str(data),'-UserDir='+str(directory/'engine-user'),'-ImperialResponseSmoke','-ImperialResponseCase='+case,
               '-ImperialResponseResult='+str(directory/'result.json'),'-abslog='+str(directory/'runtime.log')]
         if a.capture:args+=['-RenderOffscreen','-ResX=1600','-ResY=1000','-ForceRes','-ImperialResponseCapture='+str(directory/'response.png')]
         else:args+=['-nullrhi']

@@ -98,9 +98,33 @@ void AImperialAIResultsVerifier::Tick(float Dt)
             Check(TEXT("loading never arms or starts AI"),!D->IsArmed()&&!M->IsAIPracticeActive());
             if(!Capture.IsEmpty()&&R.Exists()){H->ToggleAIPracticePanel();H->NotifyHitBoxClick(TEXT("AI_Last"));FScreenshotRequest::RequestScreenshot(Capture,true,false);Stage=9;Age=0;return;}Finish();return;
         }
-        if(Case==TEXT("savefail")||Case==TEXT("discard"))
+        if(Case==TEXT("savefail")||Case==TEXT("discard")||Case==TEXT("exitfail"))
         {
+            if(Case==TEXT("exitfail"))
+            {
+                FString DataDir,Probe,BlockContent;
+                const bool Isolated=FParse::Param(FCommandLine::Get(),TEXT("ImperialAIExitIsolated"))&&
+                    FParse::Value(FCommandLine::Get(),TEXT("ImperialDataDir="),DataDir)&&!DataDir.IsEmpty()&&!FPaths::IsRelative(DataDir)&&
+                    FPaths::IsSamePath(DataDir,ImperialUserData::Directory())&&
+                    FParse::Value(FCommandLine::Get(),TEXT("ImperialAIExitProbe="),Probe)&&
+                    FPaths::IsSamePath(Probe,FPaths::Combine(DataDir,TEXT("imperial-exit-probe.json")))&&
+                    FFileHelper::LoadFileToString(BlockContent,*ImperialUserData::Path(TEXT("TrainingResults")))&&
+                    BlockContent==TEXT("IMPERIAL_ISOLATED_EXIT_FAILURE_FIXTURE_V1");
+                Check(TEXT("exit failure uses explicit isolated data and exact synthetic obstruction"),Isolated);
+                if(!Isolated){Finish();return;}
+            }
             Check(TEXT("failure test starts AI"),M->StartAIPractice({3,1,52}));Stage=7;Age=0;return;
+        }
+        if(Case==TEXT("exitactive"))
+        {
+            FString DataDir;
+            const bool Isolated=FParse::Param(FCommandLine::Get(),TEXT("ImperialAIExitIsolated"))&&
+                FParse::Value(FCommandLine::Get(),TEXT("ImperialDataDir="),DataDir)&&!DataDir.IsEmpty()&&!FPaths::IsRelative(DataDir)&&
+                FPaths::IsSamePath(DataDir,ImperialUserData::Directory())&&!IFileManager::Get().FileExists(*ImperialUserData::Path(TEXT("TrainingResults")))&&
+                !IFileManager::Get().DirectoryExists(*ImperialUserData::Path(TEXT("TrainingResults")));
+            Check(TEXT("active exit uses explicit isolated fresh data"),Isolated);
+            if(!Isolated){Finish();return;}
+            Check(TEXT("active exit starts AI"),M->StartAIPractice({3,1,52}));Stage=16;Age=0;return;
         }
         if(Case==TEXT("exit")){Check(TEXT("exit test starts AI"),M->StartAIPractice({4,1,555}));Stage=10;Age=0;return;}
         Check(TEXT("fresh user has no invented result"),!M->GetAIResult().Exists());Check(TEXT("practice starts"),M->StartAIPractice({3,0,1}));
@@ -149,6 +173,15 @@ void AImperialAIResultsVerifier::Tick(float Dt)
         M->ResetMatch();const auto& R=M->GetAIResult();FirstId=R.SessionId;
         Check(TEXT("failed save preserves interrupted result in memory"),R.Exists()&&!R.bSaved&&R.StopReason==TEXT("reset")&&R.CompletionReason==TEXT("reset")&&R.PracticeSeconds>1);
         Check(TEXT("unsaved result cannot silently be overwritten by new session"),!M->StartAIPractice({3,0,1})&&M->GetAIResult().SessionId==FirstId);
+        if(Case==TEXT("exitfail"))
+        {
+            FString Probe;FParse::Value(FCommandLine::Get(),TEXT("ImperialAIExitProbe="),Probe);
+            Check(TEXT("exit failure fixture uses an explicit absolute probe path"),!Probe.IsEmpty()&&!FPaths::IsRelative(Probe));
+            const FString Before=FString::Printf(TEXT("{\"session_id\":\"%s\",\"exists\":%s,\"saved\":%s}"),*R.SessionId,R.Exists()?TEXT("true"):TEXT("false"),R.bSaved?TEXT("true"):TEXT("false"));
+            if(Probe.IsEmpty()||FPaths::IsRelative(Probe)||!FFileHelper::SaveStringToFile(Before,*Probe,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM))
+            {Check(TEXT("write exit failure probe"),false);Finish();return;}
+            H->NotifyHitBoxClick(TEXT("Exit"));Stage=15;Age=0;return;
+        }
         if(Case==TEXT("discard"))
         {
             H->ToggleAIPracticePanel();H->NotifyHitBoxClick(TEXT("AI_Last"));H->NotifyHitBoxClick(TEXT("AI_ResultDiscard"));
@@ -182,6 +215,36 @@ void AImperialAIResultsVerifier::Tick(float Dt)
         H->NotifyHitBoxClick(TEXT("Radio_Language"));H->NotifyHitBoxClick(TEXT("AI_Close"));
         Check(TEXT("return to Korean setup does not arm or create a result"),ImperialLocalization::IsKorean()&&!D->IsArmed()&&!M->IsAIPracticeActive()&&!M->GetAIResult().Exists());
         bUISetupCaptured=true;Stage=0;Age=0;return;
+    }
+    if(Stage==16&&Age>1)
+    {
+        Check(TEXT("fixture manually arms player at low throttle"),D->SetArmed(true)&&D->IsArmed());
+        const FVector Position=D->GetActorLocation();const float Throttle=D->GetThrottle();
+        const int32 Blue=M->GetScore(0),Red=M->GetScore(1);
+        H->NotifyHitBoxClick(TEXT("Exit"));
+        Check(TEXT("active Exit starts AI landing"),M->IsAILanding());
+        Check(TEXT("active Exit preserves player arm throttle position and scores"),D->IsArmed()&&D->GetThrottle()==Throttle&&D->GetActorLocation().Equals(Position,.001f)&&M->GetScore(0)==Blue&&M->GetScore(1)==Red);
+        H->NotifyHitBoxClick(TEXT("Exit"));
+        Check(TEXT("repeated Exit does not reset landing or player"),M->IsAILanding()&&D->IsArmed()&&D->GetThrottle()==Throttle&&D->GetActorLocation().Equals(Position,.001f)&&M->GetScore(0)==Blue&&M->GetScore(1)==Red);
+        D->SetArmed(false);Stage=17;Age=0;return;
+    }
+    if(Stage==17&&!M->IsAIPracticeActive())
+    {
+        const auto& R=M->GetAIResult();
+        Check(TEXT("AI landing completes and saves original session"),R.Exists()&&R.bSaved&&R.StopReason==TEXT("manual_stop")&&R.CompletionReason==TEXT("landed"));
+        Check(TEXT("Exit may continue after result saved"),M->PrepareToExit());
+        Finish();return;
+    }
+    if(Stage==15&&Age>.5)
+    {
+        const auto& R=M->GetAIResult();
+        Check(TEXT("exit refused while original result is unsaved"),R.Exists()&&!R.bSaved&&R.SessionId==FirstId);
+        const FString Block=ImperialUserData::Path(TEXT("TrainingResults"));FString BlockContent;
+        const bool OwnBlock=FFileHelper::LoadFileToString(BlockContent,*Block)&&BlockContent==TEXT("IMPERIAL_ISOLATED_EXIT_FAILURE_FIXTURE_V1");
+        Check(TEXT("fixture removes only its own blocking file"),OwnBlock&&IFileManager::Get().Delete(*Block));
+        H->ToggleAIPracticePanel();H->NotifyHitBoxClick(TEXT("AI_Last"));H->NotifyHitBoxClick(TEXT("AI_ResultSave"));
+        Check(TEXT("retry after refused exit saves original session"),M->GetAIResult().bSaved&&M->GetAIResult().SessionId==FirstId);
+        H->NotifyHitBoxClick(TEXT("AI_Close"));Finish();return;
     }
     if(Stage==9&&Age>1)
     {

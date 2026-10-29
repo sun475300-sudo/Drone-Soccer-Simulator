@@ -382,7 +382,7 @@ void AImperialMatchManager::ToggleFlightRecording()
     const FString Directory=FPaths::Combine(ImperialUserData::Directory(),TEXT("FlightLogs"));
     IFileManager::Get().MakeDirectory(*Directory,true);
     FlightLogPath=FPaths::Combine(Directory,FDateTime::UtcNow().ToString(TEXT("%Y%m%d-%H%M%S"))+TEXT("-")+FGuid::NewGuid().ToString(EGuidFormats::Digits)+TEXT(".jsonl"));
-    LastFlightRecord=0;if(RecordFlightSample(TEXT("start")))Log(TEXT("Recording actual controls and physics. F6 stops recording."));
+    LastFlightRecord=0;if(RecordFlightSample(TEXT("start"))){bFlightRecordingFailure=false;Log(TEXT("Recording actual controls and physics. F6 stops recording."));}
 }
 bool AImperialMatchManager::RecordFlightSample(const FString& Event)
 {
@@ -420,7 +420,7 @@ bool AImperialMatchManager::RecordFlightSample(const FString& Event)
     Root->SetArrayField(TEXT("aircraft"),Rows);FString Text;FJsonSerializer::Serialize(Root,TJsonWriterFactory<TCHAR,TCondensedJsonPrintPolicy<TCHAR>>::Create(&Text));
     Text+=TEXT("\n");
     if(!FFileHelper::SaveStringToFile(Text,*FlightLogPath,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM,&IFileManager::Get(),FILEWRITE_Append))
-    {FlightLogPath.Empty();Log(TEXT("Flight recording stopped: could not write to Saved/FlightLogs."));return false;}
+    {FlightLogPath.Empty();bFlightRecordingFailure=true;Log(TEXT("Flight recording stopped: could not write to Saved/FlightLogs."));return false;}
     return true;
 }
 void AImperialMatchManager::ContactSmokeTick(float Dt)

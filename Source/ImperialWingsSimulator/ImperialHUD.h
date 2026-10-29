@@ -66,6 +66,7 @@ private:
     UPROPERTY() TWeakObjectPtr<AImperialPresentationEffects> Presentation;
     void DrawRadioPanel(AImperialMatchManager& Manager);
     void DrawFirstFlightGuide();
+    void DrawFlightRecordingWarning(const AImperialMatchManager& Manager);
     void DrawResponsePanel(UImperialRadioSubsystem& Radio);
     void BeginResponsePanel();
     FVector2D Screen(float X, float Y) const;

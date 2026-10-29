@@ -37,7 +37,7 @@ public:
     void ReturnFleet();
     void ManualSelected();
     void ResetMatch();
-    void PrepareToExit();
+    bool PrepareToExit();
     void StartMatch();
     bool StartAIPractice(ImperialAI::Settings Settings);
     void StopAIPractice();
@@ -73,6 +73,7 @@ public:
     void RecordGuardImpact(ASoccerDronePawn* Drone,float DissipatedJ);
     void ToggleFlightRecording();
     bool IsRecordingFlight() const { return !FlightLogPath.IsEmpty(); }
+    bool HasFlightRecordingFailure() const { return bFlightRecordingFailure; }
     bool IsConnected() const { return bConnected; }
     FString GetSourceCommit() const { return SourceCommit; }
     uint64 GetGuidanceCommand() const { return GuidanceWindow.Command(); }
@@ -152,6 +153,7 @@ private:
     bool bProfileWritten=false;
     FString Notice=TEXT("Keyboard ready. Select AUTO FLEET for SDACS autonomous guidance.");
     FString FlightLogPath;
+    bool bFlightRecordingFailure=false; // cleared only by a successful explicit new recording
     double LastFlightRecord=0;
     bool RecordFlightSample(const FString& Event);
     void RequestGuidance();

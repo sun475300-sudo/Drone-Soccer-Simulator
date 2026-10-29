@@ -46,6 +46,22 @@ void AImperialResponseVerifier::Tick(float Dt)
     if(Stage==0)
     {
         FParse::Value(FCommandLine::Get(),TEXT("ImperialResponseCase="),Case);
+        FString GuardCase;FParse::Value(FCommandLine::Get(),TEXT("ImperialSettingsGuard="),GuardCase);
+        if(!GuardCase.IsEmpty())
+        {
+            const bool ShouldSave=GuardCase==TEXT("save");
+            Check(TEXT("settings guard case is explicit"),ShouldSave||GuardCase==TEXT("block"));
+            const auto Before=R->GetPilotResponse();const bool PrecisionBefore=R->IsPrecisionThrottleEnabled();
+            auto Candidate=Before;Candidate.Expo[0]=.25;
+            const bool ResponseSaved=R->SavePilotResponse(Candidate,-1,FString(),true);
+            const bool ControlsSaved=R->SetPrecisionThrottleEnabled(!PrecisionBefore);
+            Check(TEXT("response save respects file validation"),ResponseSaved==ShouldSave);
+            Check(TEXT("controls save respects file validation"),ControlsSaved==ShouldSave);
+            Check(TEXT("response live state changes only after save"),FMath::IsNearlyEqual(R->GetPilotResponse().Expo[0],ShouldSave?.25:Before.Expo[0],1e-8));
+            Check(TEXT("throttle live state changes only after save"),R->IsPrecisionThrottleEnabled()==(ShouldSave?!PrecisionBefore:PrecisionBefore));
+            Check(TEXT("settings verification remains disarmed with USB disabled"),!R->IsEnabled()&&!D->IsArmed());
+            Finish();return;
+        }
         const bool Reload=Case==TEXT("reload")||Case==TEXT("replace")||Case==TEXT("replacefail");
         Check(TEXT("cold start USB disabled and disarmed"),!R->IsEnabled()&&!D->IsArmed());
         Check(TEXT("restored or default response"),FMath::IsNearlyEqual(R->GetPilotResponse().Expo[0],Reload?.2:0.,1e-8)&&R->GetPilotResponse().RateDegrees[0]==(Reload?30:180));

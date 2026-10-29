@@ -51,7 +51,7 @@ def main():
         result=read(out/"result.json")
         require(process.returncode==0 and result.get("ok") is True,"Native fixture failed or did not exit normally")
         checks=result.get("checks",[])
-        require(len(checks)==35 and all(x.get("ok") is True for x in checks),"Native checks failed or expected scenarios did not all run")
+        require(len(checks)==42 and all(x.get("ok") is True for x in checks),"Native checks failed or expected scenarios did not all run")
         require(result["build"]["source_sha256"]==expected["source_sha256"],"Runtime does not match current source fingerprint")
         require(result["build"]["version"]==expected["version"],"Runtime version mismatch")
         require(Path(result["data_directory"]).resolve()==user,"Native fixture used different user data")

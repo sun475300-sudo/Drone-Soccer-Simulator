@@ -125,6 +125,20 @@ void AImperialHUD::DrawTextDetail()
     for(int32 I=0;I<Count;++I)
         TextRaw(I==Count-1&&Lines.Num()>Count?FitRaw(Lines[I]+TEXT(" ..."),15,Width-24):Lines[I],X+12,Y+10+I*20,15,White);
 }
+void AImperialHUD::DrawFlightRecordingWarning(const AImperialMatchManager& Manager)
+{
+    if(!Manager.HasFlightRecordingFailure()||!Canvas||Canvas->SizeX<=16||Canvas->SizeY<16)return;
+    // Use the physical viewport's top 16px, outside the modal's 16px margin.
+    // The strip is display only and never intercepts input or changes flight.
+    const TGuardValue<float> ScaleGuard(Scale,1.f);
+    const TGuardValue<FVector2D> OriginGuard(Origin,FVector2D::ZeroVector);
+    const FString Display=ImperialLocalization::Translate(TEXT("Flight recording stopped: could not write to Saved/FlightLogs."));
+    const float Width=Canvas->SizeX-16.f;
+    const FString Fitted=FitRaw(Display,13.f,Width);
+    Rect(0,0,Canvas->SizeX,16,FLinearColor(.12f,.045f,.006f,.97f));
+    TextRaw(Fitted,8,1,13,Amber);
+    if(Fitted!=Display)TextDetails.Add({FBox2D(Screen(0,0),Screen(Canvas->SizeX,16)),Display});
+}
 void AImperialHUD::Panel(float X,float Y,float W,float H)
 {
     Rect(X,Y,W,H,Navy);Rect(X,Y,W,1,Edge);Rect(X,Y+H-1,W,1,Edge);
@@ -238,6 +252,7 @@ void AImperialHUD::DrawHUD()
         if(Selected)Text(FString::Printf(TEXT("%s   %s   ALT %.2f m   THR %.0f%%   BAT %.0f%% / %.1f V"),*UnitName(M->GetSelected()),*Selected->GetPilotStatus(),Selected->GetAltitudeMeters(),Selected->GetThrottle()*100,Selected->GetBatteryPercent(),Selected->GetBatteryVoltage()),40,947,13,White);
         Text(TEXT("F10 PANELS  |  C USB"),1548,950,11,Cyan,true);
         DrawFirstFlightGuide();
+        DrawFlightRecordingWarning(*M);
         DrawTextDetail();
         return;
     }
@@ -304,7 +319,7 @@ void AImperialHUD::DrawHUD()
         Button(TEXT("VisualHigh"),TEXT("HIGH"),129,610,62,32,Quality==TEXT("High"));
         Button(TEXT("VisualCinematic"),TEXT("CINEMA"),199,610,73,32,Quality==TEXT("Cinematic"));
         Text(TEXT("F8 CONNECT SAVED RADIO"),42,657,9,Muted);
-        Button(TEXT("FlightRecord"),M->IsRecordingFlight()?TEXT("F6 STOP RECORDING"):TEXT("F6 RECORD FLIGHT"),37,680,235,25,M->IsRecordingFlight());
+        Button(TEXT("FlightRecord"),M->IsRecordingFlight()?TEXT("F6 STOP RECORDING"):TEXT("F6 RECORD FLIGHT"),37,680,235,25,M->IsRecordingFlight(),M->HasFlightRecordingFailure());
     }
 
     Text(TEXT("5 v 5  /  TEAM ROSTER"),1238,159,15,White);
@@ -347,6 +362,13 @@ void AImperialHUD::DrawHUD()
         TextDetails.Add({FBox2D(Screen(42,744),Screen(678,775)),ImperialLocalization::Translate(M->GetNotice())});
     Text(TEXT("SESSION EVENTS"),42,814,12,White);Rect(42,839,644,1,Edge);
     const auto& Events=M->GetEvents();int32 Row=0;
+    if(!FirstFlightVisible&&M->HasFlightRecordingFailure())
+    {
+        const FString Warning=TEXT("Flight recording stopped: could not write to Saved/FlightLogs.");
+        Text(Fit(Warning,12,640),43,851,12,Amber);Row=1;
+        if(Fit(Warning,12,640)!=ImperialLocalization::Translate(Warning))
+            TextDetails.Add({FBox2D(Screen(43,846),Screen(683,870)),ImperialLocalization::Translate(Warning)});
+    }
     for(int32 I=Events.Num()-1;!FirstFlightVisible&&I>=0&&Row<3;--I,++Row)Text(Fit(Events[I],12,640),43,851+Row*23,12,Row==0?White:Muted);
     Text(Fit(TEXT("SPACE ARM   ARROWS THROTTLE   WASD PITCH / ROLL   QE YAW"),10,520),42,956,10,Cyan);
     const auto& Timing=M->GetSimulationTime();
@@ -370,6 +392,7 @@ void AImperialHUD::DrawHUD()
     DrawFirstFlightGuide();
     if(bRadioPanelOpen){TextDetails.Reset();DrawRadioPanel(*M);}
     if(bAIPracticePanel){TextDetails.Reset();DrawAIPracticePanel(*M);}
+    DrawFlightRecordingWarning(*M);
     DrawTextDetail();
 }
 
@@ -797,7 +820,7 @@ void AImperialHUD::NotifyHitBoxClick(FName BoxName)
             TEXT("Language could not be saved. Check your Windows user-data folder permissions.");
         return;
     }
-    if(N==TEXT("Exit")){M->PrepareToExit();UKismetSystemLibrary::QuitGame(this,PlayerOwner,EQuitPreference::Quit,false);return;}
+    if(N==TEXT("Exit")){if(M->PrepareToExit())UKismetSystemLibrary::QuitGame(this,PlayerOwner,EQuitPreference::Quit,false);return;}
     if(bAIPracticePanel&&N.StartsWith(TEXT("AI_Compare")))
     {
         if(N==TEXT("AI_CompareOpen"))M->OpenAIComparison();

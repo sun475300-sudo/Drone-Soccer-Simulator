@@ -105,13 +105,21 @@ void AImperialFirstFlightGuide::ResetAircraftAndRestart()
     {
         Guide.Begin(Observation);SetActorTickEnabled(false);return;
     }
-    for(int32 Index=1;Index<Manager->GetDrones().Num();++Index)
+    // Only the selected aircraft may be reset. Fail closed if the other
+    // aircraft observations are missing, non-finite or not safely settled.
+    std::array<ImperialFirstFlight::RestartOtherAircraft,9> Others{};
+    const int32 AircraftCount=Manager->GetDrones().Num();
+    for(int32 Index=1;Index<AircraftCount&&Index<=9;++Index)
     {
         const auto* Other=Manager->GetDrone(Index);
-        if(!Other||Other->IsArmed()||Other->GetAltitudeMeters()>.35||Other->GetFlightSpeed()>.25)
-        {
-            Guide.Stop(ImperialFirstFlight::Rejection::LandFirst);SetMessage(TEXT("다른 기체가 착륙하고 모터가 정지한 뒤 다시 시작하세요."),TEXT("Land and disarm the other aircraft before restarting this guide."));SetActorTickEnabled(false);return;
-        }
+        if(!Other)continue;
+        auto& State=Others[Index-1];
+        State.Present=true;State.Armed=Other->IsArmed();State.Autonomous=Other->IsAutonomousEnabled();
+        State.AltitudeM=Other->GetAltitudeMeters();State.SpeedMps=Other->GetFlightSpeed();
+    }
+    if(!ImperialFirstFlight::CanResetSelectedAircraft(AircraftCount,Others))
+    {
+        Guide.Stop(ImperialFirstFlight::Rejection::LandFirst);SetMessage(TEXT("다른 기체가 착륙하고 모터가 정지한 뒤 다시 시작하세요."),TEXT("Land and disarm the other aircraft before restarting this guide."));SetActorTickEnabled(false);return;
     }
     Drone->ResetDrone();
     if(ObserveWorld(Observation))Guide.Begin(Observation);else Guide.Stop(ImperialFirstFlight::Rejection::StateInvalid);

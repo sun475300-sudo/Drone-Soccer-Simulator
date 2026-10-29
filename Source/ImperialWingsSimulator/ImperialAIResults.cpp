@@ -105,9 +105,22 @@ void AImperialMatchManager::DiscardUnsavedAIResult()
 {
     if(LastAIResult.Exists()&&!LastAIResult.bSaved){LastAIResult={};Log(TEXT("Unsaved result discarded by request. Saved sessions remain unchanged."));}
 }
-void AImperialMatchManager::PrepareToExit()
+bool AImperialMatchManager::PrepareToExit()
 {
-    FinishAIResult(TEXT("application_exit"));ResetMatch();
+    // Leave the player's aircraft untouched while the AI follows its normal
+    // landing path. Never drop an in-memory result on a failed save.
+    if(IsAIPracticeActive())
+    {
+        if(!IsAILanding())StopAIPractice();
+        Log(TEXT("AI is landing. Land the blue striker manually; exit again after AI has landed and its result is saved."));
+        return false;
+    }
+    if(LastAIResult.Exists()&&!LastAIResult.bSaved)
+    {
+        Log(TEXT("Exit paused: AI result is unsaved. Land and disarm, then open AI PRACTICE > LAST RESULT to retry saving or discard it."));
+        return false;
+    }
+    ResetMatch();return true;
 }
 void AImperialMatchManager::LoadAIResult()
 {

@@ -20,7 +20,7 @@ $results=[Collections.Generic.List[object]]::new()
 function Invoke-UXRun {
     param([string]$Name,[string[]]$Extra=@(),[switch]$Capture)
     $resultFile=Join-Path $output ($Name+'.json')
-    $arguments=@('-game','-nullrhi','-nosound','-unattended','-nosplash','-ImperialNoWelcome','-ImperialRadioUXSmoke','-ImperialBridgeUrl=http://127.0.0.1:1',('-ImperialRadioUXResult='+$resultFile),('-ImperialDataDir='+$userdata),('-abslog='+(Join-Path $output ($Name+'.log'))))+$Extra
+    $arguments=@('-game','-nullrhi','-nosound','-unattended','-nosplash','-ImperialNoWelcome','-ImperialRadioUXSmoke','-ImperialBridgeUrl=http://127.0.0.1:1',('-ImperialRadioUXResult='+$resultFile),('-ImperialDataDir='+$userdata),('-UserDir='+(Join-Path $output ($Name+'-engine-user'))),('-abslog='+(Join-Path $output ($Name+'.log'))))+$Extra
     if($Capture){$arguments=@($arguments | Where-Object {$_ -ne '-nullrhi'})+@('-RenderOffscreen','-ForceRes',('-ResX='+$Width),('-ResY='+$Height),('-ImperialRadioUXCapture='+$output))}
     if($Packaged){$exe=Join-Path $environment.PackageRoot 'ImperialWingsSimulator\Binaries\Win64\ImperialWingsSimulator-Win64-Shipping.exe'}
     else{$exe=Join-Path $environment.EngineRoot 'Engine\Binaries\Win64\UnrealEditor-Cmd.exe';$arguments=@((Join-Path $root 'ImperialWingsSimulator.uproject'))+$arguments}

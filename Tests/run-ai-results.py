@@ -13,7 +13,7 @@ def main():
  results=[]
  def run(name,case,data):
   data.mkdir(parents=True,exist_ok=True);directory=out/name;directory.mkdir()
-  args=['-game','-unattended','-nosound','-nosplash','-ImperialNoWelcome','-ImperialBridgeUrl=http://127.0.0.1:1','-ImperialAIResultsSmoke','-ImperialAIResultsCase='+case,'-ImperialDataDir='+str(data),'-ImperialAIResultsResult='+str(directory/'result.json'),'-abslog='+str(directory/'runtime.log'),'-UseFixedTimeStep','-FPS=60']
+  args=['-game','-unattended','-nosound','-nosplash','-ImperialNoWelcome','-ImperialBridgeUrl=http://127.0.0.1:1','-ImperialAIResultsSmoke','-ImperialAIResultsCase='+case,'-ImperialDataDir='+str(data),'-UserDir='+str(directory/'engine-user'),'-ImperialAIResultsResult='+str(directory/'result.json'),'-abslog='+str(directory/'runtime.log'),'-UseFixedTimeStep','-FPS=60']
   args+=['-RenderOffscreen','-ResX=1600','-ResY=1000','-ForceRes','-ImperialAIResultsCapture='+str(directory/'results.png')] if a.capture else ['-nullrhi']
   with (directory/'console.log').open('w',encoding='utf-8') as log:
    proc=subprocess.run(command+args,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,timeout=120,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))

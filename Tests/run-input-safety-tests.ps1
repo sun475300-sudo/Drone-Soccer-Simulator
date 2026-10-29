@@ -7,7 +7,7 @@ $environment=Get-ImperialEnvironment -ProjectRoot $root -PackageRoot $PackageRoo
 $output=Join-Path $root ('Saved\Verification\input-safety-'+[DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss-fff'))
 New-Item -ItemType Directory -Path $output | Out-Null
 $resultFile=Join-Path $output 'result.json'
-$arguments=@('-game','-nullrhi','-nosound','-unattended','-nosplash','-ImperialNoWelcome','-ImperialInputSmoke','-ImperialBridgeUrl=http://127.0.0.1:1',('-ImperialInputResult='+$resultFile),('-ImperialDataDir='+(Join-Path $output 'userdata')),('-abslog='+(Join-Path $output 'runtime.log')))
+$arguments=@('-game','-nullrhi','-nosound','-unattended','-nosplash','-ImperialNoWelcome','-ImperialInputSmoke','-ImperialBridgeUrl=http://127.0.0.1:1',('-ImperialInputResult='+$resultFile),('-ImperialDataDir='+(Join-Path $output 'userdata')),('-UserDir='+(Join-Path $output 'engine-user')),('-abslog='+(Join-Path $output 'runtime.log')))
 if($Packaged){$exe=Join-Path $environment.PackageRoot 'ImperialWingsSimulator\Binaries\Win64\ImperialWingsSimulator-Win64-Shipping.exe'}
 else{$exe=Join-Path $environment.EngineRoot 'Engine\Binaries\Win64\UnrealEditor-Cmd.exe';$arguments=@((Join-Path $root 'ImperialWingsSimulator.uproject'))+$arguments}
 $quoted=@($arguments | ForEach-Object {'"'+$_+'"'})

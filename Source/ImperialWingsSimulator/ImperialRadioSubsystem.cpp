@@ -43,6 +43,56 @@ bool ReadFinite(const TSharedPtr<FJsonObject>& Object, const TCHAR* Key, double&
     return Object.IsValid() && Object->TryGetNumberField(Key, Value) && FMath::IsFinite(Value);
 }
 
+// A failed metadata/read operation is not a missing file. In particular, never
+// replace unsupported or unreadable settings with an implicit schema-1 default.
+bool LoadPilotSettingsRoot(const FString& Path,TSharedPtr<FJsonObject>& Root,bool& Missing)
+{
+    Root.Reset();Missing=false;
+#if PLATFORM_WINDOWS
+    const DWORD Attributes=::GetFileAttributesW(*Path);
+    if(Attributes==INVALID_FILE_ATTRIBUTES)
+    {
+        const DWORD Error=::GetLastError();
+        if(Error!=ERROR_FILE_NOT_FOUND && Error!=ERROR_PATH_NOT_FOUND)return false;
+        Missing=true;Root=MakeShared<FJsonObject>();return true;
+    }
+    if(Attributes&(FILE_ATTRIBUTE_DIRECTORY|FILE_ATTRIBUTE_REPARSE_POINT))return false;
+    return ReadJsonFile(Path,Root);
+#else
+    return false;
+#endif
+}
+
+bool ParsePilotControls(const TSharedPtr<FJsonObject>& Root,bool& Precision)
+{
+    double Version=0;Precision=false;
+    const auto* V=Root.IsValid()?Root->Values.Find(TEXT("version")):nullptr;
+    const auto* P=Root.IsValid()?Root->Values.Find(TEXT("precision_throttle")):nullptr;
+    return V&&V->IsValid()&&(*V)->Type==EJson::Number&&ReadFinite(Root,TEXT("version"),Version)&&Version==1.0&&
+        P&&P->IsValid()&&(*P)->Type==EJson::Boolean&&(*P)->TryGetBool(Precision);
+}
+
+bool ParsePilotResponse(const TSharedPtr<FJsonObject>& Root,ImperialInput::PilotResponse& Candidate,
+                        int32& Button,FString& Device,bool& Toggle)
+{
+    double Version=0,ButtonValue=-1;Toggle=true;Device.Empty();Candidate={};
+    const auto Number=[&](const TCHAR* Key,double& Value)
+    {
+        if(!Root.IsValid())return false;const auto* Field=Root->Values.Find(Key);
+        return Field&&Field->IsValid()&&(*Field)->Type==EJson::Number&&(*Field)->TryGetNumber(Value)&&FMath::IsFinite(Value);
+    };
+    bool Valid=Number(TEXT("version"),Version)&&Version==1&&Number(TEXT("arm_button"),ButtonValue)&&
+        ButtonValue>=-1&&ButtonValue<=31&&ButtonValue==FMath::FloorToDouble(ButtonValue)&&
+        Root->HasTypedField<EJson::String>(TEXT("arm_device"))&&Root->HasTypedField<EJson::Boolean>(TEXT("arm_toggle"))&&
+        Root->TryGetStringField(TEXT("arm_device"),Device)&&Root->TryGetBoolField(TEXT("arm_toggle"),Toggle);
+    for(int I=0;I<3&&Valid;++I)
+        Valid=Number(*FString::Printf(TEXT("expo_%d"),I),Candidate.Expo[I])&&
+              Number(*FString::Printf(TEXT("rate_%d"),I),Candidate.RateDegrees[I]);
+    Valid=Valid&&Candidate.Valid()&&((ButtonValue==-1&&Device.IsEmpty())||(ButtonValue>=0&&!Device.IsEmpty()&&Device.Len()<2048));
+    if(Valid)Button=static_cast<int32>(ButtonValue);
+    return Valid;
+}
+
 TArray<FImperialRadioDevice> EnumerateWinMmDevices()
 {
     TArray<FImperialRadioDevice> Result;
@@ -322,18 +372,10 @@ void UImperialRadioSubsystem::LoadPilotControls()
 {
     bPrecisionThrottle = false;
     const FString Path = ImperialUserData::Path(TEXT("Config/PilotControls.json"));
-    if (!IFileManager::Get().FileExists(*Path)) return;
-    TSharedPtr<FJsonObject> Root;
-    double Version = 0;
-    bool Precision = false;
-    bool Valid = ReadJsonFile(Path, Root) && ReadFinite(Root, TEXT("version"), Version) && Version == 1.0;
-    if (Valid)
-    {
-        const TSharedPtr<FJsonValue>* VersionField = Root->Values.Find(TEXT("version"));
-        const TSharedPtr<FJsonValue>* Field = Root->Values.Find(TEXT("precision_throttle"));
-        Valid = VersionField && VersionField->IsValid() && (*VersionField)->Type == EJson::Number &&
-            Field && Field->IsValid() && (*Field)->Type == EJson::Boolean && (*Field)->TryGetBool(Precision);
-    }
+    TSharedPtr<FJsonObject> Root;bool Missing=false;bool Precision=false;
+    const bool Read=LoadPilotSettingsRoot(Path,Root,Missing);
+    if(Read&&Missing)return;
+    const bool Valid=Read&&ParsePilotControls(Root,Precision);
     if (!Valid)
     {
         Status = TEXT("Pilot controls file invalid or unsupported. THROTTLE: DIRECT remains active.");
@@ -362,11 +404,17 @@ bool UImperialRadioSubsystem::SetPrecisionThrottleEnabled(bool bEnable)
             }
         }
     }
-    auto Root = MakeShared<FJsonObject>();
+    const FString Path = ImperialUserData::Path(TEXT("Config/PilotControls.json"));
+    ImperialProfileStorage::FRadioProfileWriteLock Lock(Path);
+    TSharedPtr<FJsonObject> Root;bool Missing=false;bool Current=false;
+    if(!Lock.IsHeld()||!LoadPilotSettingsRoot(Path,Root,Missing)||(!Missing&&!ParsePilotControls(Root,Current)))
+    {
+        Status = TEXT("Could not save pilot controls. Previous throttle response remains unchanged.");
+        return false;
+    }
     Root->SetNumberField(TEXT("version"), 1);
     Root->SetBoolField(TEXT("precision_throttle"), bEnable);
     FString Json;
-    const FString Path = ImperialUserData::Path(TEXT("Config/PilotControls.json"));
     const bool Saved = FJsonSerializer::Serialize(Root, TJsonWriterFactory<>::Create(&Json)) &&
         ImperialProfileStorage::Save(Path, Json);
     if (!Saved)
@@ -389,25 +437,13 @@ void UImperialRadioSubsystem::LoadPilotResponse()
 {
     Response={};ArmingButton=INDEX_NONE;ArmingDevice.Empty();bArmingToggle=true;
     const FString Path=ImperialUserData::Path(TEXT("Config/PilotResponse.json"));
-    if(!IFileManager::Get().FileExists(*Path))return;
     TSharedPtr<FJsonObject> Root;ImperialInput::PilotResponse Candidate;
-    double Version=0,Button=-1;FString Device;bool Toggle=true;
-    bool Valid=ReadJsonFile(Path,Root);
-    const auto Number=[&](const TCHAR* Key,double& Value)
-    {
-        if(!Root)return false;const auto* Field=Root->Values.Find(Key);
-        return Field&&Field->IsValid()&&(*Field)->Type==EJson::Number&&(*Field)->TryGetNumber(Value)&&FMath::IsFinite(Value);
-    };
-    Valid=Valid&&Number(TEXT("version"),Version)&&Version==1&&Number(TEXT("arm_button"),Button)&&
-        Button>=-1&&Button<=31&&Button==FMath::FloorToDouble(Button)&&
-        Root->HasTypedField<EJson::String>(TEXT("arm_device"))&&Root->HasTypedField<EJson::Boolean>(TEXT("arm_toggle"))&&
-        Root->TryGetStringField(TEXT("arm_device"),Device)&&Root->TryGetBoolField(TEXT("arm_toggle"),Toggle);
-    for(int I=0;I<3&&Valid;++I)
-        Valid=Number(*FString::Printf(TEXT("expo_%d"),I),Candidate.Expo[I])&&
-              Number(*FString::Printf(TEXT("rate_%d"),I),Candidate.RateDegrees[I]);
-    Valid=Valid&&Candidate.Valid()&&((Button==-1&&Device.IsEmpty())||(Button>=0&&!Device.IsEmpty()&&Device.Len()<2048));
-    if(!Valid){Status=TEXT("Response settings invalid. Default rates/Expo and unassigned ARM button retained.");return;}
-    Response=Candidate;ArmingButton=static_cast<int32>(Button);ArmingDevice=Device;bArmingToggle=Toggle;
+    bool Missing=false,Toggle=true;int32 Button=INDEX_NONE;FString Device;
+    const bool Read=LoadPilotSettingsRoot(Path,Root,Missing);
+    if(Read&&Missing)return;
+    if(!Read||!ParsePilotResponse(Root,Candidate,Button,Device,Toggle))
+    {Status=TEXT("Response settings invalid. Default rates/Expo and unassigned ARM button retained.");return;}
+    Response=Candidate;ArmingButton=Button;ArmingDevice=Device;bArmingToggle=Toggle;
 }
 
 bool UImperialRadioSubsystem::SavePilotResponse(const ImperialInput::PilotResponse& Candidate,int32 ArmButton,const FString& ArmDevice,bool bToggle)
@@ -425,11 +461,18 @@ bool UImperialRadioSubsystem::SavePilotResponse(const ImperialInput::PilotRespon
         if(!IsConnected()||!Device||Device->Identity!=ArmDevice||ArmButton>=FMath::Min(32,Device->ButtonCount))
         {Status=TEXT("Select the connected controller and learn a button it reports.");return false;}
     }
-    auto Root=MakeShared<FJsonObject>();Root->SetNumberField(TEXT("version"),1);
+    const FString Path=ImperialUserData::Path(TEXT("Config/PilotResponse.json"));
+    ImperialProfileStorage::FRadioProfileWriteLock Lock(Path);
+    TSharedPtr<FJsonObject> Root;bool Missing=false,OldToggle=true;int32 OldButton=INDEX_NONE;
+    FString OldDevice;ImperialInput::PilotResponse OldResponse;
+    if(!Lock.IsHeld()||!LoadPilotSettingsRoot(Path,Root,Missing)||
+       (!Missing&&!ParsePilotResponse(Root,OldResponse,OldButton,OldDevice,OldToggle)))
+    {Status=TEXT("Could not save response. Previous settings retained.");return false;}
+    Root->SetNumberField(TEXT("version"),1);
     for(int I=0;I<3;++I)
     {Root->SetNumberField(*FString::Printf(TEXT("expo_%d"),I),Candidate.Expo[I]);Root->SetNumberField(*FString::Printf(TEXT("rate_%d"),I),Candidate.RateDegrees[I]);}
     Root->SetNumberField(TEXT("arm_button"),ArmButton);Root->SetStringField(TEXT("arm_device"),ArmDevice);Root->SetBoolField(TEXT("arm_toggle"),bToggle);
-    const FString Path=ImperialUserData::Path(TEXT("Config/PilotResponse.json"));FString Json;
+    FString Json;
     const bool Saved=FJsonSerializer::Serialize(Root,TJsonWriterFactory<>::Create(&Json))&&
         ImperialProfileStorage::Save(Path,Json);
     if(!Saved)
@@ -824,21 +867,21 @@ bool UImperialRadioSubsystem::WriteProfile()
     const auto Error = ImperialRadio::ValidateProfile(Calibration, AvailableAxes());
     if (Error != ImperialRadio::Error::None) return SetCalibrationStatus(Error, FString());
     const FString Path = ProfilePath();
-    TSharedPtr<FJsonObject> Root;
-    if (IFileManager::Get().FileExists(*Path))
+    // Hold the cooperative lock for the entire read/merge/atomic-save transaction.
+    // Older versions and external tools do not take this lock.
+    const ImperialProfileStorage::FRadioProfileWriteLock ProfileLock(Path);
+    if (!ProfileLock.IsHeld())
     {
-        double Version = 0;
-        if (!ReadJsonFile(Path, Root) || !ReadFinite(Root, TEXT("version"), Version) || Version != 1.0)
-        {
-            Status = TEXT("Existing radio profile file is malformed or unsupported; it was left unchanged.");
-            return false;
-        }
+        Status = TEXT("Radio profile is busy or cannot be locked. Previous calibration remains unchanged; try again.");
+        return false;
     }
-    else Root = MakeShared<FJsonObject>();
+    TSharedPtr<FJsonObject> Root, Profiles;
+    if (!ImperialProfileStorage::LoadRadioProfilesForUpdate(Path, Root, Profiles))
+    {
+        Status = TEXT("Existing radio profile file is malformed or unsupported; it was left unchanged.");
+        return false;
+    }
     Root->SetNumberField(TEXT("version"), 1);
-    const TSharedPtr<FJsonObject>* StoredProfiles = nullptr;
-    TSharedPtr<FJsonObject> Profiles = Root->TryGetObjectField(TEXT("profiles"), StoredProfiles) && StoredProfiles && StoredProfiles->IsValid()
-        ? *StoredProfiles : MakeShared<FJsonObject>();
     auto Entry = MakeShared<FJsonObject>();
     ImperialRadio::WriteProfileMode(Entry, Calibration);
     Entry->SetStringField(TEXT("identity"), Device->Identity);

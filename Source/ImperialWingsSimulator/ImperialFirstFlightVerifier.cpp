@@ -168,6 +168,51 @@ void AImperialFirstFlightVerifier::Tick(float Dt)
         Check(TEXT("explicit user next advances exactly one step without aircraft commands"),G->AdvanceStep()&&G->GetStepIndex()==1&&D->IsArmed()==Armed&&D->GetThrottle()==Throttle&&!D->IsAutonomousEnabled());
         G->RetryStep();Check(TEXT("hover retry only clears current observation progress"),G->GetStepIndex()==1&&G->GetProgress()==0&&D->IsArmed()==Armed);
         G->StopGuide();Check(TEXT("stopping an airborne guide does not disarm or change throttle"),!G->IsActive()&&D->IsArmed()==Armed&&D->GetThrottle()==Throttle);
+        // Diagnostic fixture only: temporarily place another aircraft at a finite unsafe height.
+        auto* Other=M->GetDrone(1);
+        auto* OtherBody=Other?Other->GetBodyMesh():nullptr;
+        Check(TEXT("unsafe-other fixture has a physics body"),Other&&OtherBody);
+        if(Other&&OtherBody)
+        {
+            const FTransform OriginalTransform=OtherBody->GetComponentTransform();
+            const FVector OriginalVelocity=OtherBody->GetPhysicsLinearVelocity();
+            const FVector OriginalAngularVelocity=OtherBody->GetPhysicsAngularVelocityInRadians();
+            FVector UnsafePosition=OriginalTransform.GetLocation();UnsafePosition.Z=100.f;
+            OtherBody->SetWorldLocation(UnsafePosition,false,nullptr,ETeleportType::TeleportPhysics);
+            OtherBody->SetPhysicsLinearVelocity(FVector::ZeroVector);
+            OtherBody->SetPhysicsAngularVelocityInRadians(FVector::ZeroVector);
+            const FVector OtherPosition=Other->GetActorLocation();
+            const FVector OtherVelocity=OtherBody->GetPhysicsLinearVelocity();
+            const bool OtherArmed=Other->IsArmed(),OtherAuto=Other->IsAutonomousEnabled();
+            const double OtherBattery=Other->GetBatteryConsumedAh();
+            const FVector SelectedPosition=D->GetActorLocation();
+            const FVector SelectedVelocity=D->GetBodyMesh()->GetPhysicsLinearVelocity();
+            const bool SelectedArmed=D->IsArmed();
+            const float SelectedThrottle=D->GetThrottle();
+            const double SelectedBattery=D->GetBatteryConsumedAh();
+            const int32 BeforeSelection=M->GetSelected(),BlueScore=M->GetScore(0),RedScore=M->GetScore(1);
+            const bool UnsafeFixture=Other->GetAltitudeMeters()>.35f;
+            G->ResetAircraftAndRestart();
+            const FString ExpectedStatus=ImperialLocalization::IsKorean()
+                ? TEXT("다른 기체가 착륙하고 모터가 정지한 뒤 다시 시작하세요.")
+                : TEXT("Land and disarm the other aircraft before restarting this guide.");
+            Check(TEXT("unsafe other aircraft refuses guide reset with landing notice"),
+                UnsafeFixture&&!G->IsActive()&&G->GetStatus()==ExpectedStatus);
+            Check(TEXT("refused reset preserves selected aircraft, selection and both scores"),
+                FVector::Dist(SelectedPosition,D->GetActorLocation())<.001&&
+                FVector::Dist(SelectedVelocity,D->GetBodyMesh()->GetPhysicsLinearVelocity())<.001&&
+                D->IsArmed()==SelectedArmed&&D->GetThrottle()==SelectedThrottle&&
+                D->GetBatteryConsumedAh()==SelectedBattery&&M->GetSelected()==BeforeSelection&&
+                M->GetScore(0)==BlueScore&&M->GetScore(1)==RedScore);
+            Check(TEXT("refused reset preserves other aircraft test state"),
+                FVector::Dist(OtherPosition,Other->GetActorLocation())<.001&&
+                FVector::Dist(OtherVelocity,OtherBody->GetPhysicsLinearVelocity())<.001&&
+                Other->IsArmed()==OtherArmed&&Other->IsAutonomousEnabled()==OtherAuto&&
+                Other->GetBatteryConsumedAh()==OtherBattery);
+            OtherBody->SetWorldTransform(OriginalTransform,false,nullptr,ETeleportType::TeleportPhysics);
+            OtherBody->SetPhysicsLinearVelocity(OriginalVelocity);
+            OtherBody->SetPhysicsAngularVelocityInRadians(OriginalAngularVelocity);
+        }
         TArray<FVector> Positions;TArray<double> Batteries;for(int32 I=1;I<10;++I){Positions.Add(M->GetDrone(I)->GetActorLocation());Batteries.Add(M->GetDrone(I)->GetBatteryConsumedAh());}
         const int32 Score=M->GetScore(0),Selected=M->GetSelected();Release();G->ResetAircraftAndRestart();
         Check(TEXT("explicit reset restarts only the selected blue striker guide"),G->IsActive()&&G->GetStepIndex()==0&&!D->IsArmed()&&D->GetThrottle()==0);

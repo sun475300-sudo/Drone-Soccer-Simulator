@@ -1,5 +1,6 @@
 #pragma once
 #include <algorithm>
+#include <array>
 #include <cmath>
 
 // Observation-only tutorial state. This class never issues aircraft commands.
@@ -14,6 +15,23 @@ struct Observation
     int SelectedIndex=0, TeamScore=0;
     double AltitudeM=.2, SpeedMps=0, HorizontalSpeedMps=0, VerticalSpeedMps=0, TiltDeg=0, X=0, Y=0, Throttle=0;
 };
+// Restart is an explicit reset of the selected aircraft only. Every other
+// aircraft must be present, stationary, disarmed and manually controlled.
+struct RestartOtherAircraft
+{
+    bool Present=false, Armed=false, Autonomous=false;
+    double AltitudeM=0, SpeedMps=0;
+};
+inline bool CanResetSelectedAircraft(int AircraftCount,const std::array<RestartOtherAircraft,9>& Others)
+{
+    if(AircraftCount!=10)return false;
+    for(const auto& Other:Others)
+        if(!Other.Present||Other.Armed||Other.Autonomous||
+            !std::isfinite(Other.AltitudeM)||!std::isfinite(Other.SpeedMps)||
+            Other.AltitudeM<.05||Other.AltitudeM>.35||Other.SpeedMps<0||Other.SpeedMps>.25)
+            return false;
+    return true;
+}
 class Guide
 {
 public:

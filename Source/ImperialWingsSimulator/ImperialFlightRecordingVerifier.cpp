@@ -137,6 +137,11 @@ void AImperialFlightRecordingVerifier::Tick(float Dt)
         M->ToggleFlightRecording();
         Check(TEXT("failed start leaves recording inactive"),!M->IsRecordingFlight());
         Check(TEXT("failed start preserves failure notice instead of announcing recording"),FailedNotice());
+        M->ManualSelected();
+        Check(TEXT("manual disarm notice remains visible and recording warning persists"),!M->IsRecordingFlight()&&!FailedNotice()&&M->HasFlightRecordingFailure()&&M->GetNotice()==TEXT("Selected aircraft disarmed. Current input source retained; low throttle is required to arm."));
+        M->ResetMatch();
+        Check(TEXT("reset notice remains visible and recording warning persists"),!M->IsRecordingFlight()&&!FailedNotice()&&M->HasFlightRecordingFailure()&&M->GetNotice()==TEXT("Training reset. All aircraft disarmed; scores cleared."));
+        Check(TEXT("recording warning survives reset even after session events are cleared"),M->HasFlightRecordingFailure()&&!M->GetEvents().Contains(TEXT("Flight recording stopped: could not write to Saved/FlightLogs.")));
         M->ToggleFlightRecording();
         Check(TEXT("explicit retry while blocked fails again without success notice"),!M->IsRecordingFlight()&&FailedNotice());
         Next(1);return;
@@ -149,7 +154,7 @@ void AImperialFlightRecordingVerifier::Tick(float Dt)
         Check(TEXT("fixture removes only its exact known obstruction"),IFileManager::Get().Delete(*LogDir,false,true,true));
         Check(TEXT("fresh log directory can be created after resolving obstruction"),IFileManager::Get().MakeDirectory(*LogDir,true));
         const auto BeforeFiles=Files();M->ToggleFlightRecording();RetryFile=OnlyNewFile(BeforeFiles);
-        Check(TEXT("explicit retry after start failure creates a unique real start record"),M->IsRecordingFlight()&&RecordingNotice()&&HasEvents(RetryFile,false));
+        Check(TEXT("explicit retry after start failure creates a unique real start record"),M->IsRecordingFlight()&&RecordingNotice()&&!M->HasFlightRecordingFailure()&&HasEvents(RetryFile,false));
         M->ToggleFlightRecording();
         Check(TEXT("normal stop after start retry appends stop and announces saved"),!M->IsRecordingFlight()&&SavedNotice()&&HasEvents(RetryFile,true));
         Next(2);return;
@@ -165,7 +170,11 @@ void AImperialFlightRecordingVerifier::Tick(float Dt)
     {
         if(M->IsRecordingFlight()&&Age<1)return;
         Check(TEXT("periodic sample failure stops recording"),!M->IsRecordingFlight());
-        Check(TEXT("periodic sample failure notice remains visible"),FailedNotice());
+        Check(TEXT("periodic sample failure notice remains visible"),FailedNotice()&&M->HasFlightRecordingFailure());
+        M->ManualSelected();
+        Check(TEXT("periodic recording failure warning survives manual disarm"),M->HasFlightRecordingFailure()&&!FailedNotice());
+        M->ResetMatch();
+        Check(TEXT("periodic recording failure warning survives reset"),M->HasFlightRecordingFailure());
         Unlock();FString After;
         Check(TEXT("sample lock failure preserves the complete previously written prefix"),Read(SampleFile,After)&&After==SamplePrefix&&HasEvents(SampleFile,false));
         Next(4);return;
@@ -174,7 +183,7 @@ void AImperialFlightRecordingVerifier::Tick(float Dt)
     {
         Check(TEXT("recording does not silently resume after sample write failure"),!M->IsRecordingFlight()&&Files().Num()==2);
         const auto Before=Files();M->ToggleFlightRecording();RetryFile=OnlyNewFile(Before);
-        Check(TEXT("explicit sample-failure retry creates another file and recording notice"),M->IsRecordingFlight()&&RecordingNotice()&&!RetryFile.IsEmpty()&&RetryFile!=SampleFile);
+        Check(TEXT("explicit sample-failure retry creates another file and recording notice"),M->IsRecordingFlight()&&RecordingNotice()&&!M->HasFlightRecordingFailure()&&!RetryFile.IsEmpty()&&RetryFile!=SampleFile);
         Next(5);return;
     }
     if(Stage==5&&Age>.2)
@@ -187,7 +196,11 @@ void AImperialFlightRecordingVerifier::Tick(float Dt)
         if(!Locked){Finish();return;}
         M->ToggleFlightRecording();
         Check(TEXT("failed stop leaves recording inactive"),!M->IsRecordingFlight());
-        Check(TEXT("failed stop preserves failure notice instead of announcing saved"),FailedNotice());
+        Check(TEXT("failed stop preserves failure notice instead of announcing saved"),FailedNotice()&&M->HasFlightRecordingFailure());
+        M->ManualSelected();
+        Check(TEXT("stop recording failure warning survives manual disarm"),M->HasFlightRecordingFailure()&&!FailedNotice());
+        M->ResetMatch();
+        Check(TEXT("stop recording failure warning survives reset"),M->HasFlightRecordingFailure());
         Unlock();FString After;
         Check(TEXT("failed stop preserves prefix without adding a false stop record"),Read(StopFile,After)&&After==StopPrefix&&HasEvents(StopFile,false));
         Next(6);return;
@@ -196,7 +209,7 @@ void AImperialFlightRecordingVerifier::Tick(float Dt)
     {
         Check(TEXT("failed stop never automatically retries or overwrites existing logs"),!M->IsRecordingFlight()&&Files().Num()==4);
         const auto Before=Files();M->ToggleFlightRecording();RetryFile=OnlyNewFile(Before);
-        Check(TEXT("explicit stop-failure retry starts a separate unique file"),M->IsRecordingFlight()&&RecordingNotice()&&!RetryFile.IsEmpty()&&RetryFile!=StopFile&&RetryFile!=SampleFile);
+        Check(TEXT("explicit stop-failure retry starts a separate unique file"),M->IsRecordingFlight()&&RecordingNotice()&&!M->HasFlightRecordingFailure()&&!RetryFile.IsEmpty()&&RetryFile!=StopFile&&RetryFile!=SampleFile);
         Next(7);return;
     }
     if(Stage==7&&Age>.2)

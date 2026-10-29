@@ -1,3 +1,9 @@
+> **0.7.15-dev-safety3 사전 시험판** — 조종 설정 보존과 AI 결과 저장 실패 시 종료, 비행 기록 실패 안내를 개선한 개발 시험본입니다. 아래 사용법과 화면은 기존 v0.7.14/v0.7.13 기준입니다.
+>
+> [Windows ZIP](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.15-dev-safety3/ImperialWings-0.7.15-dev-safety3.zip) · [설치 프로그램](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.15-dev-safety3/ImperialWings-Setup-0.7.15-dev-safety3.exe) · [사전 릴리스 상세](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.15-dev-safety3) · [English guide for v0.7.14](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/main/README.en.md)
+>
+> 실제 Boxer 조종기, 다른 PC, 설치 프로그램 GUI 및 F6 오류 배너의 실제 화면은 이 시험본에서 확인되지 않았습니다. 설치 프로그램은 서명되지 않아 Windows 경고가 표시될 수 있습니다.
+
 # Imperial Wings · 드론축구 시뮬레이터
 
 > **v0.7.14-rc1 사전 배포판**: HUD 글자·장치명, AI 기록 비교, F6 저장 실패 안내를 개선했습니다. [이번 검증과 제한](docs/releases/v0.7.14-rc1.md)을 확인하세요. 실물 조종기·다른 PC·사람 기록 비교는 미검증입니다.

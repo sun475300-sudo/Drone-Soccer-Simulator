@@ -13,6 +13,7 @@
 #include "Engine/GameViewportClient.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
+#include "Serialization/JsonReader.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "Misc/FileHelper.h"
@@ -80,6 +81,104 @@ void AImperialRadioUXVerifier::CheckStorage()
     bool NoTemps=true;
     for(const auto& File:Files)if(File.Contains(TEXT(".tmp-")))NoTemps=false;
     Check(TEXT("successful and failed writes leave no temporary siblings"),NoTemps&&Files.Num()==3);
+
+    // Isolated schema fixtures: validation must never alter rejected source bytes.
+    const FString ProfileFolder=ImperialUserData::Path(TEXT("Verification/RadioProfileStructure"));
+    IFileManager::Get().MakeDirectory(*ProfileFolder,true);
+    struct FBadRadioStore { const TCHAR* Name; const TCHAR* Contents; };
+    const FBadRadioStore BadStores[]={
+        {TEXT("missing_profiles"),TEXT("{\"version\":1}")},
+        {TEXT("null_profiles"),TEXT("{\"version\":1,\"profiles\":null}")},
+        {TEXT("string_profiles"),TEXT("{\"version\":1,\"profiles\":\"damaged\"}")},
+        {TEXT("array_profiles"),TEXT("{\"version\":1,\"profiles\":[]}")},
+        {TEXT("wrong_version"),TEXT("{\"version\":2,\"profiles\":{}}")},
+        {TEXT("missing_version"),TEXT("{\"profiles\":{}}")},
+        {TEXT("invalid_json"),TEXT("{broken")}
+    };
+    for (const auto& Case:BadStores)
+    {
+        const FString File=FPaths::Combine(ProfileFolder,FString(Case.Name)+TEXT(".json"));
+        const bool Written=FFileHelper::SaveStringToFile(Case.Contents,*File,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
+        TArray<uint8> Before,After;
+        const bool ReadBefore=FFileHelper::LoadFileToArray(Before,*File);
+        TSharedPtr<FJsonObject> Store,Profiles;
+        const bool Accepted=ImperialProfileStorage::LoadRadioProfilesForUpdate(File,Store,Profiles);
+        const bool ReadAfter=FFileHelper::LoadFileToArray(After,*File);
+        Check(*FString::Printf(TEXT("invalid radio store %s is rejected with bytes preserved"),Case.Name),
+              Written&&ReadBefore&&!Accepted&&!Store.IsValid()&&!Profiles.IsValid()&&ReadAfter&&Before==After);
+    }
+    const FString Fresh=FPaths::Combine(ProfileFolder,TEXT("fresh.json"));
+    TSharedPtr<FJsonObject> FreshRoot,FreshProfiles;
+    Check(TEXT("missing radio store creates in-memory objects without writing"),
+          !IFileManager::Get().FileExists(*Fresh)&&ImperialProfileStorage::LoadRadioProfilesForUpdate(Fresh,FreshRoot,FreshProfiles)&&
+          FreshRoot.IsValid()&&FreshProfiles.IsValid()&&!IFileManager::Get().FileExists(*Fresh));
+    const FString ValidFile=FPaths::Combine(ProfileFolder,TEXT("valid.json"));
+    const bool ValidWritten=FFileHelper::SaveStringToFile(TEXT("{\"version\":1,\"profiles\":{\"existing\":{\"confirmed\":true}},\"unknown\":\"keep\"}"),
+                                                           *ValidFile,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
+    TSharedPtr<FJsonObject> ValidRoot,ValidProfiles;
+    const bool ValidLoaded=ImperialProfileStorage::LoadRadioProfilesForUpdate(ValidFile,ValidRoot,ValidProfiles);
+    bool Preserved=false;
+    if(ValidLoaded&&ValidRoot.IsValid()&&ValidProfiles.IsValid())
+    {
+        ValidProfiles->SetObjectField(TEXT("new"),MakeShared<FJsonObject>());
+        ValidRoot->SetObjectField(TEXT("profiles"),ValidProfiles);
+        FString Json;
+        const bool Serialized=FJsonSerializer::Serialize(ValidRoot.ToSharedRef(),TJsonWriterFactory<>::Create(&Json));
+        const bool Saved=Serialized&&ImperialProfileStorage::Save(ValidFile,Json);
+        TSharedPtr<FJsonObject> Reread,Reprofiles;
+        FString Unknown;
+        Preserved=Saved&&ImperialProfileStorage::LoadRadioProfilesForUpdate(ValidFile,Reread,Reprofiles)&&
+            Reread->TryGetStringField(TEXT("unknown"),Unknown)&&Unknown==TEXT("keep")&&
+            Reprofiles->HasField(TEXT("existing"))&&Reprofiles->HasField(TEXT("new"));
+    }
+    Check(TEXT("valid multi-device store preserves existing profile and unknown field"),ValidWritten&&Preserved);
+#if PLATFORM_WINDOWS
+    // These are synthetic files beneath the explicit isolated data directory.
+    // Two independent handles exercise the same nonblocking lock used by WriteProfile.
+    TArray<uint8> LockBefore,LockAfter;
+    const bool LockRead=FFileHelper::LoadFileToArray(LockBefore,*ValidFile);
+    bool FirstHeld=false,SecondRejected=false;
+    {
+        ImperialProfileStorage::FRadioProfileWriteLock First(ValidFile);
+        ImperialProfileStorage::FRadioProfileWriteLock Second(ValidFile);
+        FirstHeld=First.IsHeld();SecondRejected=!Second.IsHeld();
+    }
+    const bool LockReadAfter=FFileHelper::LoadFileToArray(LockAfter,*ValidFile);
+    Check(TEXT("cooperative radio lock rejects a second handle and preserves original bytes"),
+          LockRead&&FirstHeld&&SecondRejected&&LockReadAfter&&LockBefore==LockAfter);
+    bool Retried=false;
+    {
+        ImperialProfileStorage::FRadioProfileWriteLock Retry(ValidFile);
+        TSharedPtr<FJsonObject> Current,CurrentProfiles;
+        if(Retry.IsHeld()&&ImperialProfileStorage::LoadRadioProfilesForUpdate(ValidFile,Current,CurrentProfiles))
+        {
+            CurrentProfiles->SetObjectField(TEXT("retry"),MakeShared<FJsonObject>());
+            Current->SetObjectField(TEXT("profiles"),CurrentProfiles);
+            FString Json;Retried=FJsonSerializer::Serialize(Current.ToSharedRef(),TJsonWriterFactory<>::Create(&Json))&&
+                ImperialProfileStorage::Save(ValidFile,Json);
+        }
+    }
+    TSharedPtr<FJsonObject> RetriedRoot,RetriedProfiles;FString RetriedUnknown;
+    Check(TEXT("explicit retry reloads and preserves both existing profiles and metadata"),
+          Retried&&ImperialProfileStorage::LoadRadioProfilesForUpdate(ValidFile,RetriedRoot,RetriedProfiles)&&
+          RetriedRoot->TryGetStringField(TEXT("unknown"),RetriedUnknown)&&RetriedUnknown==TEXT("keep")&&
+          RetriedProfiles->HasField(TEXT("existing"))&&RetriedProfiles->HasField(TEXT("new"))&&RetriedProfiles->HasField(TEXT("retry")));
+    const FString LockBlocked=FPaths::Combine(Blocker,TEXT("lock.json"));
+    ImperialProfileStorage::FRadioProfileWriteLock Unavailable(LockBlocked);
+    Check(TEXT("unavailable cooperative lock fails closed without changing parent file"),!Unavailable.IsHeld()&&ReadEquals(Blocker,TEXT("retain parent")));
+    Check(TEXT("radio profile lock rejection has Korean guidance"),
+          ContainsHangul(ImperialLocalization::Translate(TEXT("Radio profile is busy or cannot be locked. Previous calibration remains unchanged; try again."))));
+    const bool ExternalBusy=FParse::Param(FCommandLine::Get(),TEXT("ImperialRadioLockExternalBusy"));
+    const bool ExternalAvailable=FParse::Param(FCommandLine::Get(),TEXT("ImperialRadioLockExternalAvailable"));
+    if (ExternalBusy||ExternalAvailable)
+    {
+        // Test target is fixed underneath the explicitly isolated test data directory.
+        const FString ExternalTarget=FPaths::Combine(ProfileFolder,TEXT("external.json"));
+        ImperialProfileStorage::FRadioProfileWriteLock External(ExternalTarget);
+        Check(TEXT("cross-process radio lock matches external holder state"),
+              ExternalBusy!=ExternalAvailable&&(ExternalBusy?!External.IsHeld():External.IsHeld()));
+    }
+#endif
 }
 void AImperialRadioUXVerifier::CheckResponse(AImperialHUD& H,UImperialRadioSubsystem& R,AImperialMatchManager& M)
 {

@@ -7,7 +7,7 @@ $environment=Get-ImperialEnvironment -ProjectRoot $root -PackageRoot $PackageRoo
 $output=Join-Path $root ('Saved\Verification\radio-modes-'+[DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss-fff')+'-'+[Guid]::NewGuid().ToString('N').Substring(0,8))
 New-Item -ItemType Directory -Path $output | Out-Null
 $resultFile=Join-Path $output 'result.json'
-$arguments=@('-game','-nullrhi','-nosound','-unattended','-nosplash','-ImperialNoWelcome','-ImperialRadioModeSmoke','-ImperialBridgeUrl=http://127.0.0.1:1',('-ImperialRadioModeResult='+$resultFile),('-ImperialDataDir='+(Join-Path $output 'userdata')),('-abslog='+(Join-Path $output 'runtime.log')))
+$arguments=@('-game','-nullrhi','-nosound','-unattended','-nosplash','-ImperialNoWelcome','-ImperialRadioModeSmoke','-ImperialBridgeUrl=http://127.0.0.1:1',('-ImperialRadioModeResult='+$resultFile),('-ImperialDataDir='+(Join-Path $output 'userdata')),('-UserDir='+(Join-Path $output 'engine-user')),('-abslog='+(Join-Path $output 'runtime.log')))
 if($RenderCapture){$arguments=@($arguments | Where-Object {$_ -ne '-nullrhi'})+@('-RenderOffscreen','-ResX=1600','-ResY=1000',('-ImperialRadioModeCapture='+$output))}
 if($Packaged){$exe=Join-Path $environment.PackageRoot 'ImperialWingsSimulator\Binaries\Win64\ImperialWingsSimulator-Win64-Shipping.exe'}
 else{$exe=Join-Path $environment.EngineRoot 'Engine\Binaries\Win64\UnrealEditor-Cmd.exe';$arguments=@((Join-Path $root 'ImperialWingsSimulator.uproject'))+$arguments}
