@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -15,6 +16,60 @@ ROOT = Path(__file__).resolve().parents[1]
 def digest(path):
     with path.open('rb') as source:
         return hashlib.file_digest(source, 'sha256').hexdigest()
+
+
+def current_source_identity(root):
+    """Match Get-SourceIdentity/UBT input normalization, including this script."""
+    extensions = {'.h', '.cpp', '.cs', '.ini', '.json', '.py', '.ps1', '.txt',
+                  '.cmd', '.bat', '.uproject', '.uasset', '.umap', '.png'}
+    binary = {'.uasset', '.umap', '.png'}
+    paths = []
+    for folder in ('Source', 'Config', 'Content', 'ArtSource', 'Bridge', 'Scripts'):
+        base = root/folder
+        if base.is_dir():
+            paths.extend(p for p in base.rglob('*') if p.is_file() and p.suffix.lower() in extensions)
+    paths.extend(p for p in root.iterdir() if p.is_file() and p.suffix.lower() in {'.uproject', '.cmd'})
+    # Ordinal UTF-16 order also agrees with the Windows/C# implementation for non-BMP names.
+    paths.sort(key=lambda p: p.relative_to(root).as_posix().encode('utf-16-be', errors='surrogatepass'))
+    manifest = []
+    for path in paths:
+        if path.suffix.lower() in binary:
+            content = path.read_bytes()
+        else:
+            with path.open('r', encoding='utf-8-sig', newline='') as stream:
+                content = stream.read().replace('\r\n', '\n').encode('utf-8')
+        manifest.append(path.relative_to(root).as_posix()+'\0'+hashlib.sha256(content).hexdigest()+'\n')
+    with (root/'Config/DefaultGame.ini').open('r', encoding='utf-8-sig', newline='') as stream:
+        settings = stream.read()
+    version = re.search(r'(?m)^ProjectVersion=([^\r\n]+)', settings)
+    if version is None:
+        raise ValueError('Current source ProjectVersion is missing')
+    return dict(version=version.group(1).strip(), input_count=len(paths),
+                source_sha256=hashlib.sha256(''.join(manifest).encode('utf-8')).hexdigest())
+
+
+def validated_package_identity(package, source_root):
+    """Reject stale/ambiguous staged identities before creating a release."""
+    directory = package/'ImperialWingsSimulator/Binaries/Win64'
+    identities = list(directory.glob('ImperialBuildIdentity-*.json'))
+    if len(identities) != 1:
+        raise ValueError('Package must contain exactly one build identity; found '+str(len(identities)))
+    identity = json.loads(identities[0].read_text(encoding='utf-8-sig'))
+    if (not isinstance(identity, dict)
+            or identities[0].name != 'ImperialBuildIdentity-ImperialWingsSimulator.json'
+            or identity.get('target') != 'ImperialWingsSimulator'
+            or identity.get('platform') != 'Win64'
+            or identity.get('configuration') != 'Shipping'
+            or not isinstance(identity.get('source_sha256'), str)
+            or re.fullmatch(r'[a-f0-9]{64}', identity['source_sha256']) is None
+            or not isinstance(identity.get('version'), str) or not identity['version']
+            or type(identity.get('input_count')) is not int or identity['input_count'] <= 0
+            or not (directory/'ImperialWingsSimulator-Win64-Shipping.exe').is_file()):
+        raise ValueError('Invalid Shipping game build identity or executable')
+    expected = current_source_identity(source_root)
+    if any(identity.get(key) != value for key, value in expected.items()):
+        raise ValueError('Packaged build identity does not match current source version, hash and input count')
+    return identity
 
 
 def bundle_feedback_form(source, output):
@@ -35,6 +90,7 @@ def make(args):
         raise ValueError('Release destination already exists; choose a new directory')
     if not (package/'ImperialWingsSimulator.exe').is_file():
         raise ValueError('Package the Unreal game first')
+    identity=validated_package_identity(package,ROOT)
     feedback_source=ROOT/'docs'/'feedback-form.html'
     if not feedback_source.is_file():
         raise ValueError('Reviewed standalone feedback form is missing')
@@ -83,8 +139,8 @@ def make(args):
                 relative=Path(str(f).replace('\\','/').split('.dist-info/licenses/',1)[1])
                 target=notices/package_name/relative;target.parent.mkdir(parents=True,exist_ok=True)
                 shutil.copy2(distribution.locate_file(f),target)
-    identities=list((output/'Windows'/'ImperialWingsSimulator'/'Binaries'/'Win64').glob('ImperialBuildIdentity-*.json'))
-    identity=json.loads(identities[0].read_text(encoding='utf-8-sig'))
+    if validated_package_identity(output/'Windows',ROOT) != identity:
+        raise ValueError('Copied package build identity changed during release assembly')
     manifest=dict(version=identity['version'],build=identity,upstream=provenance,
                   platform='Windows x64',data_directory='%LOCALAPPDATA%/ImperialWingsSimulator/Saved',
                   prerequisites='Microsoft Visual C++ x64 14.44 or later; Windows 10/11 x64; DX12 SM6 GPU',

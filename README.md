@@ -1,14 +1,14 @@
 # Imperial Wings · 드론축구 시뮬레이터
 
-> **0.7.14-dev-ui1 로컬 검증본 · 미배포**: HUD 글자/장치명과 게임 내 AI 기록 비교를 개선했습니다. [빌드·실제 창 검사와 남은 범위](docs/product-ui-2026-10-28.md)를 확인하세요. 아래 공개 다운로드와 화면은 v0.7.13-rc1(C7)이며 후속 로컬 기능은 포함하지 않습니다.
+> **v0.7.14-rc1 사전 배포판**: HUD 글자·장치명, AI 기록 비교, F6 저장 실패 안내를 개선했습니다. [이번 검증과 제한](docs/releases/v0.7.14-rc1.md)을 확인하세요. 실물 조종기·다른 PC·사람 기록 비교는 미검증입니다.
 
 Windows에서 키보드나 USB 조종기로 연습하는 드론축구 시뮬레이터입니다. 기본 시점은 경기장 밖 LOS, 기본 비행은 ANGLE입니다. 모터 힘과 강체 물리로 비행하며, 실제 기체의 실측 특성을 보증하는 모델은 아닙니다.
 
-**[설치 EXE](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.13-rc1/ImperialWings-Setup-v0.7.13-rc1.exe)** · **[Windows v0.7.13-rc1 ZIP](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.13-rc1/ImperialWings-Windows-v0.7.13-rc1.zip)** · [릴리스와 검증 범위](docs/releases/v0.7.13-rc1.md) · [검증 기록](docs/verification.md#v0713-rc1)
+**[설치 EXE](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.14-rc1/ImperialWings-Setup-v0.7.14-rc1.exe)** · **[Windows v0.7.14-rc1 ZIP](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.14-rc1/ImperialWings-Windows-v0.7.14-rc1.zip)** · [릴리스와 검증 범위](docs/releases/v0.7.14-rc1.md) · [검증 기록](docs/verification.md#v0714-rc1)
 
 ## 실제 화면
 
-아래는 **v0.7.13-rc1 Windows 실행본**의 실제 화면입니다. 기획 이미지가 아닙니다. 촬영 해상도와 소스 지문은 [검증 기록](docs/verification.md#v0713-rc1)에 구분합니다.
+아래 기존 조종 화면은 **v0.7.13-rc1 Windows 실행본**입니다. 기획 이미지가 아닙니다. 촬영 해상도와 당시 소스 지문은 [v0.7.13 기록](docs/verification.md#v0713-rc1)에 구분합니다.
 
 ![한국어 첫 비행 안내](docs/images/v0.7.13-first-flight-ko-720.png)
 
@@ -75,7 +75,7 @@ Windows 10/11 x64와 DirectX 12·Shader Model 6 지원 GPU가 필요합니다. U
 - **AI 종료**는 AI 상대를 착륙시킵니다. 사용자의 기체는 직접 착륙해야 합니다.
 - 결과 저장이 실패하면 미저장을 표시하며 재시도할 수 있습니다. 로컬 기록은 온라인 검증 기록이 아닙니다.
 
-### 로컬 개발본에서 기록 비교
+### 저장 기록 비교
 
 AI 설정 또는 저장된 최근 결과의 **저장 기록 비교**를 엽니다. 기준 A와 비교 B를 직접 선택한 뒤 비교를 누릅니다. 다른 조건·자동 검사·중도 종료·같은 세션은 차단 이유를 보여 줍니다. 허용된 통계는 B−A이며 실력 인증이 아닙니다. 목록은 파일명 순서 최대100개이고 새로고침할 때 읽습니다. 원본 기록은 유지합니다. F6 비행 기록은 비교 입력이 아닙니다.
 
@@ -87,4 +87,4 @@ AI 설정 또는 저장된 최근 결과의 **저장 기록 비교**를 엽니�
 
 오류나 개선 의견은 [GitHub Issues](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/issues)로 보내 주세요. 버전, 재현 순서, 기대한 결과와 실제 결과를 적고 공개할 내용을 확인한 뒤 직접 제출합니다. 개인정보나 개인 보정 파일은 첨부하지 않습니다. ZIP에 포함된 `feedback-form.html`에서도 보고서를 정리할 수 있습니다.
 
-개발용 소스는 [v0.7.13-rc1 태그](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.13-rc1)를 기준으로 확인하세요.
+개발용 소스는 [v0.7.14-rc1 태그](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.14-rc1)를 기준으로 확인하세요.

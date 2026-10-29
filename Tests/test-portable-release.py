@@ -82,7 +82,8 @@ def run(args):
         if profile:
             (data/'Config').mkdir();shutil.copy2(profile,data/'Config/RadioProfile.json')
         result=output/(label+'-storage.json')
-        command=[str(binary),'-nullrhi','-nosound','-unattended','-nosplash','-ImperialStorageSmoke','-ImperialDataDir='+str(data),'-ImperialStorageResult='+str(result),'-abslog='+str(output/(label+'-game.log'))]
+        engine_user=output/(label+' engine user');engine_user.mkdir()
+        command=[str(binary),'-nullrhi','-nosound','-unattended','-nosplash','-UserDir='+str(engine_user),'-ImperialStorageSmoke','-ImperialDataDir='+str(data),'-ImperialStorageResult='+str(result),'-abslog='+str(output/(label+'-game.log'))]
         if profile:command.append('-ImperialStorageExpectSaved')
         p=subprocess.run(command,env=clean,cwd=str(output),timeout=60)
         check(label+' standalone Unreal storage result',p.returncode==0 and result.exists())
