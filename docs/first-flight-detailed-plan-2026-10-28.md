@@ -4,19 +4,19 @@
 
 상위 기준은 [사용자 피드백·최신 우선순위](practice-candidates-2026-10-27.md#review-2026-10-28)다. 이 문서는 해당 계획을 화면·상태·실패 복구·측정·작업 묶음으로 구체화한다. 기존 **326개 기능과 C01~C16 후보 수를 유지**하며 아래 단계 이름은 신규 기능 번호가 아니다. 정적 검토 기준은 04ff2f4, 상세화 직전 문서 기준은 7ac1f86이다. 공개 실행본 v0.7.4-r2의 실제 기능·버튼과 이 계획의 제안 화면을 혼동하지 않는다.
 
-## 최신 공개 기준 — v0.7.13-rc1
+## 최신 업데이트 — v0.7.14-rc1 사전 배포
 
-현재 공개 사전 릴리스는 [v0.7.13-rc1](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.13-rc1)입니다. 개발·빌드 기준은 [해당 태그 소스](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.13-rc1)이며, 검증된 **게임 입력 160개 SHA-256**은 `c7feb1cfce27923bcc993e06bfb1736897ffb775858373dc3a88723636afc4c3`입니다. 구현·검증 상태는 태그에 고정된 [릴리스 노트](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.13-rc1/docs/releases/v0.7.13-rc1.md), [검증 기록](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.13-rc1/docs/verification.md#v0713-rc1), [기계 판독 검증 요약](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.13-rc1/docs/verification/v0.7.13-rc1-summary.json)을 근거로 구분합니다.
+2026-10-29 UTC 기준 새 사전 릴리스를 빌드·검증하고 공개했다. 다운로드 자산은 [v0.7.14-rc1 릴리스](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.14-rc1)에서 확인한다. 개발·빌드는 [해당 태그 소스](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.14-rc1)를 사용한다. 새 rc 게임 입력169개의 SHA-256은 bd1e2cf9bf8b4bbe6e731859c31b8febca588d838cc9c8693bb6c23880bcfa8b이며, [이번 업데이트·검증 기록](releases/v0.7.14-rc1.md)과 태그의 [검증 기록](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.14-rc1/docs/verification.md#v0714-rc1)을 기준으로 구현·검증·미검증을 구별한다.
 
-**이 상세 기획서는 main 전용 문서이며 v0.7.13-rc1 태그에는 포함되지 않습니다.** main 게임 코드는 기존 v0.7.4 기반을 유지하고 있습니다. 공개 태그 소스와 main의 코드·히스토리 통합은 후속 작업이며, 이 문서 갱신으로 코드가 통합되거나 모든 수용 기준이 완료되는 것은 아닙니다.
+**이 상세 기획서는 main 전용 문서이며 현재 v0.7.14 릴리스 작업 소스에는 포함되지 않는다. main 게임 코드는 기존 v0.7.4 기반을 유지한다.** 문서 갱신은 게임 코드·히스토리 통합이나 모든 수용 기준 완료를 뜻하지 않는다. 이전 [v0.7.13-rc1](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.13-rc1) 공개 기록과 C7의160개 입력 지문은 해당 태그의 역사로 보존한다.
 
-공개본에는 F1의 6단계 첫 비행 안내, 조종기 연결·Mode 1/2 그림, 기본/고급 설정 분리, 주요 한국어/영어 화면과 AI 연습·대전 개선이 포함됩니다. 본문의 초기 ‘제안/미구현’ 표현은 작성 당시 기준으로 보존하며, 현재 구현 여부는 위 공개 태그 자료와 대조합니다. AI 대전은 이 문서와 연계된 사후 설명용 AI 코치의 구현을 뜻하지 않습니다.
+새 rc는 기존 F1의6단계 첫 비행·연결/Mode1·2 그림·기본/고급 설정을 유지하면서 HUD 크기·말줄임·실제 장치명, AI 결과 비교 UI와 F6 저장 실패 안내를 개선했다. [통합 계획](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.14-rc1/docs/master-development-plan.md)과 [실제 사용 안내](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.14-rc1/README.md)를 대조한다. 본문의 초기 제안·미구현 표현은 작성 당시 기준이며, 새 UI의 구현이 모든 입문 과제나 학습 효과 검증을 뜻하지 않는다. AI 대전·기록 비교는 별도 사후 설명용 AI 코치의 완료 근거가 아니다.
 
-**미검증:** 실물 Boxer 스틱·아밍 스위치·USB 분리/재연결, 다른 물리 PC, 실제 키보드로 처음부터 첫 골·마지막 착륙까지 6단계를 연속 완주하는 시험과 초보자의 독립 사용성입니다. 자동 상태/native 검사 및 부분 실제 조작 결과를 이 전체 시험으로 확대하지 않습니다. 이번 갱신은 공개 문서 대조이며 실행·하드웨어 시험을 새로 수행한 결과가 아닙니다.
+**미검증:** 실물 Boxer 스틱·아밍·USB 손실/재연결, 다른 물리 PC·신규 Windows/VC환경, 실제 사람 AI 기록 비교, 초보자 독립 사용성·Windows125~200%DPI 및 이번 rc의 첫 비행6단계 전체 연속 완주다. 자동/native·GPU·부분 실제 조작은 각각의 범위로 구분한다. 이 기획서 편집에서 새 실행·하드웨어·코치 시험을 수행한 것은 아니다.
 
 ## 과거 공개 후보 기록 — v0.7.12-rc1 (2026-10-28 12:45 UTC)
 
-> 아래는 v0.7.12-rc1 당시의 문서 확인 기록입니다. 이 단락의 ‘후보/최신’은 당시 기준이며 현재 공개 상태는 위 v0.7.13-rc1 안내를 따릅니다.
+> 아래는 v0.7.12-rc1 당시의 문서 확인 기록입니다. 이 단락의 ‘후보/최신’은 당시 기준이며 현재 공개 상태는 위 최신 업데이트 안내를 따릅니다.
 
 [공개 v0.7.12-rc1](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.12-rc1)과 [태그의 검증 요약](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.12-rc1/docs/verification/v0.7.12-rc1-summary.json)을 문서로 확인했다. 아래 v0.7.4-r2·04ff2f4 기준 설명과 학교 PC 관측은 당시 기록이며 삭제하지 않는다. **당시 공개 후보(v0.7.12-rc1)의 기능 상태를 해당 릴리스 자료로 대조한 기록이다.** 이번 기획 점검에서 실행본을 내려받거나 시험을 다시 실행한 것은 아니다.
 

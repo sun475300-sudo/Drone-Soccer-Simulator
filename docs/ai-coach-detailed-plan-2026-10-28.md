@@ -2,19 +2,21 @@
 
 작성일: 2026-10-28. **이 문서는 구현 전 설계·수용 기준이다. AI 연동, 서버 배포, API 키 발급, 유료 모델 호출을 수행하거나 승인하는 문서가 아니다.** 코드·README·공개 실행본을 변경하지 않는다.
 
-## 최신 공개 기준 — v0.7.13-rc1
+## 최신 업데이트 — v0.7.14-rc1 사전 배포
 
-현재 공개 사전 릴리스는 [v0.7.13-rc1](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.13-rc1)입니다. 개발·빌드 기준은 [해당 태그 소스](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.13-rc1)이며, 검증된 **게임 입력 160개 SHA-256**은 `c7feb1cfce27923bcc993e06bfb1736897ffb775858373dc3a88723636afc4c3`입니다. 구현·검증 상태는 태그에 고정된 [릴리스 노트](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.13-rc1/docs/releases/v0.7.13-rc1.md), [검증 기록](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.13-rc1/docs/verification.md#v0713-rc1), [기계 판독 검증 요약](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.13-rc1/docs/verification/v0.7.13-rc1-summary.json)을 근거로 구분합니다.
+2026-10-29 UTC 기준 새 사전 릴리스를 빌드·검증하고 공개했다. 다운로드 자산은 [v0.7.14-rc1 릴리스](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.14-rc1)에서 확인한다. 개발·빌드는 [해당 태그 소스](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.14-rc1)를 사용한다. 새 rc 게임 입력169개의 SHA-256은 bd1e2cf9bf8b4bbe6e731859c31b8febca588d838cc9c8693bb6c23880bcfa8b이며, [이번 업데이트·검증 기록](releases/v0.7.14-rc1.md)과 태그의 [검증 기록](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.14-rc1/docs/verification.md#v0714-rc1)을 기준으로 구현·검증·미검증을 구별한다.
 
-**이 상세 기획서는 main 전용 문서이며 v0.7.13-rc1 태그에는 포함되지 않습니다.** main 게임 코드는 기존 v0.7.4 기반을 유지하고 있습니다. 공개 태그 소스와 main의 코드·히스토리 통합은 후속 작업이며, 이 문서 갱신으로 코드가 통합되거나 모든 수용 기준이 완료되는 것은 아닙니다.
+**이 상세 기획서는 main 전용 문서이며 현재 v0.7.14 릴리스 작업 소스에는 포함되지 않는다. main 게임 코드는 기존 v0.7.4 기반을 유지한다.** 문서 갱신은 게임 코드·히스토리 통합이나 모든 수용 기준 완료를 뜻하지 않는다. 이전 [v0.7.13-rc1](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.13-rc1) 공개 기록과 C7의160개 입력 지문은 해당 태그의 역사로 보존한다.
 
-**공개된 AI 연습·대전과 이 문서의 사후 설명용 AI 코치는 별개입니다.** 이 문서에서 제안하는 코치 화면·평가 연계·백엔드/API·전송 동의/비식별화 흐름은 미구현 후속 범위입니다. AI 대전이나 일반 결과 저장의 공개를 코치 제품의 완료 근거로 사용하지 않습니다.
+새 rc에는 C++ 기반 AI 저장 기록 비교 UI·A/B 선택·조건별 차단과 기술 통계가 추가됐다. 원본은 읽기 전용이며, F6 JSONL/F5 CSV는 비교 입력이 아니다. 다른 버전·소스 지문 또는 자동 검사·중도 종료·같은 세션은 비교를 차단한다. [비교 사용법과 제한](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.14-rc1/docs/ai-result-comparison.md)을 따른다. 이 기능은 입력·배터리·시작 움직임 등 기록되지 않은 조건이나 실력 향상을 인증하지 않는다.
 
-**미검증:** 실물 USB 조종·Boxer 아밍/분리·재연결, 다른 물리 PC, 실제 키보드로 첫 비행 6단계를 연속 완주하는 시험과 초보자의 독립 사용성입니다. 새 코치 분석의 입력 계약은 실제 태그·빌드의 기록 필드와 다시 대조해야 합니다. 이번 갱신은 공개 문서 확인이며 코치 구현·API 호출·실행 시험을 수행하지 않았습니다.
+**AI 연습·대전과 기록 비교는 이 문서의 사후 설명용 AI 코치와 별개다.** 제안된 코치 화면·평가 연계·백엔드/API·전송 동의/비식별화는 미구현 후속 범위다. 유료 모델 호출·키 발급·서버 운영을 수행하거나 승인한 결과가 아니다.
+
+**미검증:** 실물 Boxer 스틱·아밍·USB 손실/재연결, 다른 물리 PC·신규 Windows/VC환경, 실제 사람 AI 기록 비교, 초보자 독립 사용성·Windows125~200%DPI 및 이번 rc의 첫 비행6단계 전체 연속 완주다. 자동/native·GPU·부분 실제 조작은 각각의 범위로 구분한다. 이 기획서 편집에서 새 실행·하드웨어·코치 시험을 수행한 것은 아니다.
 
 ## 과거 공개 후보와 코치 범위 기록 — v0.7.12-rc1
 
-> 아래는 v0.7.12-rc1 당시의 정적 조사·범위 구분 기록입니다. 현재 공개 상태는 위 v0.7.13-rc1 안내를 따릅니다.
+> 아래는 v0.7.12-rc1 당시의 정적 조사·범위 구분 기록입니다. 현재 공개 상태는 위 최신 업데이트 안내를 따릅니다.
 
 [공개 사전 릴리스 v0.7.12-rc1](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.12-rc1)에는 조종기 중심 한국어 안내·안전 저장과 기존 AI 연습/대전이 포함된다고 보고돼 있다. **AI 상대와 이 문서의 기록 기반 사후 설명 코치는 서로 다른 기능이다.** 이 릴리스 공개를 코치 백엔드·API·동의/비식별화·평가 엔진의 완료 근거로 사용하지 않는다.
 
