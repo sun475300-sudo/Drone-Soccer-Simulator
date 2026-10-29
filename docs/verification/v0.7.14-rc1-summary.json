@@ -1,0 +1,78 @@
+{
+  "version": "0.7.14-rc1",
+  "build": {
+    "build_commit": "4617a4fea416777b0bf6e963b95a5881539925a5",
+    "source_dirty_at_build": false,
+    "source_sha256": "bd1e2cf9bf8b4bbe6e731859c31b8febca588d838cc9c8693bb6c23880bcfa8b",
+    "source_input_count": 169,
+    "shipping_sha256": "50d88da9f997224d967063a984e7d8b374e04cc9be294382a096d8f6f1ef2497"
+  },
+  "assets": {
+    "windows_zip": {
+      "sha256": "d0e650a4bdaf3d7e3bb75337f6bce8e32ec9b960698a6e9b363570dba6b4abd6",
+      "bytes": 374982197
+    },
+    "setup_exe": {
+      "sha256": "55577c41b997882388d36c100232852c86db935c9e3d669740614a166c219636",
+      "bytes": 375051776,
+      "signed": false
+    }
+  },
+  "tests": {
+    "comparison_71_cases_77_checks_per_run": [
+      "Editor60",
+      "Shipping20",
+      "Shipping60",
+      "Shipping240",
+      "relocated_zip60"
+    ],
+    "first_flight_43_checks_each": [
+      "Shipping20",
+      "Shipping240"
+    ],
+    "f6_native": 35,
+    "input_native": 29,
+    "physics_fixed_timestep": [
+      20,
+      30,
+      60,
+      120,
+      240
+    ],
+    "gpu_ai_ui_55_each": [
+      "1280x720",
+      "960x640",
+      "updated_installed_1280x720"
+    ],
+    "portable_fresh": 13,
+    "installer_full_payload": 65,
+    "upgrade_v0713": 50,
+    "actual_os_ui": [
+      "relocated_zip_960x640",
+      "installed_launcher_1280x720"
+    ],
+    "installed_launcher_f6_start_stop": true,
+    "installed_launcher_apf_connected": true,
+    "actual_process_exit_codes_zero": true
+  },
+  "optional_existing_profile_test": {
+    "checks_passed": 13,
+    "checks_failed": 1,
+    "completed": false,
+    "reason": "Boxer absent; profile found but activation and round-trip could not succeed; ended disabled."
+  },
+  "limitations": [
+    "physical Boxer movement, arming and USB reconnect",
+    "other physical PC and fresh VC environment",
+    "human record comparison and novice usability",
+    "complete six-step manual flight on this build",
+    "Windows high-DPI and accessibility",
+    "full installation GUI workflow, real disk-full/ACL and power-loss recovery"
+  ],
+  "preservation": {
+    "personal_config_and_training_results_files": 829,
+    "unchanged": true,
+    "original_project_changes_preserved": true
+  },
+  "scope": "Fixed timestep is not rendered FPS performance; OS comparison used synthetic records; same PC only."
+}

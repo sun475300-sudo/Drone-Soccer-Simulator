@@ -8,6 +8,11 @@ Windows에서 키보드나 USB 조종기로 연습하는 드론축구 시뮬레�
 
 ## 실제 화면
 
+아래 **v0.7.14-rc1 ZIP 실행 화면**은 합성 시험 기록 두 개의 비교 예시입니다. 실제 사람의 성적이 아닙니다.
+
+![한국어 AI 저장 기록 비교](docs/images/v0.7.14-compare-ko.png)
+
+
 아래 기존 조종 화면은 **v0.7.13-rc1 Windows 실행본**입니다. 기획 이미지가 아닙니다. 촬영 해상도와 당시 소스 지문은 [v0.7.13 기록](docs/verification.md#v0713-rc1)에 구분합니다.
 
 ![한국어 첫 비행 안내](docs/images/v0.7.13-first-flight-ko-720.png)
