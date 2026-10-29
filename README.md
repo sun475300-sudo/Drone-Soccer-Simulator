@@ -1,5 +1,7 @@
 # Imperial Wings · 드론축구 시뮬레이터
 
+[English](README.en.md)
+
 > **v0.7.14-rc1 사전 배포판 · 개발·빌드 소스: [v0.7.14-rc1 태그](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.14-rc1)**
 >
 > 새 실행본을 빌드·검증한 뒤 사전 배포합니다. 다운로드 자산은 [새 릴리스 페이지](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.14-rc1)에서 확인하세요. **현재 main 게임 코드는 기존 v0.7.4 기반입니다. v0.7.14 게임 소스가 main에 통합된 상태가 아니므로 개발·빌드는 해당 태그를 사용하세요.** 이번 main 변경은 README와 업데이트 기록에 한정합니다.
