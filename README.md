@@ -2,21 +2,42 @@
 
 [English](README.en.md)
 
-> **v0.7.14-rc1 사전 배포판 · 개발·빌드 소스: [v0.7.14-rc1 태그](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.14-rc1)**
+> **최신 공개 시험판: v0.7.15-dev-safety3 · 2026-10-29 공개 · 정식 완성판이 아닙니다.**
 >
-> 새 실행본을 빌드·검증한 뒤 사전 배포합니다. 다운로드 자산은 [새 릴리스 페이지](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.14-rc1)에서 확인하세요. **현재 main 게임 코드는 기존 v0.7.4 기반입니다. v0.7.14 게임 소스가 main에 통합된 상태가 아니므로 개발·빌드는 해당 태그를 사용하세요.** 이번 main 변경은 README와 업데이트 기록에 한정합니다.
+> 다운로드와 검증 한계는 [safety3 릴리스 기록](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.15-dev-safety3)을 확인하세요. **main 게임 코드는 기존 v0.7.4 기반이며 safety3 소스가 통합된 상태가 아닙니다.** 이 공개판의 개발·빌드에는 [v0.7.15-dev-safety3 태그](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.15-dev-safety3)를 사용하세요. README 갱신은 새 실행본 배포나 전체 작업 완료를 뜻하지 않습니다.
 
 Windows에서 키보드나 USB 조종기로 연습하는 드론축구 시뮬레이터입니다. 기본 시점은 경기장 밖 LOS, 기본 비행은 ANGLE입니다. 모터 힘과 강체 물리로 비행하며, 실제 기체의 실측 특성을 보증하는 모델은 아닙니다.
 
-**[v0.7.14-rc1 설치 EXE](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.14-rc1/ImperialWings-Setup-v0.7.14-rc1.exe)** · **[v0.7.14-rc1 Windows ZIP](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.14-rc1/ImperialWings-Windows-v0.7.14-rc1.zip)** · [업데이트·검증 범위](docs/releases/v0.7.14-rc1.md) · [기존 공개 v0.7.13-rc1](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.13-rc1)
+**[safety3 설치 EXE](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.15-dev-safety3/ImperialWings-Setup-0.7.15-dev-safety3.exe)** · **[safety3 Windows ZIP](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.15-dev-safety3/ImperialWings-0.7.15-dev-safety3.zip)** · [SHA-256 목록](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.15-dev-safety3/SHA256SUMS-safety3.txt) · [변경·검증 한계](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.15-dev-safety3) · [이전 v0.7.14-rc1](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.14-rc1)
 
 ## 새 버전 업데이트 기록
+
+### v0.7.15-dev-safety3
+
+- 조종 응답·버튼·스로틀 설정을 명시적으로 저장할 때 미래 버전·손상 파일을 덮어쓰지 않도록 다시 확인합니다. 유효한 파일의 알 수 없는 필드는 유지합니다.
+- 같은 잠금에 참여하는 새 버전들 사이에서 조종기 보정 파일 저장을 직렬화합니다. 구버전·외부 프로그램과의 동시 쓰기나 오래된 편집 내용의 충돌 병합까지 보장하지는 않습니다.
+- AI 결과 저장이 실패하면 종료를 보류하고, 대전 중 종료 요청은 AI 착륙과 저장을 기다립니다. F6 기록 쓰기 실패 상태는 새 기록 시작이 성공할 때 해제합니다.
+
+### 이전 v0.7.14-rc1
 
 - **v0.7.14-rc1:** HUD 글자 크기·긴 문구·실제 장치명 표시를 개선하고, 게임 안에서 AI 저장 기록의 기준 A와 비교 B를 선택하는 화면을 추가했습니다. 다른 조건·버전·자동 검사·중도 종료·중복 세션은 차이 계산을 차단합니다.
 - F6 기록 저장 실패 시 성공 안내가 실패 안내를 덮지 않도록 수정했습니다. 가드 파편의 빈 슬롯 갱신을 줄였으며 FPS 향상을 측정했다고 주장하지 않습니다.
 - 새 소스 지문의 빌드·자동 회귀와 ZIP·설치기 검사를 구분해 [추가 업데이트 기록](docs/releases/v0.7.14-rc1.md)에 정리합니다. 실제 사람 기록·실물 Boxer·다른 PC·고 DPI 검사는 남았습니다.
 
+## 시험 범위와 남은 확인
+
+[safety3 릴리스 기록](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.15-dev-safety3)은 격리된 Unreal 자동 검사, AI 저장 실패·종료 재시도, 설정 파일 보존, ZIP CRC·해시와 portable 13/13·설치기 무등록 자동 검사 65/65를 보고합니다. 합성 입력·기록과 nullrhi 검사를 실물 조종이나 화면 검수로 보지 않습니다. 고정 시간 간격 검사는 실제 렌더링 FPS 측정이 아닙니다.
+
+- **미검증:** 실물 Boxer 보정·비행·분리/재연결, 다른 물리 PC, 사람의 전체 첫 비행, 고 DPI와 실제 사람 기록 비교.
+- **화면·설치 한계:** F6 오류 경고의 실제 한국어·영어 표시/겹침은 포커스 안전 중단으로 미확인입니다. 설치 GUI 전체 흐름, 공개 v0.7.14에서의 실제 업그레이드, 전원 차단·디스크 부족·권한 부족·SmartScreen은 미검증입니다.
+- 피드백 양식의 실제 브라우저 검사도 접근 차단으로 미완료이며, 운영체제 강제 종료 시 미저장 AI 결과 보존을 보장하지 않습니다.
+- 이후 독립 로컬 후보의 변경·시험 결과를 이 공개판에 포함되거나 검증된 것으로 합산하지 않습니다.
+
+공개 태그 커밋은 [`c0787aba9b3db4f7f41224adfaeada6aa6be9512`](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/commit/c0787aba9b3db4f7f41224adfaeada6aa6be9512)입니다. 릴리스 기록의 빌드 입력 지문은 `8187bde6de435f866f33792ff1663aeb2b81ad71bd782403f42481cd0ed3b167`(169개 입력)이며 시험 스크립트·문서는 이 지문에 포함되지 않습니다. 다운로드 파일은 위 SHA-256 목록으로 확인하세요.
+
 ## 실제 화면
+
+아래 화면은 각각 표시한 **이전 버전**의 촬영본이며, safety3의 미검증 화면을 대신하는 근거가 아닙니다.
 
 아래 **v0.7.14-rc1 ZIP 실행 화면**은 합성 시험 기록 두 개의 비교 예시입니다. 실제 사람의 성적이 아닙니다.
 
@@ -48,7 +69,7 @@ AI 수비 연습 또는 3분 대전을 선택합니다. 실행 중에는 대수�
 <a id="run-steps"></a>
 ## 다운로드하고 실행하기
 
-1. **설치 EXE**는 전체 프로그램을 담고 있습니다. 실행 후 **새 폴더 설치 / 기존 버전 업데이트**를 선택합니다. [설치·백업·제거 안내](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.14-rc1/Packaging/Installer/INSTALLER.md)를 먼저 확인하세요. ZIP 방식은 아래 순서를 따릅니다. GitHub `Source code` ZIP은 개발용입니다.
+1. **설치 EXE**는 전체 프로그램을 담고 있습니다. 실행 후 **새 폴더 설치 / 기존 버전 업데이트**를 선택합니다. [설치·백업·제거 안내](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.15-dev-safety3/Packaging/Installer/INSTALLER.md)를 먼저 확인하세요. ZIP 방식은 아래 순서를 따릅니다. GitHub `Source code` ZIP은 개발용입니다.
 2. 새 폴더에 **전체 압축 해제**합니다. EXE 하나만 꺼내지 않습니다.
 3. `ImperialWingsLauncher.exe`를 실행합니다. 옆의 `Windows`, `Guidance`, `Prerequisites` 폴더를 유지합니다.
 4. Visual C++ 구성 요소가 없다는 메시지가 나오면 포함된 `Prerequisites/vc_redist.x64.exe`를 설치합니다.
@@ -95,7 +116,7 @@ Windows 10/11 x64와 DirectX 12·Shader Model 6 지원 GPU가 필요합니다. U
 
 ### 저장 기록 비교
 
-AI 설정 또는 저장 완료 결과의 **저장 기록 비교**에서 기준 A와 비교 B를 직접 선택합니다. 원본 기록을 편집·삭제·전송하지 않으며, 비교 가능한 통계는 B−A로 표시합니다. 실력이나 동일한 실물 훈련 조건을 인증하는 기능은 아닙니다. 입력은 AI 결과 schema 1/2이며 F6 JSONL과 F5 CSV는 지원하지 않습니다. 목록은 파일명 순서 최대 100개이고 열기·새로고침 때 읽습니다. [조건·차단 이유·한계](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.14-rc1/docs/ai-result-comparison.md)를 확인하세요.
+AI 설정 또는 저장 완료 결과의 **저장 기록 비교**에서 기준 A와 비교 B를 직접 선택합니다. 원본 기록을 편집·삭제·전송하지 않으며, 비교 가능한 통계는 B−A로 표시합니다. 실력이나 동일한 실물 훈련 조건을 인증하는 기능은 아닙니다. 입력은 AI 결과 schema 1/2이며 F6 JSONL과 F5 CSV는 지원하지 않습니다. 목록은 파일명 순서 최대 100개이고 열기·새로고침 때 읽습니다. [조건·차단 이유·한계](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.15-dev-safety3/docs/ai-result-comparison.md)를 확인하세요.
 
 ## 개발 상태와 의견 보내기
 
@@ -105,4 +126,4 @@ AI 설정 또는 저장 완료 결과의 **저장 기록 비교**에서 기준 A
 
 오류나 개선 의견은 [GitHub Issues](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/issues)로 보내 주세요. 버전, 재현 순서, 기대한 결과와 실제 결과를 적고 공개할 내용을 확인한 뒤 직접 제출합니다. 개인정보나 개인 보정 파일은 첨부하지 않습니다. ZIP에 포함된 `feedback-form.html`에서도 보고서를 정리할 수 있습니다.
 
-개발용 소스는 [v0.7.14-rc1 태그](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.14-rc1)를 사용하세요. main의 문서 업데이트는 게임 코드·이력 통합 완료를 뜻하지 않습니다.
+개발용 소스는 [v0.7.15-dev-safety3 태그](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.15-dev-safety3)를 사용하세요. main의 문서 업데이트는 게임 코드·이력 통합 완료를 뜻하지 않습니다.

@@ -4,11 +4,17 @@
 
 Imperial Wings is a Windows drone soccer simulator for keyboard or compatible USB controller practice. The default view is the pilot's line of sight from outside the court, and manual flight uses ANGLE self-levelling. The aircraft use motor forces and rigid-body physics; their simulated behaviour is not a measured or certified model of a real aircraft.
 
-**Current download: v0.7.14-rc1 pre-release.** This page describes the released Windows package. The game code on the repository's main branch is still based on v0.7.4; use the [v0.7.14-rc1 source tag](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.14-rc1) when developing or building this release.
+**Latest public download: v0.7.15-dev-safety3, published 29 October 2026. This is a development pre-release, not a finished product.** The game code on main is still based on v0.7.4 and does not incorporate safety3. Use the [v0.7.15-dev-safety3 source tag](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/tree/v0.7.15-dev-safety3) to develop or build this release. A README update does not mean a new binary was published or all work is complete.
 
-[Download installer EXE](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.14-rc1/ImperialWings-Setup-v0.7.14-rc1.exe) · [Download Windows ZIP](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.14-rc1/ImperialWings-Windows-v0.7.14-rc1.zip) · [Release and checksums](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.14-rc1)
+[Download safety3 installer EXE](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.15-dev-safety3/ImperialWings-Setup-0.7.15-dev-safety3.exe) · [Download safety3 Windows ZIP](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.15-dev-safety3/ImperialWings-0.7.15-dev-safety3.zip) · [SHA-256 checksums](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.15-dev-safety3/SHA256SUMS-safety3.txt) · [Release and limitations](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.15-dev-safety3) · [Previous v0.7.14-rc1](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.14-rc1)
 
-## What is in this release
+## What changed in safety3
+
+- Explicit saves recheck controller response, button and throttle settings to avoid overwriting corrupt or unsupported-version files. Unknown fields in valid files are retained.
+- Calibration saves are serialized between new versions using the same lock. Older versions and external programs do not participate; stale edits are not automatically merged.
+- Exit is deferred if AI results cannot be saved. An exit request during a duel waits for AI landing and saving. F6 write-error state is cleared only after a new recording starts successfully.
+
+## Features carried forward
 
 - A six-step first-flight guide: takeoff, hover, movement, landing, first goal and final landing. The guide observes your flight; you choose when to advance and operate ARM and the controls yourself.
 - Illustrated USB connection and calibration guidance, Mode 1 and Mode 2, basic and advanced response settings, and Korean/English selection. Some internal messages are not yet translated.
@@ -18,7 +24,7 @@ Imperial Wings is a Windows drone soccer simulator for keyboard or compatible US
 
 ![Korean AI result comparison screen](https://raw.githubusercontent.com/sun475300-sudo/Drone-Soccer-Simulator/v0.7.14-rc1/docs/images/v0.7.14-compare-ko.png)
 
-The screenshot is from the v0.7.14 Windows package and uses synthetic test records, not human performance results.
+The screenshot is from the previous v0.7.14-rc1 Windows package and uses synthetic test records, not human performance results. It is not evidence that safety3's pending screen checks passed.
 
 ## Requirements and installation
 
@@ -26,7 +32,7 @@ Windows 10 or 11 x64 and a DirectX 12, Shader Model 6 capable GPU are required. 
 
 The installer and program are unsigned, so Windows or your browser may show an unknown publisher or SmartScreen warning.
 
-**Installer:** Run the EXE and choose either a new folder or an update of a recognized existing installation. Updating verifies the existing files, prepares the replacement and retains a backup of the previous program. Close the game before updating. See the [installer, backup and removal guide](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.14-rc1/Packaging/Installer/INSTALLER.md) (Korean) for the supported conditions and recovery limits.
+**Installer:** Run the EXE and choose either a new folder or an update of a recognized existing installation. Updating verifies the existing files, prepares the replacement and retains a backup of the previous program. Close the game before updating. See the [installer, backup and removal guide](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.15-dev-safety3/Packaging/Installer/INSTALLER.md) (Korean) for the supported conditions and recovery limits.
 
 **ZIP:** Extract the entire archive to a new folder, then run ImperialWingsLauncher.exe. Keep the Windows, Guidance and Prerequisites folders alongside it. Do not extract only the launcher. GitHub's automatically generated “Source code” ZIP is for development and is not the runnable Windows package.
 
@@ -68,9 +74,14 @@ From AI settings or a saved recent result, open saved-record comparison, choose 
 
 ## Verification and known limits
 
-This pre-release was built and tested on the development PC. Automated tests covered comparison, first-flight safety, input, recording, fixed-timestep physics, installation and update/rollback. Actual Windows windows were also exercised using isolated synthetic records and automated input. Fixed 240 Hz tests are not a measurement of real 240 FPS rendering performance.
+The [safety3 release record](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.15-dev-safety3) reports isolated Unreal automated checks, AI save-failure/exit retries, settings-file preservation, ZIP CRC/hash checks, portable checks (13/13) and installer no-registration checks (65/65). Synthetic input/records and nullrhi tests are not physical-controller or rendered-UI validation. Fixed-timestep checks are not measurements of actual rendering FPS.
 
-Physical Boxer controls and USB loss/reconnection, a different physical PC or fresh Windows/VC environment, comparisons of human play records, novice usability, high-DPI coverage and a complete six-step human first flight remain unverified. Online play, country/world leaderboards, more languages and a full AI coach are future work. See the [detailed release verification](docs/releases/v0.7.14-rc1.md) and [full verification history](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/blob/v0.7.14-rc1/docs/verification.md#v0714-rc1) (Korean).
+- Physical Boxer calibration/flight, cable loss/reconnection, another physical PC, a complete human first flight, human record comparisons and high-DPI coverage remain unverified.
+- A focus-safety interruption left the actual Korean/English F6 error warning and overlap checks incomplete. The complete installer GUI flow, a real upgrade from public v0.7.14, power loss, disk-full/permission-denied conditions and SmartScreen remain unverified.
+- Real-browser feedback-form testing was blocked by local-file access. Unsaved AI results are not guaranteed to survive forced OS termination.
+- Changes and tests in later isolated local candidates are not counted as included in, or validation of, this public package. Online play, country/world leaderboards, more languages and a full AI coach remain future work.
+
+The public tag points to [`c0787aba9b3db4f7f41224adfaeada6aa6be9512`](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/commit/c0787aba9b3db4f7f41224adfaeada6aa6be9512). The release record gives build-input SHA-256 `8187bde6de435f866f33792ff1663aeb2b81ad71bd782403f42481cd0ed3b167` across 169 inputs; test scripts and documentation are outside that fingerprint. Verify downloads against the linked SHA-256 list. See the [previous v0.7.14-rc1 record](docs/releases/v0.7.14-rc1.md) for historical checks; they are not fresh safety3 results.
 
 ## Feedback
 
