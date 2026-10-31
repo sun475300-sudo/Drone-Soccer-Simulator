@@ -4,9 +4,13 @@
 #include <cstdint>
 #include <limits>
 
+// DRAFT ONLY (topgun-s2-draft-1). The runtime-verified course is S-01-v1 in
+// branch codex/topgun-training (TopgunCourse.h, namespace ImperialTopgun); its
+// side order is the opposite of this draft. Do not wire this judge into the game
+// in place of S-01-v1; it is kept as a reference for extra invalidation rules.
 // Engine-independent local Topgun S-course judge. Positions are metres and
 // all times are seconds supplied by the caller's monotonic simulation clock.
-namespace ImperialTopgun
+namespace ImperialTopgunLocal
 {
 struct Vec3M
 {

@@ -1,4 +1,4 @@
-#include "TopgunCourse.h"
+#include "TopgunCourseDraft.h"
 #include "TopgunRecords.h"
 
 #include <array>
@@ -10,7 +10,7 @@
 
 namespace
 {
-using namespace ImperialTopgun;
+using namespace ImperialTopgunLocal;
 
 int Checks=0;
 int Failures=0;

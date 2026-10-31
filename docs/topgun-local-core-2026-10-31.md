@@ -16,7 +16,7 @@
 
 ## 생성 파일과 책임
 
-- `Source/ImperialWingsSimulator/TopgunCourse.h`는 Unreal 헤더 없이 쓰는 C++17 코스 판정기다.
+- `Source/ImperialWingsSimulator/TopgunCourseDraft.h`(namespace `ImperialTopgunLocal`, 게임 미연결 초안)는 Unreal 헤더 없이 쓰는 C++17 코스 판정기다.
 - `Source/ImperialWingsSimulator/TopgunRecords.h`는 로컬 프로필·시도·최고 기록·직렬화 코어다.
 - 두 헤더는 파일 I/O, 난수 생성, 네트워크, Unreal 타입과 전역 가변 상태를 사용하지 않는다.
 - `Tests/topgun_tests.cpp`는 `main()` 기반의 독립 검사이며, `Tests/run-topgun-tests.ps1`는 Windows MSVC 검사 경로를 준비하지만 이 Linux 환경에서는 실행하지 않았다.
@@ -128,3 +128,20 @@
 ## 상태 제안
 
 핵심 로직 구현·네이티브 검사 통과(g++), Unreal 통합·실행 검증 대기.
+
+<a id="s01-v1-relation"></a>
+## 별도 개발본 S-01-v1과의 관계 (2026-10-31 대조)
+
+원격 브랜치 `codex/topgun-training`(커밋 `92a233d`)에는 Unreal에 통합되고 로컬 v0.7.11 ZIP으로 실행 검증한 **S-01-v1** 코스가 이미 있다. 이 브랜치는 `v0.7.15-dev-safety3`에 병합되지 않았다(분기점 `12150ce`). 대조 결과는 아래와 같다.
+
+| 항목 | 별도 개발본 S-01-v1 | 이 문서의 `topgun-s2-draft-1` |
+|---|---|---|
+| 파일·namespace | `TopgunCourse.h`, `ImperialTopgun` | `TopgunCourseDraft.h`, `ImperialTopgunLocal`(충돌 회피를 위해 2026-10-31 이름 변경) |
+| 기둥 | X=±2 m, Y=0, 지름 70 cm, 높이 3.6 m | X=±2 m, Y=0, 반경 0.35 m, Z=0.25~4.25 m |
+| 출발·결승 | (-5,0)/(5,0) m, 진행 +X | +X 진행, 출발선·결승선 별도 구역 |
+| 중간 판정 | 게이트 (-2,-1.5)·(0,0)·(2,1.5), 폭 1.6 m, 높이 0.6~3.0 m | 첫 기둥 측면·기둥 사이·둘째 기둥 측면 구역 |
+| S자 방향 | 첫 기둥 **-Y**, 둘째 기둥 **+Y** | 첫 기둥 **+Y**, 둘째 기둥 **-Y** (반대) |
+| 실행 근거 | Unreal 통합·자동 비행 실행 검사 | g++ 단위 검사만 |
+| 프로필·기록 | 없음. 문서에 “다음 C단계: 닉네임·로컬 UUID·국적, 결과 저장/복원, 동일 조건 최고 기록”으로 남김 | `TopgunRecords.h`로 구현(g++) |
+
+**결정:** 코스 판정의 기준은 실행 검증된 **S-01-v1**이다. `TopgunCourseDraft.h`는 게임에 연결하지 않는다. S-01-v1에 없는 무효 규칙(시도 중 설정·기체 변경, 공식 기록 조건 등)을 옮길 때 참고 자료로만 쓴다. `TopgunRecords.h`는 S-01-v1의 다음 C단계를 채우는 보완 코어다. 통합할 때는 다음 순서를 따른다. ① `codex/topgun-training`을 먼저 병합한다. ② 기록 코어의 코스 버전을 `S-01-v1`로 바꾸고, 무효 사유를 S-01-v1의 `Reason`(MissedGate·Reverse·Contact·Clock·Motion·Disarmed·Reset·Assistance)과 1:1로 대응시킨다. ③ 대응표를 검사하는 테스트를 추가한다. ④ Unreal 빌드와 실행본으로 다시 검증한다. 이 대응 작업은 아직 하지 않았다.

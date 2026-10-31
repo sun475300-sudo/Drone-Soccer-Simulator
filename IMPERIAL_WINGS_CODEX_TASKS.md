@@ -3,7 +3,7 @@
 - [x] 7 시동 차단 원인 동시 표시·스틱 드리프트 진단·DISARM 재시작·실패 지점 재연습 요청(`PilotAssistDiagnostics.h`) g++46.
 - [x] 8 훈련 목표(호버 박스·게이트 정확도·구간 시간)·동일 조건 키·횟수 요약·선택형 음향 ID(`TrainingGoals.h`) g++81.
 - [x] 9 AI 다중 장애물 접선 경로·이동 장애물 재계획·실패 착륙 요청(`AIObstaclePlanner.h`) g++32.
-- [x] 10 탑건 S자2기둥 판정·로컬 프로필/기록·체크섬 직렬화 초안(`TopgunCourse.h`·`TopgunRecords.h`) g++63. 별도 Topgun 개발본 대조 전.
+- [x] 10 탑건 S자2기둥 판정·로컬 프로필/기록·체크섬 직렬화 초안(`TopgunCourseDraft.h`·`TopgunRecords.h`) g++63. 별도 개발본 S-01-v1과 대조: S자 방향이 반대라 판정 초안은 분리, 기록 코어만 S-01-v1 보완용.
 - [x] 11 승인 득점1회=점멸1회·시작/종료·10초 테두리·카운트다운·무음/감소 효과(`MatchPresentationCues.h`, 실제 MatchRules 연동) g++50.
 - [x] 12 연습 전용 중력 선택→검토→적용·공식 잠금·기록 태그·UE cm/s² 변환(`PracticeGravity.h`) g++60.
 - [x] 17 심판 승인/취소/재검토 이력·경고/페널티·기권·결과 확정/재개방(`MatchOfficiating.h`) g++93. 승계·연장은 대회 지침 확인 필요.

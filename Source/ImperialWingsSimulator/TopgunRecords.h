@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TopgunCourse.h"
+#include "TopgunCourseDraft.h"
 
 #include <array>
 #include <cmath>
@@ -14,7 +14,7 @@
 // Local-only Topgun profile and record storage. This header never generates
 // randomness, opens files, contacts a server, or treats a local record as
 // online-verified.
-namespace ImperialTopgun
+namespace ImperialTopgunLocal
 {
 enum class ProfileValidation
 {

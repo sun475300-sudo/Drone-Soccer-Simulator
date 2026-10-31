@@ -24,7 +24,7 @@ STRICT_TESTS=(topgun_tests match_cues_tests practice_gravity_tests los_auto_fram
   pilot_assist_tests match_officiating_tests ai_obstacle_planner_tests net_session_core_tests
   training_goals_tests)
 # Headers that Unreal will include must not need exceptions or RTTI.
-STRICT_HEADERS=(TopgunCourse.h TopgunRecords.h MatchPresentationCues.h PracticeGravity.h
+STRICT_HEADERS=(TopgunCourseDraft.h TopgunRecords.h MatchPresentationCues.h PracticeGravity.h
   LosAutoFraming.h PilotAssistDiagnostics.h MatchOfficiating.h AIObstaclePlanner.h
   NetSessionCore.h TrainingGoals.h)
 PY_TESTS=(test-diagnostic-bundle.py test-check-localization.py)
