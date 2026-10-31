@@ -1,3 +1,19 @@
+# 계획표 엔진 독립 핵심 로직 — plan/complete-2026-10-31 / safety3 기반 / 미배포
+- [x] 6 LOS 거리별 자동 줌·지면 여백·앞뒤 보조·수동 복귀(`LosAutoFraming.h`, 기본 OFF) g++46.
+- [x] 7 시동 차단 원인 동시 표시·스틱 드리프트 진단·DISARM 재시작·실패 지점 재연습 요청(`PilotAssistDiagnostics.h`) g++46.
+- [x] 8 훈련 목표(호버 박스·게이트 정확도·구간 시간)·동일 조건 키·횟수 요약·선택형 음향 ID(`TrainingGoals.h`) g++81.
+- [x] 9 AI 다중 장애물 접선 경로·이동 장애물 재계획·실패 착륙 요청(`AIObstaclePlanner.h`) g++32.
+- [x] 10 탑건 S자2기둥 판정·로컬 프로필/기록·체크섬 직렬화 초안(`TopgunCourseDraft.h`·`TopgunRecords.h`) g++63. 별도 개발본 S-01-v1과 대조: S자 방향이 반대라 판정 초안은 분리, 기록 코어만 S-01-v1 보완용.
+- [x] 11 승인 득점1회=점멸1회·시작/종료·10초 테두리·카운트다운·무음/감소 효과(`MatchPresentationCues.h`, 실제 MatchRules 연동) g++50.
+- [x] 12 연습 전용 중력 선택→검토→적용·공식 잠금·기록 태그·UE cm/s² 변환(`PracticeGravity.h`) g++60.
+- [x] 17 심판 승인/취소/재검토 이력·경고/페널티·기권·결과 확정/재개방(`MatchOfficiating.h`) g++93. 승계·연장은 대회 지침 확인 필요.
+- [x] 18 서버 권한 세션 코어: 조종권·입력 순번·손실 failsafe·재점유 후 새 ARM·사건 로그 수렴(`NetSessionCore.h`) g++164.
+- [x] 진단 ZIP(dry-run 기본·--confirm·보정/비밀 제외·경로/ID 정제·manifest) Python8, 한/영 점검기 Python24(표572행·발견79건).
+- [x] 5 USB 호환 시험표·판정 기준 문서, 전체 일괄 실행 `Tests/run-native-core-tests.sh` 32통과·0실패.
+- [ ] 각 코어의 MSVC `/W4 /WX` 러너 실행과 Unreal 클래스 연결·Editor/Shipping 빌드·패키지 실행본 재검사.
+- [ ] 실제 소켓/두 PC LAN, 실물 Boxer, 다른 PC, 사람 사용성, 13·14 실측 물리, 새 USB 입력 경로.
+[범위·검사·남은 통합 지점](docs/master-development-plan.md#core-2026-10-31). 이 브랜치는 기존 소스를 수정하지 않았고 실행본 동작은 safety3와 같다.
+---
 # 로컬 제품 UI 후속 — 0.7.14-dev-ui1 /0350 / 미배포
 
 - [x] HUD 최소10px 요청 크기·UTF16 말줄임·장치명 literal 출력, 독립177검사.

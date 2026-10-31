@@ -1,4 +1,17 @@
 # 검증 기록
+<a id="core-20261031"></a>
+## 2026-10-31 엔진 독립 핵심 로직 — plan/complete-2026-10-31 · Unreal 미빌드
+브랜치 `plan/complete-2026-10-31`은 태그 `v0.7.15-dev-safety3` 위에 새 파일만 추가했다. 기존 소스·설정·콘텐츠는 수정하지 않았다. 새 헤더 10개는 아직 어떤 Unreal 클래스도 include하지 않는다. Linux 샌드박스(g++ 13.3.0, Python 3)에서 `bash Tests/run-native-core-tests.sh`를 실행한 결과는 **32 통과·0 실패**다.
+
+| 구분 | 내용 | 결과 |
+|---|---|---|
+| 기존 네이티브 11종 | 공격수54207·복구28260·AI planner2765307·첫비행410·guidance16·HUD177·스로틀29·물리122·조종응답4881·라디오205·규칙133 | 모두 통과(기존 경고 허용 플래그) |
+| 새 코어 9종 | 탑건63·연출50·중력60·LOS46·조종보조46·심판93·AI경로32·LAN세션164·훈련목표81 | 모두 통과(`-Wpedantic -Wconversion -Wsign-conversion -Wshadow -Werror`) |
+| 헤더 10종 | `-fno-exceptions -fno-rtti` 단독 include | 모두 통과 |
+| Python 2종 | 진단 ZIP 8·현지화 점검 24 | 모두 통과 |
+
+**하지 않은 검증:** Windows MSVC `/W4 /WX` 러너(`Tests/run-*-tests.ps1`) 실행, Unreal Editor/Shipping 빌드, 패키지 실행본, 실물 Boxer, 다른 PC, 사람 비행, 실제 네트워크. g++ 경고 옵션은 MSVC 경고와 같지 않다. 새 MSVC 러너는 Windows에서 처음 실행할 때 별도로 확인해야 한다. 기존 `DroneSoccerRules.cpp`는 g++ `-Wsign-conversion`에서 경고가 나므로, 일괄 실행기는 기존 소스를 기존 플래그로 따로 컴파일한다. 범위와 통합 지점은 [계획서](master-development-plan.md#core-2026-10-31)에 정리했다.
+
 
 <a id="v0714-rc1"></a>
 ## v0.7.14-rc1 사전 배포 후보
