@@ -94,6 +94,8 @@ AI 설정 또는 저장된 최근 결과의 **저장 기록 비교**를 엽니�
 
 [전체 개발 계획·사용자 요청 20개](docs/master-development-plan.md) · [국가·세계 리더보드와 다국어 후속 기획](docs/follow-up-plan-2026-10-28.md) · [상세 기능 명세](docs/simulator-feature-plan.md) · [과거 버전·개발 이력](docs/history/README-before-v0.7.13.md)
 
+2026-10-31 개발 브랜치 `plan/complete-2026-10-31`에는 탑건 판정·경기 연출·연습 중력·LOS 자동 줌·심판 판정·LAN 세션 등 [엔진 독립 핵심 로직](docs/master-development-plan.md#core-2026-10-31)이 추가됐습니다. 아직 게임 화면에 연결하지 않았고 Unreal 빌드로 확인하지 않았습니다.
+
 나라별·세계 통합 리더보드, 추가 국가 언어, 혼합 5대5, 실물 조종기·다른 PC 검증은 후속 작업입니다. 전체 기능 완료나 실기체 인증을 의미하지 않습니다.
 
 오류나 개선 의견은 [GitHub Issues](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/issues)로 보내 주세요. 버전, 재현 순서, 기대한 결과와 실제 결과를 적고 공개할 내용을 확인한 뒤 직접 제출합니다. 개인정보나 개인 보정 파일은 첨부하지 않습니다. ZIP에 포함된 `feedback-form.html`에서도 보고서를 정리할 수 있습니다.
