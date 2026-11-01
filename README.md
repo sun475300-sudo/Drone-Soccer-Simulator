@@ -10,6 +10,26 @@ Windows에서 키보드나 USB 조종기로 연습하는 드론축구 시뮬레�
 
 **[safety3 설치 EXE](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.15-dev-safety3/ImperialWings-Setup-0.7.15-dev-safety3.exe)** · **[safety3 Windows ZIP](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.15-dev-safety3/ImperialWings-0.7.15-dev-safety3.zip)** · [SHA-256 목록](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/download/v0.7.15-dev-safety3/SHA256SUMS-safety3.txt) · [변경·검증 한계](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.15-dev-safety3) · [이전 v0.7.14-rc1](https://github.com/sun475300-sudo/Drone-Soccer-Simulator/releases/tag/v0.7.14-rc1)
 
+<a id="local-improvements-20261101"></a>
+## 로컬 개선 내역 — 2026-11-01 · 아직 미배포
+
+**로컬 검증본 `0.7.18-local-los1`의 개발 기록입니다. 아래 개선은 현재 공개 safety3 다운로드나 main 게임 코드에 반영된 상태가 아닙니다.** 이번 GitHub 갱신 범위는 README 문서이며, 게임 코드·새 실행본 배포는 보류합니다. 모든 테스트는 사용자의 Windows PC에서 로컬로 수행했습니다.
+
+| 개선 | 실제 동작 |
+|---|---|
+| 선택형 LOS 자동 기체 보기 | 경기장 밖 높이 1.70m의 파일럿 위치를 고정하고 선택 기체를 바라봅니다. 착륙하면 아래로 시선을 따라갑니다. |
+| 독립 원거리 확대 | 자동 보기와 별도로 켜고 끕니다. 약 6~16m에서 FOV85°→65°로 완만하게 확대합니다. 두 옵션은 기본 OFF입니다. |
+| 수동 조작·명시적 재개 | 우클릭 드래그는 자동 방향, 휠은 자동 확대만 멈춥니다. `기체 다시 보기`로 재개하고, 메뉴/HUD 위 입력과 창 전환을 구분합니다. 비행·ARM·USB 재연결은 자동 재개하지 않습니다. |
+| 한국어 시점 설정 | 전체/F10 간소 HUD에서 설정을 엽니다. 착륙·DISARM한 자유 연습에서만 저장하며, 취소·기본값 초안·저장 실패 후 재시도를 지원합니다. |
+| 설정·기록 보존 | 손상·미래 형식·잘못된 타입·빈/과대 설정 파일을 보존합니다. 호환 확장 필드를 유지하고 동시 저장 잠금 실패를 안내합니다. |
+| 탑건 로컬 통합 | 앞선 로컬 S코스·닉네임/로컬 ID/선택 국가·시도/개인 최고 기록 기능을 포함합니다. 이번에는 추적/확대 옵션을 비교 조건에 추가해 다른 시점 설정의 기록을 섞지 않습니다. 국가·세계 순위는 후속입니다. |
+
+**로컬 검증 결과:** Editor·Shipping 빌드 성공, 회귀 **37개 묶음 최종 통과**, LOS 계산99개, 설정 저장/재실행12사례58개, 실제 모터 힘·Chaos 비행20/60/240Hz 각각46개, GPU720p48개·1080p41개, 실제 Editor Play41개를 확인했습니다. 새 한글·공백 폴더에서33파일 해시와 실행을 다시 확인했으며 개인 조종기 보정은 보존했습니다. 테스트 스크립트의 구형 PowerShell 해시 명령 오류1건은 .NET SHA256으로 수정해 동일99개를 재검사했고 최초 실패 기록도 남겼습니다.
+
+고정 시간 간격 검사는 실제 GPU FPS 측정이 아닙니다. Canvas 명령·진단용 포커스 대체를 사용하는 자동 검사는 실제 OS 마우스 전체 조작이나 실물 조종기 검증이 아닙니다. **미검증:** 실물 스틱/스위치·USB 케이블 재연결, 다른 PC/GPU, 고 DPI·1440p/4K·장시간 성능, 실측 물리 계수. 원거리 철망의 촘촘한 겹침은 실제 화면에서 재확인했으며 아직 해결되지 않았습니다.
+
+검증한 로컬 소스 지문: `993698965a9d1dc7f41c5d953a9dda3657959ec1fdcfb920b8fd0673281a726f` (190개 빌드 입력). 이 지문은 공개 커밋·다운로드 파일을 뜻하지 않습니다. 전체 계획은 미완료이며 방향 보조·시인성/성능, 연습 중력과 공식 경기/기록 조건, 승인 득점 연출·시작/종료 알림, 정밀 물리·모델·심판·LAN/온라인 작업을 이어갑니다.
+
 ## 새 버전 업데이트 기록
 
 ### v0.7.15-dev-safety3
