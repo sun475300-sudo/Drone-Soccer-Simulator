@@ -1,0 +1,64 @@
+name: Drone Video Lab Windows preview
+on:
+  push:
+    branches: ['feature/drone-video-lab']
+    paths: ['Tools/DroneVideoLab/**', '.github/workflows/drone-video-lab.yml', '!Tools/DroneVideoLab/docs/**', '!Tools/DroneVideoLab/research/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: drone-video-lab-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  windows-build:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: Tools/DroneVideoLab
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: Tools/DroneVideoLab
+          lfs: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: x64
+      - name: Build and test Windows EXE
+        run: ./build-windows.ps1
+      - name: Preserve test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: drone-video-lab-evidence-${{ github.run_number }}
+          path: Tools/DroneVideoLab/verification/
+          if-no-files-found: warn
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: drone-video-lab-windows-${{ github.run_number }}
+          path: |
+            Tools/DroneVideoLab/release/*.exe
+            Tools/DroneVideoLab/release/*.zip
+            Tools/DroneVideoLab/release/SHA256SUMS.txt
+          if-no-files-found: error
+      - name: Publish separate prerelease without changing simulator latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = 'video-lab-v0.1.0-preview-build-${{ github.run_number }}'
+          $note = @'
+          드론축구 영상분석실 시험판입니다. 기존 Unreal 시뮬레이터와 별개 도구입니다.
+          영상 재생/프레임 탐색, 기체 수동 지정, 템플릿 추적 후보, 사건 기록, JSON/CSV/PNG/무음 MP4 출력을 제공합니다.
+          자동 득점 심판, 학습된 드론 검출, 3D/실제 m/s 계산은 제공하지 않습니다.
+          Windows CI에서 단위 검사, GUI/합성 영상 처리, 한글·공백 경로로 옮긴 EXE 실행을 검사했습니다.
+          사용자 실제 영상의 Windows 전수 검증과 다른 PC 검증은 미완료입니다. 코드 서명은 없습니다.
+          원본 영상/개인 데이터는 포함되지 않습니다. SHA256SUMS와 verification ZIP을 확인하세요.
+          '@
+          $assets = @(Get-ChildItem release -File | ForEach-Object { $_.FullName })
+          gh release create $tag @assets --repo '${{ github.repository }}' --target '${{ github.sha }}' --title 'Drone Video Lab 0.1.0 preview (Windows x64)' --notes $note --prerelease --latest=false
+          if ($LASTEXITCODE -ne 0) { throw 'GitHub Release publication failed' }

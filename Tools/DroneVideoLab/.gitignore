@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+build/
+dist/
+*.spec
+*.mp4
+*.mov
+*.avi
+*.review.json
+smoke*/
+verification/
+release/
+licenses/
