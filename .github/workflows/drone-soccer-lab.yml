@@ -1,0 +1,78 @@
+name: Drone Soccer Lab Windows Preview
+on:
+  push:
+    branches: ['video-review/2026-11-15']
+    paths: ['tools/drone-soccer-lab/**', '.github/workflows/drone-soccer-lab.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: drone-soccer-lab-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: tools/drone-soccer-lab
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@v7
+        with:
+          go-version: stable
+          cache: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Test
+        run: |
+          go test -v ./...
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node --test tests/core.test.cjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Build standalone Windows EXE
+        run: |
+          New-Item -ItemType Directory -Force dist/package | Out-Null
+          $env:CGO_ENABLED = '0'
+          $env:GOOS = 'windows'
+          $env:GOARCH = 'amd64'
+          go build -trimpath -ldflags '-s -w -H=windowsgui' -o dist/package/DroneSoccerLab.exe .
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Native EXE and relocated path smoke tests
+        run: |
+          ./scripts/smoke-windows.ps1 -Exe ./dist/package/DroneSoccerLab.exe
+          $testDir = Join-Path $env:RUNNER_TEMP '드론 복기 시험'
+          New-Item -ItemType Directory -Force $testDir | Out-Null
+          Copy-Item ./dist/package/DroneSoccerLab.exe $testDir
+          ./scripts/smoke-windows.ps1 -Exe (Join-Path $testDir 'DroneSoccerLab.exe')
+      - name: Package and checksum
+        run: |
+          Copy-Item README.md dist/package/
+          Copy-Item docs,scripts dist/package/ -Recurse
+          @('Source commit: ' + $env:GITHUB_SHA, 'Windows native self-test and HTTP smoke tests passed.', 'Real Windows browser workflow, HEVC decoding, and match accuracy remain unvalidated.', 'Unsigned preview; no private videos included.') | Set-Content dist/package/BUILD-INFO.txt -Encoding utf8
+          Compress-Archive -Path dist/package/* -DestinationPath dist/DroneSoccerLab-0.1.0-win-x64.zip
+          Copy-Item dist/package/DroneSoccerLab.exe dist/DroneSoccerLab-0.1.0-win-x64.exe
+          Get-FileHash dist/DroneSoccerLab-0.1.0-win-x64.exe,dist/DroneSoccerLab-0.1.0-win-x64.zip -Algorithm SHA256 | ForEach-Object { $_.Hash.ToLower() + '  ' + (Split-Path $_.Path -Leaf) } | Set-Content dist/SHA256SUMS.txt -Encoding ascii
+          Copy-Item dist/package/BUILD-INFO.txt dist/BUILD-INFO.txt
+      - name: Publish separate preview release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          $tag = 'review-v0.1.0-preview-' + $env:GITHUB_RUN_ID
+          $notes = @"
+          Drone Soccer Lab 0.1.0-preview - standalone local video review tool, not the Unreal simulator.
+          Native Windows EXE and loopback HTTP tests passed, including a Korean/space relocation path.
+          Human-in-the-loop template tracking only. No automatic scoring or true 3D/world speed.
+          Real Windows browser/HEVC/long match validation remains pending. Unsigned preview.
+          Source commit: $env:GITHUB_SHA
+          No user videos or screenshots are published. Existing simulator releases are untouched.
+          "@
+          $notes | Set-Content dist/RELEASE-NOTES.txt -Encoding utf8
+          gh release create $tag dist/DroneSoccerLab-0.1.0-win-x64.exe dist/DroneSoccerLab-0.1.0-win-x64.zip dist/SHA256SUMS.txt dist/BUILD-INFO.txt --target $env:GITHUB_SHA --title 'Drone Soccer Lab 0.1.0 Preview (Windows x64)' --notes-file dist/RELEASE-NOTES.txt --prerelease --latest=false
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
