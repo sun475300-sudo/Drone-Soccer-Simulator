@@ -20,6 +20,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -125,10 +126,15 @@ func run() error {
 	host := listener.Addr().String()
 	url := "http://" + host + prefix
 	srv := &http.Server{ReadHeaderTimeout: 5 * time.Second, IdleTimeout: 60 * time.Second, MaxHeaderBytes: 8192}
+	shutdownDone := make(chan struct{})
+	var stopOnce sync.Once
 	stop := func() {
-		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-		defer cancel()
-		_ = srv.Shutdown(ctx)
+		stopOnce.Do(func() {
+			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+			defer cancel()
+			_ = srv.Shutdown(ctx)
+			close(shutdownDone)
+		})
 	}
 	srv.Handler = newHandler(prefix, host, stop)
 	sig := make(chan os.Signal, 1)
@@ -150,6 +156,7 @@ func run() error {
 	}
 	err = srv.Serve(listener)
 	if errors.Is(err, http.ErrServerClosed) {
+		<-shutdownDone // Let in-flight responses flush before the process exits.
 		return nil
 	}
 	return err
